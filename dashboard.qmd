@@ -250,58 +250,6 @@ text_transform(
 )
 ```
 
-```{r "standings plot"}
-#| title: "Standings"
-
-# roster_points_per_game |>
-#     unnest(game_date) |>
-#     pivot_longer(
-#         cols = -game_date,
-#         names_to = "Team",
-#         values_to = "Points"
-#     )
-
-# standings |>
-# mutate(
-#     delta = roster_points_per_game |>
-#     filter(
-#         game_date == last_game_day_date
-#     ) |>
-#     compute_standings(
-#         team_images
-#     ) |>
-#     pull(
-#         Points
-#     )
-# ) |>
-# mutate(
-#     Points = paste0(
-#             Points,
-#             " (+",
-#             delta,
-#             ")"
-#         )
-# ) |> select(
-#     c(
-#         Name,
-#         Team,
-#         Points
-#     )
-# ) |>
-# gt() |>
-# text_transform(
-#     locations = cells_body(
-#         columns = Team
-#     ),
-#     fn = function(x) {
-#         web_image(
-#             url = x,
-#             height = "5vh"
-#         )
-#     }
-# )
-```
-
 # Team Standings
 
 ## Row
