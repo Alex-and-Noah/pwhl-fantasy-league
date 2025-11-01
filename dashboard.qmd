@@ -412,9 +412,11 @@ schedule |>
         c(
             game_date,
             game_status,
-            away_team,
+            away_team_logo,
+            # away_team_code,
             away_score,
-            home_team,
+            home_team_logo,
+            # home_team_code,
             home_score,
             venue
         )
@@ -429,20 +431,34 @@ schedule |>
             )
     ) |>
     gt() |>
+    fmt_image(
+        columns = c(
+            away_team_logo,
+            home_team_logo
+        ),
+        # width = "1.5em",
+        height = "2em"
+    ) |>
     cols_align(
         align = "center",
         columns = c(
-            "game_status",
-            "away_score",
-            "home_score"
+            game_status,
+            away_score,
+            home_score
         )
+    ) |>
+    cols_width(
+        game_date ~ pct(20),
+        game_status ~ pct(20)
     ) |>
     cols_label(
         game_date = "Date",
         game_status = "Time",
-        away_team = "Visiting Team",
+        away_team_logo = "Away",
+        # away_team_code = "",
         away_score = "Score",
-        home_team = "Home Team",
+        home_team_logo = "Home",
+        # home_team_code = "",
         home_score = "Score",
         venue = "Venue"
     )

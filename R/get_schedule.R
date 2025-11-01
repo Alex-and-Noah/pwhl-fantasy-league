@@ -80,7 +80,8 @@ get_schedule <- function(
         season_id,
         "start_date"
       ]
-    )
+    ) |>
+    as_date()
 
   if (
     as.character(
