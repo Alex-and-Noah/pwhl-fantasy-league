@@ -20,7 +20,7 @@ invisible(
 
 ```{r "Get season dates and type"}
 current_date = today()
-current_date = "2025-04-22"
+# current_date = "2025-04-22"
 
 season_dates_and_type <- get_season_dates_and_type()
 
@@ -63,7 +63,11 @@ schedules <- get_schedule(
   current_date
 )
 
-schedule <- schedules["schedule"][[1]]
+schedule <- schedules["schedule"][[1]] |>
+    mutate(
+        game_date = game_date |> as.Date()
+    )
+
 schedule_to_date <- schedules["schedule_to_date"][[1]]
 last_game_day_date <- schedules["last_game_day_date"][[1]]
 next_game_day_date <- schedules["next_game_day_date"][[1]]
@@ -422,6 +426,67 @@ res <- purrr::map_chr(
 cat(res, sep = '\n')
 ```
 :::
+
+# Schedule
+
+```{r "Schedule"}
+
+schedule |>
+    select(
+        c(
+            game_date,
+            game_status,
+            away_team_logo,
+            # away_team_code,
+            away_score,
+            home_team_logo,
+            # home_team_code,
+            home_score
+        )
+    ) |>
+    mutate(
+        game_date = as.Date(
+                game_date,
+                format="%Y-%m-%d"
+            ) |>
+            format(
+                "%a, %b %e"
+            )
+    ) |>
+    gt() |>
+    fmt_image(
+        columns = c(
+            away_team_logo,
+            home_team_logo
+        )
+        # width = "1.5em",
+        # height = "2em"
+    ) |>
+    cols_align(
+        align = "center",
+        columns = c(
+            game_status,
+            away_score,
+            home_score
+        )
+    ) |>
+    cols_width(
+        game_date ~ pct(20),
+        game_status ~ pct(20),
+        away_team_logo ~ pct(10),
+        away_score ~ pct(10),
+        home_team_logo ~ pct(10),
+        home_score ~ pct(10)
+    ) |>
+    cols_label(
+        game_date = "Date",
+        game_status = "Time",
+        away_team_logo = "Away",
+        away_score = "Score",
+        home_team_logo = "Home",
+        home_score = "Score"
+    )
+```
 
 # PWHL Rosters
 
