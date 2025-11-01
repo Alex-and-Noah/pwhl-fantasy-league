@@ -5,6 +5,7 @@ library(bslib)
 library(shiny)
 library(bsicons)
 library(ggimage)
+library(rsvg)
 
 invisible(
   lapply(
