@@ -1,32 +1,25 @@
----
-title: "PWHL Fantasy League"
-author: "TBD"
-format:
-  dashboard:
-    css: styles.css
----
-
 ```{r imports}
 library(tidyverse)
 library(gt)
 library(bslib)
 library(shiny)
 library(bsicons)
+library(ggimage)
 
 invisible(
-    lapply(
-        list.files(
-            "./R",
-            full.names = TRUE
-        ),
-        source
-    )
+  lapply(
+    list.files(
+      "./R",
+      full.names = TRUE
+    ),
+    source
+  )
 )
 ```
 
 ```{r "Get season dates and type"}
 current_date = today()
-# current_date = "2024-11-22"
+current_date = "2025-04-22"
 
 season_dates_and_type <- get_season_dates_and_type()
 
@@ -36,19 +29,18 @@ days_for_current_date <- get_days_for_current_date(
 )
 
 last_game_day_date <- days_for_current_date$last_game_day_date |>
- as.character()
+  as.character()
 next_game_day_date <- days_for_current_date$next_game_day_date |>
- as.character()
+  as.character()
 season_id <- days_for_current_date$season_id |>
- as.numeric()
+  as.numeric()
 season <- days_for_current_date$season |>
- as.numeric()
+  as.numeric()
 game_type <- days_for_current_date$game_type |>
- as.character()
+  as.character()
 ```
 
 ```{r "Get team and schedule data"}
-
 team_data_frames <- get_all_teams(
   season_id,
   season,
@@ -91,15 +83,15 @@ fantasy_teams_and_standings <- get_fantasy_teams_and_standings(
 
 team_images <- fantasy_teams_and_standings["team_images"][[1]]
 team_rosters <- fantasy_teams_and_standings["team_rosters"][[1]]
-roster_points_per_game <- fantasy_teams_and_standings["roster_points_per_game"][[1]]
+roster_points_per_game <- fantasy_teams_and_standings[
+  "roster_points_per_game"
+][[1]]
 standings <- fantasy_teams_and_standings["standings"][[1]]
 
-if (
-    typeof(last_game_day) != "logical"
-) {
-    last_game_day <- last_game_day |>
+if (typeof(last_game_day) != "logical") {
+  last_game_day <- last_game_day |>
     mutate(
-        roster_points_per_game[game_id,]
+      roster_points_per_game[game_id, ]
     )
 }
 ```
@@ -109,110 +101,110 @@ if (
 ## Row
 
 ```{r "next game day"}
-
 p_args <- next_game_day |>
-mutate(
+  mutate(
     temp = paste0(
-            home_team_code,
-            " @ ",
-            away_team_code,
-            ", ",
-            game_status
-        )
-) |> select(
+      home_team_code,
+      " @ ",
+      away_team_code,
+      ", ",
+      game_status
+    )
+  ) |>
+  select(
     temp
-)
+  )
 
-p_args <-map(
-    p_args[,1],
-    p
+p_args <- map(
+  p_args[, 1],
+  p
 )
 
 value_box(
-    title = "Next game day",
-    showcase = bs_icon(
-        "calendar-event",
-        size="6vh"
+  title = "Next game day",
+  showcase = bs_icon(
+    "calendar-event",
+    size = "6vh"
+  ),
+  value = tags$p(
+    format(
+      as.Date(
+        next_game_day_date,
+        format = "%Y-%m-%d"
+      ),
+      "%b %e, %Y"
     ),
-    value = tags$p(
-        format(
-            as.Date(
-                next_game_day_date,
-                format="%Y-%m-%d"
-            ),
-            "%b %e, %Y"
-        ),
-        style = "font-size: 4vh;"
-    ),
-    theme = "success",
-    !!!p_args
+    style = "font-size: 4vh;"
+  ),
+  theme = "success",
+  !!!p_args
 )
 ```
 
-## Row
-
 ```{r "last game day"}
 if (
-    nrow(
-        roster_points_per_game
-    ) == 0
+  nrow(
+    roster_points_per_game
+  ) ==
+    0
 ) {
-
-    value_box(
-        title = "No data available",
-        showcase = bs_icon(
-            "hourglass-split",
-            size="6vh"
-        ),
-        value = tags$p(
-            "No games played yet this season",
-            style = "font-size: 4vh;"
-        ),
-        theme = "danger"
-    )
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games played yet this season",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
 } else {
-
-    last_game_day |> mutate(
-        temp = "-"
-    ) |> select(
-        c(
-            "home_team_code",
-            "home_team_logo",
-            "home_score",
-            "temp",
-            "away_score",
-            "away_team_logo",
-            "away_team_code"
-        )
+  last_game_day |>
+    mutate(
+      temp = "-"
     ) |>
-    gt()  |>
+    select(
+      c(
+        "home_team_code",
+        "home_team_logo",
+        "home_score",
+        "temp",
+        "away_score",
+        "away_team_logo",
+        "away_team_code"
+      )
+    ) |>
+    gt() |>
     tab_header(
-        format(
-            last_game_day_date,
-            "Last game day (%B %e, %Y)"
-        )
+      format(
+        last_game_day_date,
+        "Last game day (%B %e, %Y)"
+      )
     ) |>
     text_transform(
-        locations = cells_body(
-            columns = c(
-                "home_team_logo",
-                "away_team_logo"
-            )
-        ),
-        fn = function(x) {
-            web_image(
-                url = x,
-                height = "5vh"
-            )
-        }
-    ) |> cols_label(
-        home_team_code = "",
-        home_team_logo = "Home",
-        home_score = "",
-        temp = "",
-        away_score = "",
-        away_team_logo = "Away",
-        away_team_code = ""
+      locations = cells_body(
+        columns = c(
+          "home_team_logo",
+          "away_team_logo"
+        )
+      ),
+      fn = function(x) {
+        web_image(
+          url = x,
+          height = "5vh"
+        )
+      }
+    ) |>
+    cols_label(
+      home_team_code = "",
+      home_team_logo = "Home",
+      home_score = "",
+      temp = "",
+      away_score = "",
+      away_team_logo = "Away",
+      away_team_code = ""
     )
 }
 
@@ -223,44 +215,45 @@ if (
 ```{r "standings overview"}
 #| title: "Standings"
 standings |>
-mutate(
+  mutate(
     delta = roster_points_per_game |>
-    filter(
+      filter(
         game_date == last_game_day_date
-    ) |>
-    compute_standings(
+      ) |>
+      compute_standings(
         team_images
-    ) |>
-    pull(
+      ) |>
+      pull(
         Points
-    )
-) |>
-mutate(
+      )
+  ) |>
+  mutate(
     Points = paste0(
-            Points,
-            " (+",
-            delta,
-            ")"
-        )
-) |> select(
-    c(
-        Name,
-        Team,
-        Points
+      Points,
+      " (+",
+      delta,
+      ")"
     )
-) |>
-gt() |>
-text_transform(
+  ) |>
+  select(
+    c(
+      Name,
+      Team,
+      Points
+    )
+  ) |>
+  gt() |>
+  text_transform(
     locations = cells_body(
-        columns = Team
+      columns = Team
     ),
     fn = function(x) {
-        web_image(
-            url = x,
-            height = "5vh"
-        )
+      web_image(
+        url = x,
+        height = "5vh"
+      )
     }
-)
+  )
 ```
 
 # Team Standings
@@ -270,18 +263,18 @@ text_transform(
 ```{r "standings full"}
 #| title: "Standings"
 standings |>
-gt() |>
-text_transform(
+  gt() |>
+  text_transform(
     locations = cells_body(
-        columns = Team
+      columns = Team
     ),
     fn = function(x) {
-        web_image(
-            url = x,
-            height = "5vh"
-        )
+      web_image(
+        url = x,
+        height = "5vh"
+      )
     }
-)
+  )
 ```
 
 ## Row
@@ -290,48 +283,78 @@ text_transform(
 #| title: "Standings over time"
 
 if (
-    nrow(
-        roster_points_per_game
-    ) == 0
+  nrow(
+    roster_points_per_game
+  ) ==
+    0
 ) {
-
-    value_box(
-        title = "No data available",
-        showcase = bs_icon(
-            "hourglass-split",
-            size="6vh"
-        ),
-        value = tags$p(
-            "No games played yet this season",
-            style = "font-size: 4vh;"
-        ),
-        theme = "danger"
-    )
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games played yet this season",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
 } else {
-
-    roster_points_per_game |>
+  data <- roster_points_per_game |>
     mutate(
-        across(
-            names(team_rosters),
-            ~ .x |> as.numeric() |> cumsum()
-        ),
-        game_idx = 1:nrow(
-            roster_points_per_game
-        )
+      across(
+        names(team_rosters),
+        ~ .x |> as.numeric() |> cumsum()
+      ),
+      game_idx = 1:nrow(
+        roster_points_per_game
+      )
     ) |>
     pivot_longer(
-        cols = names(team_rosters),
-        names_to = "team_name",
-        values_to = "cum_score"
+      cols = names(team_rosters),
+      names_to = "Team",
+      values_to = "Points"
     ) |>
+    rename("Game" = game_idx)
+
+  #TODO this needs to be moved ig
+  standings <- standings |>
+    mutate(
+      colours = c("#5F259F", "#9d6dd1ff", "#2B2D42", "#F5F5F5")
+    )
+
+  data |>
     ggplot() +
     geom_line(
-        aes(
-            x = game_idx,
-            y = cum_score,
-            colour = team_name
-        )
-    )
+      aes(
+        x = Game,
+        y = Points,
+        colour = Team
+      ),
+      linewidth = 2
+    ) +
+    scale_color_manual(values = standings$colours) +
+    geom_point(
+      data = standings,
+      aes(
+        x = max(data$Game),
+        y = Points,
+        colour = Name
+      ),
+      size = 10,
+      colour = standings$colours
+    ) +
+    geom_image(
+      data = standings,
+      aes(
+        x = max(data$Game),
+        y = Points,
+        image = Team
+      )
+    ) +
+    guides(colour = guide_legend(override.aes = list(size = 10))) +
+    theme_minimal()
 }
 ```
 
@@ -342,61 +365,61 @@ if (
 ```{r "team rosters"}
 #| output: asis
 res <- purrr::map_chr(
-    unique(names(team_rosters)),
-    function(name) {
-        knitr::knit_child(
-            text = c(
-                "## `r name`",
-                "", 
-                "```{r}",
-                "#| echo: false",
-                "html(",
-                "    web_image(",
-                "        url = team_images[[name]],",
-                "        height = '50px'",
-                "    )",
-                ")",
-                "team_rosters[[name]] |>",
-                "    select(",
-                "        c(",
-                "            'jersey_number',",
-                "            'player_headshot',",
-                "            'player_name',",
-                "            'position',",
-                "            'primary_hand',",
-                "            'dob',",
-                "            'home_town'",
-                "        )",
-                "    ) |>",
-                "    rename(",
-                "        c(",
-                "            '#' = 'jersey_number',",
-                "            Headshot = 'player_headshot',",
-                "            Name = 'player_name',",
-                "            Pos = 'position',",
-                "            Shoots = 'primary_hand',",
-                "            DOB = 'dob',",
-                "            'Home town' = 'home_town'",
-                "        )",
-                "    ) |>",
-                "   gt() |>",
-                "   text_transform(",
-                "        locations = cells_body(columns = Headshot),",
-                "        fn = function(x) {",
-                "            web_image(",
-                "                url = x,",
-                "                height = '50px'",
-                "            )",
-                "        }",
-                "    )",
-                "```",
-                "",
-                ""
-            ),
-            envir = environment(),
-            quiet = TRUE
-        )
-    }
+  unique(names(team_rosters)),
+  function(name) {
+    knitr::knit_child(
+      text = c(
+        "## `r name`",
+        "",
+        "```{r}",
+        "#| echo: false",
+        "html(",
+        "    web_image(",
+        "        url = team_images[[name]],",
+        "        height = '50px'",
+        "    )",
+        ")",
+        "team_rosters[[name]] |>",
+        "    select(",
+        "        c(",
+        "            'jersey_number',",
+        "            'player_headshot',",
+        "            'player_name',",
+        "            'position',",
+        "            'primary_hand',",
+        "            'dob',",
+        "            'home_town'",
+        "        )",
+        "    ) |>",
+        "    rename(",
+        "        c(",
+        "            '#' = 'jersey_number',",
+        "            Headshot = 'player_headshot',",
+        "            Name = 'player_name',",
+        "            Pos = 'position',",
+        "            Shoots = 'primary_hand',",
+        "            DOB = 'dob',",
+        "            'Home town' = 'home_town'",
+        "        )",
+        "    ) |>",
+        "   gt() |>",
+        "   text_transform(",
+        "        locations = cells_body(columns = Headshot),",
+        "        fn = function(x) {",
+        "            web_image(",
+        "                url = x,",
+        "                height = '50px'",
+        "            )",
+        "        }",
+        "    )",
+        "```",
+        "",
+        ""
+      ),
+      envir = environment(),
+      quiet = TRUE
+    )
+  }
 )
 
 cat(res, sep = '\n')
@@ -471,48 +494,48 @@ schedule |>
 ```{r "Boston roster"}
 #| title: Boston
 generate_pwhl_roster_gt_table(
-    all_teams,
-    "Boston"
+  all_teams,
+  "Boston"
 )
 ```
 
 ```{r "Minnesota roster"}
 #| title: Minnesota
 generate_pwhl_roster_gt_table(
-    all_teams,
-    "Minnesota"
+  all_teams,
+  "Minnesota"
 )
 ```
 
 ```{r "Montreal roster"}
 #| title: Montreal
 generate_pwhl_roster_gt_table(
-    all_teams,
-    "Montreal"
+  all_teams,
+  "Montreal"
 )
 ```
 
 ```{r "New York roster"}
 #| title: New York
 generate_pwhl_roster_gt_table(
-    all_teams,
-    "New York"
+  all_teams,
+  "New York"
 )
 ```
 
 ```{r "Ottawa roster"}
 #| title: Ottawa
 generate_pwhl_roster_gt_table(
-    all_teams,
-    "Ottawa"
+  all_teams,
+  "Ottawa"
 )
 ```
 
 ```{r "Toronto roster"}
 #| title: Toronto
 generate_pwhl_roster_gt_table(
-    all_teams,
-    "Toronto"
+  all_teams,
+  "Toronto"
 )
 ```
 

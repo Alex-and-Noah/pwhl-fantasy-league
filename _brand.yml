@@ -1,0 +1,29 @@
+# _brand.yml — Quarto brand configuration for PWHL-inspired theme
+
+color:
+  palette:
+    purple: "#5F259F"
+    light-purple: "#9d6dd1ff"
+    navy: "#2B2D42" 
+    gray: "#F5F5F5" 
+    white: "#FFFFFF"
+  foreground: gray
+  background: white
+  primary: purple
+  secondary: navy
+  tertiary: navy
+  success: navy
+  info: light-purple
+  warning: light-purple
+  danger: light-purple
+  light: white
+  dark: navy
+
+typography:
+  fonts:
+    - family: "Montserrat"
+      source: google
+    - family: "Open Sans"
+      source: google
+  base: "Open Sans"
+  headings: "Montserrat"
