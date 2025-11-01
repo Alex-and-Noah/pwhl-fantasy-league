@@ -19,7 +19,7 @@ invisible(
 
 ```{r "Get season dates and type"}
 current_date = today()
-current_date = "2025-04-22"
+# current_date = "2025-04-22"
 
 season_dates_and_type <- get_season_dates_and_type()
 
@@ -440,8 +440,7 @@ schedule |>
             away_score,
             home_team_logo,
             # home_team_code,
-            home_score,
-            venue
+            home_score
         )
     ) |>
     mutate(
@@ -458,9 +457,9 @@ schedule |>
         columns = c(
             away_team_logo,
             home_team_logo
-        ),
+        )
         # width = "1.5em",
-        height = "2em"
+        # height = "2em"
     ) |>
     cols_align(
         align = "center",
@@ -472,18 +471,19 @@ schedule |>
     ) |>
     cols_width(
         game_date ~ pct(20),
-        game_status ~ pct(20)
+        game_status ~ pct(20),
+        away_team_logo ~ pct(10),
+        away_score ~ pct(10),
+        home_team_logo ~ pct(10),
+        home_score ~ pct(10)
     ) |>
     cols_label(
         game_date = "Date",
         game_status = "Time",
         away_team_logo = "Away",
-        # away_team_code = "",
         away_score = "Score",
         home_team_logo = "Home",
-        # home_team_code = "",
-        home_score = "Score",
-        venue = "Venue"
+        home_score = "Score"
     )
 ```
 

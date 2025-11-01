@@ -54,3 +54,6 @@ rsconnect/
 /_site/
 
 *.png
+
+/dashboard_files/
+dashboard.html
