@@ -1,2 +1,11 @@
-project:
-  type: website
+format: 
+  dashboard:
+    logo: logo.svg
+    nav-buttons: 
+      - icon: github
+        href: https://github.com/alexmcsw/pwhl-fantasy-league
+    theme:
+      - brand
+      - styles.scss
+    scrolling: true 
+    expandable: false

@@ -1,17 +1,10 @@
----
-title: "PWHL Fantasy League"
-author: "TBD"
-format:
-  dashboard:
-    css: styles.css
----
-
 ```{r imports}
 library(tidyverse)
 library(gt)
 library(bslib)
 library(shiny)
 library(bsicons)
+library(ggimage)
 
 invisible(
     lapply(
@@ -26,7 +19,7 @@ invisible(
 
 ```{r "Get season dates and type"}
 current_date = today()
-# current_date = "2024-11-22"
+current_date = "2025-04-22"
 
 season_dates_and_type <- get_season_dates_and_type()
 
@@ -144,8 +137,6 @@ value_box(
     !!!p_args
 )
 ```
-
-## Row
 
 ```{r "last game day"}
 if (
@@ -286,48 +277,78 @@ text_transform(
 #| title: "Standings over time"
 
 if (
-    nrow(
-        roster_points_per_game
-    ) == 0
+  nrow(
+    roster_points_per_game
+  ) ==
+    0
 ) {
-
-    value_box(
-        title = "No data available",
-        showcase = bs_icon(
-            "hourglass-split",
-            size="6vh"
-        ),
-        value = tags$p(
-            "No games played yet this season",
-            style = "font-size: 4vh;"
-        ),
-        theme = "danger"
-    )
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games played yet this season",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
 } else {
-
-    roster_points_per_game |>
+  data <- roster_points_per_game |>
     mutate(
-        across(
-            names(team_rosters),
-            ~ .x |> as.numeric() |> cumsum()
-        ),
-        game_idx = 1:nrow(
-            roster_points_per_game
-        )
+      across(
+        names(team_rosters),
+        ~ .x |> as.numeric() |> cumsum()
+      ),
+      game_idx = 1:nrow(
+        roster_points_per_game
+      )
     ) |>
     pivot_longer(
-        cols = names(team_rosters),
-        names_to = "team_name",
-        values_to = "cum_score"
+      cols = names(team_rosters),
+      names_to = "Team",
+      values_to = "Points"
     ) |>
+    rename("Game" = game_idx)
+
+  #TODO this needs to be moved ig
+  standings <- standings |>
+    mutate(
+      colours = c("#5F259F", "#9d6dd1ff", "#2B2D42", "#F5F5F5")
+    )
+
+  data |>
     ggplot() +
     geom_line(
-        aes(
-            x = game_idx,
-            y = cum_score,
-            colour = team_name
-        )
-    )
+      aes(
+        x = Game,
+        y = Points,
+        colour = Team
+      ),
+      linewidth = 2
+    ) +
+    scale_color_manual(values = standings$colours) +
+    geom_point(
+      data = standings,
+      aes(
+        x = max(data$Game),
+        y = Points,
+        colour = Name
+      ),
+      size = 10,
+      colour = standings$colours
+    ) +
+    geom_image(
+      data = standings,
+      aes(
+        x = max(data$Game),
+        y = Points,
+        image = Team
+      )
+    ) +
+    guides(colour = guide_legend(override.aes = list(size = 10))) +
+    theme_minimal()
 }
 ```
 
