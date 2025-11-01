@@ -1,25 +1,29 @@
+# _brand.yml — Quarto brand configuration for PWHL-inspired theme
+
 color:
   palette:
-    black: "#1A1A1A"
-    white: "#F9F9F9"
-    orange: "#FF6F20"
-    pink: "#FF3D7F"
-  foreground: black
+    purple: "#5F259F"
+    light-purple: "#9d6dd1ff"
+    navy: "#2B2D42" 
+    gray: "#F5F5F5" 
+    white: "#FFFFFF"
+  foreground: gray
   background: white
-  primary: orange
-  danger: pink
+  primary: purple
+  secondary: navy
+  tertiary: navy
+  success: navy
+  info: light-purple
+  warning: light-purple
+  danger: light-purple
+  light: white
+  dark: navy
 
 typography:
   fonts:
-    - family: Open Sans
+    - family: "Montserrat"
       source: google
-    - family: Rubik
+    - family: "Open Sans"
       source: google
-    - family: IBM Plex Mono
-      source: google
-
-  base: Open Sans
-  headings:
-    family: Rubik
-    weight: 400
-  monospace: IBM Plex Mono
+  base: "Open Sans"
+  headings: "Montserrat"
