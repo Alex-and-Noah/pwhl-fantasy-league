@@ -12,26 +12,26 @@ get_fantasy_teams_and_standings <- function(
   schedule_to_date,
   schedule
 ) {
-  rosters_idx_gsheet <- get_google_sheet(
+  rosters_names_gsheet <- get_google_sheet(
     sheet_id = 0
   )
 
-  team_images <- rosters_idx_gsheet$team_image |>
+  team_images <- rosters_names_gsheet$team_image |>
     set_names(
-      rosters_idx_gsheet$team_name
+      rosters_names_gsheet$team_name
     )
 
-  rosters_idx <- rosters_idx_gsheet |>
+  rosters_names <- rosters_names_gsheet |>
     select(!(team_name:team_image)) |>
     t() |>
     data.frame() |>
     set_names(
-      rosters_idx_gsheet$team_name
+      rosters_names_gsheet$team_name
     )
 
-  team_rosters <- rosters_idx |>
+  team_rosters <- rosters_names |>
     map(
-      filter_for_roster_idx,
+      filter_for_roster_names,
       all_teams = all_teams
     )
 

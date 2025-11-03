@@ -71,8 +71,8 @@ pwhl_teams <- function(
             "NY",
             "OTT",
             "SEA",
-            "VAN",
-            "TOR"
+            "TOR",
+            "VAN"
           )
 
           team_label = c(
@@ -82,8 +82,8 @@ pwhl_teams <- function(
             "New York",
             "Ottawa",
             "Seattle",
-            "Vancouver",
-            "Toronto"
+            "Toronto",
+            "Vancouver"
           )
         } else {
           team_code = c(

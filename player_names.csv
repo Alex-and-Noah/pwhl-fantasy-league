@@ -1,0 +1,234 @@
+player_name,position,team
+Sophie Shirley,Forwards,Boston
+Alina Müller,Forwards,Boston
+Chloé Aurard-Bushee,Forwards,Boston
+Liz Schepers,Forwards,Boston
+Olivia Mobley,Forwards,Boston
+Theresa Schafzahl,Forwards,Boston
+Julia Nearis,Forwards,Boston
+Abby Newhook,Forwards,Boston
+Hannah Brandt,Forwards,Boston
+Laura Kluge,Forwards,Boston
+Ella Huber,Forwards,Boston
+Shay Maloney,Forwards,Boston
+Loren Gabel,Forwards,Boston
+Jill Saulnier,Forwards,Boston
+Jamie Lee Rattray,Forwards,Boston
+Susanna Tapani,Forwards,Boston
+Kelly Babstock,Forwards,Boston
+Zoe Boyd,Defenders,Boston
+Olivia Zafuto,Defenders,Boston
+Julia Shaunessy,Defenders,Boston
+Megan Keller,Defenders,Boston
+Hadley Hartmetz,Defenders,Boston
+Mia Biotti,Defenders,Boston
+Haley Winn,Defenders,Boston
+Riley Brengman,Defenders,Boston
+Olivia Muhn,Defenders,Boston
+Rylind MacKinnon,Defenders,Boston
+Daniela Pejšová,Defenders,Boston
+Amanda Thiele,Goalies,Boston
+Aerin Frankel,Goalies,Boston
+Kaitlyn Ross,Goalies,Boston
+Abbey Levy,Goalies,Boston
+Alyssa Machado,Forwards,Minnesota
+Katy Knoll,Forwards,Minnesota
+Claire Butorac,Forwards,Minnesota
+Kaitlyn O'Donohoe,Forwards,Minnesota
+Kelly Pannek,Forwards,Minnesota
+Grace Zumwinkle,Forwards,Minnesota
+Dominique Petrie,Forwards,Minnesota
+Madison Mashuga,Forwards,Minnesota
+Vanessa Upson,Forwards,Minnesota
+Kendall Coyne Schofield,Forwards,Minnesota
+Taylor Heise,Forwards,Minnesota
+Anna Segedi,Forwards,Minnesota
+Klára Hymlárová,Forwards,Minnesota
+Abby Hustler,Forwards,Minnesota
+Britta Curl-Salemme,Forwards,Minnesota
+Peyton Anderson,Forwards,Minnesota
+Lee Stecklein,Defenders,Minnesota
+Kendall Cooper,Defenders,Minnesota
+Sidney Morin,Defenders,Minnesota
+Madison Bizal,Defenders,Minnesota
+Brooke Becker,Defenders,Minnesota
+Ava Rinker,Defenders,Minnesota
+Mae Batherson,Defenders,Minnesota
+Natalie Buchbinder,Defenders,Minnesota
+Cameron Sikich,Defenders,Minnesota
+Marlène Boissonnault,Goalies,Minnesota
+Nicole Hensley,Goalies,Minnesota
+Maddie Rooney,Goalies,Minnesota
+Maya Labad,Forwards,Montreal
+Laura Stacey,Forwards,Montreal
+Abby Roque,Forwards,Montreal
+Alexandra Labelle,Forwards,Montreal
+Claire Vekich,Forwards,Montreal
+Hayley Scamurra,Forwards,Montreal
+Dara Greig,Forwards,Montreal
+Kaitlin Willoughby,Forwards,Montreal
+Audrey-Anne Veillette,Forwards,Montreal
+Maureen Murphy,Forwards,Montreal
+Lina Ljungblom,Forwards,Montreal
+Shiann Darkangelo,Forwards,Montreal
+Jade Downie-Landry,Forwards,Montreal
+Catherine Dubois,Forwards,Montreal
+Marie-Philip Poulin,Forwards,Montreal
+Skylar Irving,Forwards,Montreal
+Natálie Mlýnková,Forwards,Montreal
+Kati Tabin,Defenders,Montreal
+Tamara Giaquinto,Defenders,Montreal
+Jessica DiGirolamo,Defenders,Montreal
+Erin Ambrose,Defenders,Montreal
+Amanda Boulier,Defenders,Montreal
+Kelly-Ann Nadeau,Defenders,Montreal
+Nicole Gosling,Defenders,Montreal
+Maggie Flaherty,Defenders,Montreal
+Megan Warrener,Goalies,Montreal
+Sandra Abstreiter,Goalies,Montreal
+Ann-Renée Desbiens,Goalies,Montreal
+Tricia Deguire,Goalies,Montreal
+Elle Hartje,Forwards,New York
+Savannah Norcross,Forwards,New York
+Sarah Fillier,Forwards,New York
+Alexis Paddington,Forwards,New York
+Taylor Girard,Forwards,New York
+Maddi Wheeler,Forwards,New York
+Paetyn Levis,Forwards,New York
+Anna Bargman,Forwards,New York
+Anne Cherkowski,Forwards,New York
+Casey O'Brien,Forwards,New York
+Emmy Fecteau,Forwards,New York
+Kristin O'Neill,Forwards,New York
+Kira Juodikis,Forwards,New York
+Kayla Vespa,Forwards,New York
+Kristýna Kaltounková,Forwards,New York
+Dayle Ross,Defenders,New York
+Maja Nylen Persson,Defenders,New York
+Olivia Knowles,Defenders,New York
+Nicole Vallario,Defenders,New York
+Jaime Bourbonnais,Defenders,New York
+Lauren Bernard,Defenders,New York
+Allyson Simpson,Defenders,New York
+Micah Zandee-Hart,Defenders,New York
+Jincy Roese,Defenders,New York
+Callie Shanahan,Goalies,New York
+Kaley Doyle,Goalies,New York
+Kayle Osborne,Goalies,New York
+Élizabeth Giguère,Forwards,Ottawa
+Alexa Vasko,Forwards,Ottawa
+Kateřina Mrázová,Forwards,Ottawa
+Gabbie Hughes,Forwards,Ottawa
+Mannon McMahon,Forwards,Ottawa
+Brianne Jenner,Forwards,Ottawa
+Taylor House,Forwards,Ottawa
+Sarah Wozniewicz,Forwards,Ottawa
+Emily Clark,Forwards,Ottawa
+Peyton Hemp,Forwards,Ottawa
+Rebecca Leslie,Forwards,Ottawa
+Fanuza Kadirova,Forwards,Ottawa
+Alexandra Huszák,Forwards,Ottawa
+Anna Meixner,Forwards,Ottawa
+Anna Shokhina,Forwards,Ottawa
+Jocelyne Larocque,Defenders,Ottawa
+Rory Guilday,Defenders,Ottawa
+Stephanie Markowski,Defenders,Ottawa
+Kathryn Reilly,Defenders,Ottawa
+Vita Ponyatovskaya,Defenders,Ottawa
+Brooke Hobson,Defenders,Ottawa
+Jessica Adolfsson,Defenders,Ottawa
+Emma Bergesen,Defenders,Ottawa
+Samantha Isbell,Defenders,Ottawa
+Ronja Savolainen,Defenders,Ottawa
+Sanni Ahola,Goalies,Ottawa
+Gwyneth Philips,Goalies,Ottawa
+Logan Angers,Goalies,Ottawa
+Kendra Woodland,Goalies,Ottawa
+Lily Delianedis,Forwards,Seattle
+Natalie Snodgrass,Forwards,Seattle
+Jessie Eldridge,Forwards,Seattle
+Jenna Buglioni,Forwards,Seattle
+Mikyla Grant-Mentis,Forwards,Seattle
+Olivia Wallin,Forwards,Seattle
+Brooke Bryant,Forwards,Seattle
+Hannah Bilka,Forwards,Seattle
+Hilary Knight,Forwards,Seattle
+Alex Carpenter,Forwards,Seattle
+Jada Habisch,Forwards,Seattle
+Marah Wagner,Forwards,Seattle
+Sydney Langseth,Forwards,Seattle
+Lexie Adzija,Forwards,Seattle
+Julia Gosling,Forwards,Seattle
+Danielle Serdachny,Forwards,Seattle
+Aneta Tejralová,Defenders,Seattle
+Cayla Barnes,Defenders,Seattle
+Anna Wilgren,Defenders,Seattle
+Emily Zumwinkle,Defenders,Seattle
+Emily Brown,Defenders,Seattle
+Lily Yovetich,Defenders,Seattle
+Mariah Keopple,Defenders,Seattle
+Lyndie Lobdell,Defenders,Seattle
+Megan Carter,Defenders,Seattle
+Corinne Schroeder,Goalies,Seattle
+Carly Jackson,Goalies,Seattle
+Hannah Murphy,Goalies,Seattle
+Madison Samoskevich,Forwards,Vancouver
+Izzy Daniel,Forwards,Vancouver
+Katie Chan,Forwards,Vancouver
+Jenn Gardiner,Forwards,Vancouver
+Tereza Vanišová,Forwards,Vancouver
+Gabby Rosenthal,Forwards,Vancouver
+Brianna Brooks,Forwards,Vancouver
+Malia Schneider,Forwards,Vancouver
+Sarah Nurse,Forwards,Vancouver
+Abby Boreen,Forwards,Vancouver
+Brooke McQuigge,Forwards,Vancouver
+Chanreet Bassi,Forwards,Vancouver
+Michelle Karvinen,Forwards,Vancouver
+Hannah Miller,Forwards,Vancouver
+Taylor Lind,Forwards,Vancouver
+Denisa Křížová,Forwards,Vancouver
+Darcie Lappan,Forwards,Vancouver
+Michela Cava,Forwards,Vancouver
+Madison Clough,Defenders,Vancouver
+Karley Garcia,Defenders,Vancouver
+Sydney Bard,Defenders,Vancouver
+Sophie Jaques,Defenders,Vancouver
+Ashton Bell,Defenders,Vancouver
+Mellissa Channell-Watkins,Defenders,Vancouver
+Emma Greco,Defenders,Vancouver
+Nina Jobst-Smith,Defenders,Vancouver
+Claire Thompson,Defenders,Vancouver
+Kennesha Miswaggon,Defenders,Vancouver
+Erica Fryer,Goalies,Vancouver
+Kimberly Newell,Goalies,Vancouver
+Emerance Maschmeyer,Goalies,Vancouver
+Kristen Campbell,Goalies,Vancouver
+Clair DeGeorge,Forwards,Toronto
+Daryl Watts,Forwards,Toronto
+Kiara Zanon,Forwards,Toronto
+Anneke Rankila,Forwards,Toronto
+Lauren Messier,Forwards,Toronto
+Jesse Compher,Forwards,Toronto
+Sara Hjalmarsson,Forwards,Toronto
+Emma Gentry,Forwards,Toronto
+Kristin Della Rovere,Forwards,Toronto
+Maggie Connors,Forwards,Toronto
+Natalie Spooner,Forwards,Toronto
+Clara Van Wieren,Forwards,Toronto
+Emma Maltais,Forwards,Toronto
+Blayre Turnbull,Forwards,Toronto
+Claire Dalton,Forwards,Toronto
+Emma Woods,Forwards,Toronto
+Jessica Kondas,Defenders,Toronto
+Kali Flanagan,Defenders,Toronto
+Hanna Baskin,Defenders,Toronto
+Allie Munroe,Defenders,Toronto
+Renata Fast,Defenders,Toronto
+Savannah Harmon,Defenders,Toronto
+Ella Shelton,Defenders,Toronto
+Anna Kjellbin,Defenders,Toronto
+Raygan Kirk,Goalies,Toronto
+Elaine Chuli,Goalies,Toronto
+Sarah Coe,Goalies,Toronto
+Jessie McPherson,Goalies,Toronto

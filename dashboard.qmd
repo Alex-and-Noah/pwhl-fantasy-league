@@ -532,11 +532,27 @@ generate_pwhl_roster_gt_table(
 )
 ```
 
+```{r "Seattle roster"}
+#| title: Seattle
+generate_pwhl_roster_gt_table(
+  all_teams,
+  "Seattle"
+)
+```
+
 ```{r "Toronto roster"}
 #| title: Toronto
 generate_pwhl_roster_gt_table(
   all_teams,
   "Toronto"
+)
+```
+
+```{r "Vancouver roster"}
+#| title: Vancouver
+generate_pwhl_roster_gt_table(
+  all_teams,
+  "Vancouver"
 )
 ```
 

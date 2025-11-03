@@ -1,5 +1,6 @@
 library(readr)
 library(stringr)
+library(data.table)
 
 #' @title  **Import a Google Sheet**
 #' @description Import a Google Sheet
@@ -10,6 +11,7 @@ library(stringr)
 #' @return data.frame read from the Google Sheet
 #' @import readr
 #' @import stringr
+#' @import data.table
 #' @export
 
 get_google_sheet <- function(
@@ -58,17 +60,14 @@ get_google_sheet <- function(
 
   df <- read_csv(
     address,
+    col_names = c(""),
     col_types = cols(
-      team_name = col_character(),
-      team_image = col_character(),
-      player_1 = col_integer(),
-      player_2 = col_integer(),
-      player_3 = col_integer(),
-      player_4 = col_integer(),
-      player_5 = col_integer(),
-      player_6 = col_integer()
+      .default = "c"
     )
-  )
+  ) |>
+    transpose(
+      make.names = 1
+    )
 
   return(df)
 }
