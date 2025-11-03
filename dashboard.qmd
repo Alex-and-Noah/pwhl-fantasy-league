@@ -83,6 +83,7 @@ fantasy_teams_and_standings <- get_fantasy_teams_and_standings(
 )
 
 team_images <- fantasy_teams_and_standings["team_images"][[1]]
+team_colours <- fantasy_teams_and_standings["team_colours"][[1]]
 team_rosters <- fantasy_teams_and_standings["team_rosters"][[1]]
 roster_points_per_game <- fantasy_teams_and_standings[
   "roster_points_per_game"

@@ -21,6 +21,11 @@ get_fantasy_teams_and_standings <- function(
       rosters_names_gsheet$team_name
     )
 
+  team_colours <- rosters_names_gsheet$team_colour |>
+    set_names(
+      rosters_names_gsheet$team_name
+    )
+
   rosters_names <- rosters_names_gsheet |>
     select(!(team_name:team_image)) |>
     t() |>
@@ -57,6 +62,7 @@ get_fantasy_teams_and_standings <- function(
   return(
     list(
       team_images = team_images,
+      team_colours = team_colours,
       team_rosters = team_rosters,
       roster_points_per_game = roster_points_per_game,
       standings = standings
