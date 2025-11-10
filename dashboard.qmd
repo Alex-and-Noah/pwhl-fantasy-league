@@ -214,6 +214,14 @@ if (
 
 ## Row
 
+::: {.card title="**Team Generator**"}
+
+Need help making your team? Generate a random regulation team [here](#team-generator) to paste into the [Google Sheet]()
+:::
+
+
+## Row
+
 ```{r "standings overview"}
 #| title: "Standings"
 standings |>
@@ -557,3 +565,83 @@ generate_pwhl_roster_gt_table(
 )
 ```
 
+# Team Generator {#team-generator}
+
+
+```{r generate-team}
+
+seed <- 1
+
+random_teams <- data.frame(matrix(ncol = 12, nrow = 0)) |> set_names("F1", "F2", "F3", "F4", "F5", "F6", "D1", "D2", "D3", "D4", "G1", "G2")
+
+for (i in 1:50) {
+  random_team <- all_teams |> mutate(
+    position = case_when(
+      position == "C" ~ "F",
+      position == "LW" ~ "F",
+      position == "RW" ~ "F",
+      position == "LD" ~ "D",
+      position == "RD" ~ "D",
+      .default = position
+    )
+  ) |> 
+    group_by(position) |>
+    slice_sample(
+      n = 6
+    ) |> ungroup()
+
+    random_teams <- rbind(
+      random_teams,
+      rbind(
+        random_team |> filter(position == "F") |> select(player_name),
+        random_team |> filter(position == "D") |> slice(1:4) |> select(player_name),
+        random_team |> filter(position == "G") |> slice(1:2) |> select(player_name)
+      ) |> transpose() |> set_names(
+        "F1", "F2", "F3", "F4", "F5", "F6", "D1", "D2", "D3", "D4", "G1", "G2"
+      )
+    )
+  
+}
+
+random_teams <- cbind(
+  Team_name = slice_sample(read.csv("static/common_words.csv"), n = 50),
+  Team_colour = sample(rgb(
+  t(col2rgb(colors())),
+  maxColorValue = 255
+), 50), random_teams
+)
+
+# Convert to JSON for JavaScript
+df_json <- toJSON(random_teams, dataframe = "rows", pretty = FALSE)
+
+# Output the JSON into a <script> tag
+cat(sprintf('<script id="df-data" type="application/json">%s</script>', df_json))
+
+```
+
+```{html}
+<script>
+// Read the JSON data from the script tag
+const df = JSON.parse(document.getElementById("df-data").textContent);
+
+// Get references to DOM elements
+const btn = document.getElementById("revealBtn");
+const output = document.getElementById("output");
+
+// Add click event listener
+btn.addEventListener("click", () => {
+  // Pick a random row
+  const rowIndex = Math.floor(Math.random() * df.length);
+  const row = df[rowIndex];
+
+  // Display as a simple table
+  output.innerHTML = `
+    <table border="1" cellpadding="5">
+      <tr>${Object.keys(row).map(k => `<th>${k}</th>`).join("")}</tr>
+      <tr>${Object.values(row).map(v => `<td>${v}</td>`).join("")}</tr>
+    </table>
+  `;
+});
+</script>
+
+```
