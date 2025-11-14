@@ -1,7 +1,10 @@
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: 
+      - main
+  schedule:
+    - cron: '0 * * * *'
 
 name: Quarto Publish
 
