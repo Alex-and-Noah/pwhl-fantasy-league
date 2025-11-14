@@ -246,7 +246,7 @@ if (
 
 ## Row
 
-Need help making your team? Generate a random regulation team [here](#team-generator) to paste into the [Google Sheet]()
+Need help making your team? Generate a random regulation team [here](#team-generator) to paste into the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing)
 
 
 ## Row
@@ -424,7 +424,8 @@ if (
   #TODO this needs to be moved ig
   standings <- standings |>
     mutate(
-      colours = c("#5F259F", "#9d6dd1ff", "#2B2D42", "#F5F5F5")
+      colours = c("#5F259F", "#9d6dd1ff")
+      # colours = c("#5F259F", "#9d6dd1ff", "#2B2D42", "#F5F5F5")
     )
 
   data |>

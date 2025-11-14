@@ -24,8 +24,8 @@ get_team_logo_urls <- function(
   if (season_id >= 7) {
     team_logo_urls <- c(
       team_logo_urls,
-      SEA = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/PWHL_Seattle_Logo.webp/800px-PWHL_Seattle_Logo.webp.png",
-      VAN = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/VAN_PWHL.webp/400px-VAN_PWHL.webp.png"
+      SEA = "https://upload.wikimedia.org/wikipedia/en/6/6c/Seattle_Torrent_logo.png",
+      VAN = "https://upload.wikimedia.org/wikipedia/en/thumb/7/73/Vancouver_Goldeneyes_logo.png/250px-Vancouver_Goldeneyes_logo.png"
     )
   }
 
