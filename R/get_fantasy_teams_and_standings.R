@@ -12,9 +12,27 @@ get_fantasy_teams_and_standings <- function(
   schedule_to_date,
   schedule
 ) {
+  is_valid_hex_color <- function(color) {
+    if (
+      grepl(
+        "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
+        color
+      )
+    ) {
+      return(color)
+    } else {
+      return("#000000")
+    }
+  }
+
+  v = Vectorize(is_valid_hex_color)
+
   rosters_names_gsheet <- get_google_sheet(
     sheet_id = 0
-  )
+  ) |>
+    mutate(
+      team_colour = v(team_colour)
+    )
 
   team_images <- rosters_names_gsheet$team_image |>
     set_names(
