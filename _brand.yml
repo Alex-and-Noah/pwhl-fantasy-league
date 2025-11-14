@@ -7,7 +7,7 @@ color:
     navy: "#2B2D42" 
     gray: "#F5F5F5" 
     white: "#FFFFFF"
-  foreground: gray
+  foreground: navy
   background: white
   primary: purple
   secondary: navy
