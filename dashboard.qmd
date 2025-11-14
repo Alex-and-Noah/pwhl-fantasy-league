@@ -457,8 +457,7 @@ if (
   #TODO this needs to be moved ig
   standings <- standings |>
     mutate(
-      colours = c("#5F259F", "#9d6dd1ff")
-      # colours = c("#5F259F", "#9d6dd1ff", "#2B2D42", "#F5F5F5")
+      colours = team_colours
     )
 
   data |>
