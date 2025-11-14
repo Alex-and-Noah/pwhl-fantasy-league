@@ -327,6 +327,39 @@ standings |>
   )
 ```
 
+# Draft info
+
+## Row
+
+::: {.card title="Rules"}
+- Choose your fantasy team name, colour, logo and roster in the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing)
+  - If you want some inspiration for your draft, you can check out the [team generator](#team-generator)
+  - 🔴🟡🔵**Team Colour:** Valid hexadecimal colour code
+  - 👩‍👩‍👧📷🖥️**Team Image:** Valid link to any `.svg` image on the web
+- Your team should have exactly the following (the Google Sheet dropdowns force this structure, don't worry!):
+  - **🏒 6 forwards**
+  - **🛡️ 4 defenders**
+  - **🥅 2 goalies**
+- 😮‍💨 Players/goalies aren't restricted to a single fantasy team so if someone took a player you like, you can take them too!
+- ↔️ Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!
+- 🕐 **Deadline:** You can use all of November's pre-season and regular season games to scout your roster and aim to lock it in by **November 30th, 2025**!
+- (Optional) 💰💵💸 **Prize pool:** E-transfer $10 to Alex or Noah to enter in the fantasy prize pool! More information TBD but you could **WIN BIGGGG!**
+:::
+
+## Row
+
+::: {.card title="Scoring"}
+Your fantasy team's score is updated daily with data from the previous day's games. Each day, each member of your fantasy roster will contribute a number of points to your team's overall score, following the scheme below:
+
+- 🏒 1 point per goal
+- 🤝 1 point per assist
+- ✨ 2 points per win
+- 😖 0 points per loss
+- 🥇 1 point per OT loss
+
+You can check how your and everyone else's teams are doing [here](#team-standings).
+:::
+
 # Team Standings
 
 ## Row
