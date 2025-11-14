@@ -40,10 +40,7 @@ team_stats <- function(
         team_label_arg = team_label,
         season = season,
         game_type = game_type
-      ) %>%
-        mutate(
-          sign = ""
-        )
+      )
 
       all_teams <- rbind(all_teams, df_team)
     } else {
@@ -53,9 +50,6 @@ team_stats <- function(
         season = season,
         game_type = game_type
       ) %>%
-        mutate(
-          sign = DescTools::Zodiac(as.Date(dob))
-        ) %>%
         merge(
           df_stats,
           by = c("player_id")
