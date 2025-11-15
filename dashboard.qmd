@@ -537,7 +537,10 @@ if (
       colour = standings$colours
     ) +
     geom_image(
-      data = standings,
+      data = standings |> mutate(Team = case_when(
+        is.na(Team) ~ "logo.svg",
+        .default = Team
+      )),
       aes(
         x = max(data$Game),
         y = Points,
