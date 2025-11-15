@@ -90,7 +90,13 @@ team_rosters <- fantasy_teams_and_standings["team_rosters"][[1]]
 roster_points_per_game <- fantasy_teams_and_standings[
   "roster_points_per_game"
 ][[1]]
-standings <- fantasy_teams_and_standings["standings"][[1]]
+standings <- fantasy_teams_and_standings["standings"][[1]] |>
+  mutate(
+    Team = case_when(
+      is.na(Team) ~ "logo.svg",
+      .default = Team
+    )
+  )
 
 if (typeof(last_game_day) != "logical") {
   last_game_day <- last_game_day |>
@@ -537,10 +543,7 @@ if (
       colour = standings$colours
     ) +
     geom_image(
-      data = standings |> mutate(Team = case_when(
-        is.na(Team) ~ "logo.svg",
-        .default = Team
-      )),
+      data = standings,
       aes(
         x = max(data$Game),
         y = Points,
