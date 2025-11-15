@@ -440,6 +440,10 @@ standings |>
       )
     }
   ) |>
+  cols_align(
+    columns = Team,
+    align = "center"
+  ) |>
     tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
