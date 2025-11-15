@@ -34,7 +34,6 @@ pwhl_stats_fix <- function(
   tryCatch(
     expr = {
       if (position == "goalie") {
-        browser()
         URL <- glue::glue(
           "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team=all&position=goalies&rookies=0&statsType=expanded&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=gaa&league_id=1&lang=en&division=-1&qualified=all&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._5"
         )
@@ -130,10 +129,10 @@ pwhl_stats_fix <- function(
             power_play_assists = c(data[[y]]$row$power_play_assists),
             short_handed_goals = c(data[[y]]$row$short_handed_goals),
             short_handed_assists = c(data[[y]]$row$short_handed_assists),
-            shootout_goals = c(data[[y]]$row$shootout_goals),
-            shootout_attempts = c(data[[y]]$row$shootout_attempts),
-            shootout_pct = c(data[[y]]$row$shootout_percentage),
-            shootout_winning_goals = c(data[[y]]$row$shootout_winning_goals),
+            # shootout_goals = c(data[[y]]$row$shootout_goals),
+            # shootout_attempts = c(data[[y]]$row$shootout_attempts),
+            # shootout_pct = c(data[[y]]$row$shootout_percentage),
+            # shootout_winning_goals = c(data[[y]]$row$shootout_winning_goals),
             faceoff_attempts = c(data[[y]]$row$faceoff_attempts),
             faceoff_wins = c(data[[y]]$row$faceoff_wins),
             faceoff_pct = c(data[[y]]$row$faceoff_pct)
