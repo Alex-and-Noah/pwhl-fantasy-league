@@ -16,6 +16,8 @@ invisible(
     source
   )
 )
+
+pool <- 30
 ```
 
 ```{r "Get season dates and type"}
@@ -241,6 +243,46 @@ if (
     "
   )
 }
+
+```
+
+```{r}
+
+temps <- data.table(temp = seq(from = 0, to = pool, by = 0.01))
+temps[, temp1 := shift(temp, 1)]
+
+ggplot(temps, aes(x = 1)) +
+    geom_segment(
+      aes(y = 0, yend = 100),
+      linewidth = 10,
+      lineend = c("round"),
+      color = "black"
+    ) +
+    geom_segment(
+      aes(y = 0, yend = 100),
+      linewidth = 9,
+      lineend = c("round"),
+      color = "white"
+    ) +
+    geom_segment(
+      data = temps[1:1000],
+      aes(y = temp, yend = temp1), color = "#5F259F",
+      lineend = c("round"),
+      linewidth = 9
+    ) +
+    geom_segment(
+      data = temps[-(1:1000)],
+      aes(y = temp, yend = temp1), color = "#5F259F",
+      lineend = c("square"),
+      linewidth = 9
+    ) +
+    theme_void() +
+    labs(
+      title = paste0("Prize pool: ", pool, "$")
+    ) +
+    theme(
+      plot.title = element_text(size = 50, hjust = 0.5)
+    )
 
 ```
 
