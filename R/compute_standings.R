@@ -4,8 +4,8 @@ library(magrittr)
 #' @title  **Compute PWHL Fantasy Team Standings**
 #' @description Compute PWHL fantasy team standings to date.
 #'
-#' @param roster_points_per_game data.frame of points earned by each fantasy
-#' team, per game
+#' @param fantasy_roster_points data.frame of points earned by each fantasy
+#' roster, per game
 #' @param team_images Images associated to each team
 #' @return A data frame with aggregated fantasy team standings
 #' @import dplyr
@@ -13,28 +13,27 @@ library(magrittr)
 #' @export
 
 compute_standings <- function(
-  roster_points_per_game,
+  fantasy_roster_points,
   team_images
 ) {
-  standings <- roster_points_per_game |>
-    summarise(
-      across(
-        -game_date,
-        ~ sum(
-          .,
-          na.rm = TRUE
-        )
-      )
-    )
+  fantasy_team_scores <- lapply(
+    names(fantasy_roster_points),
+    function(team_name) {
+      fantasy_roster_points[[team_name]] |>
+        tail(1) |>
+        select(
+          fantasy_points
+        ) |>
+        pull()
+    }
+  )
 
-  standings <- standings[
-    order(
-      unlist(
-        standings
-      ),
-      decreasing = TRUE
-    )
-  ] |>
+  names(fantasy_team_scores) <- names(fantasy_roster_points)
+
+  standings <- fantasy_team_scores[order(
+    unlist(fantasy_team_scores),
+    decreasing = TRUE
+  )] |>
     stack() |>
     set_names(
       c(

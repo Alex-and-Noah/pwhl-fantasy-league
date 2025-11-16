@@ -4,7 +4,7 @@
 #' @param all_teams All PWHL player info and stats
 #' @param schedule_to_date Current season schedule up to current_date
 #' @param schedule Entire schedule for current season
-#' @return data.frames of schedule and next/last game days
+#' @return data.frames of fantasy team/roster scores and standings
 #' @export
 
 get_fantasy_teams_and_standings <- function(
@@ -72,8 +72,12 @@ get_fantasy_teams_and_standings <- function(
     schedule
   )
 
+  fantasy_roster_points <- compute_fantasy_roster_points(
+    roster_points_per_game
+  )
+
   standings <- compute_standings(
-    roster_points_per_game,
+    fantasy_roster_points,
     team_images
   )
 
@@ -83,6 +87,7 @@ get_fantasy_teams_and_standings <- function(
       team_colours = team_colours,
       team_rosters = team_rosters,
       roster_points_per_game = roster_points_per_game,
+      fantasy_roster_points = fantasy_roster_points,
       standings = standings
     )
   )

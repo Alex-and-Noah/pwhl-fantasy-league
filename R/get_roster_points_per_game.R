@@ -3,13 +3,13 @@ library(purrr)
 library(tibble)
 
 #' @title  **Compute PWHL Fantasy Points For Each Game So Far**
-#' @description Compute how many points each PWHL fantasy team earned for each
+#' @description Compute how many points each PWHL fantasy team player earned for each
 #' game played so far
 #'
 #' @param team_rosters data.frame of Fantasy team rosters
 #' @param player_boxes_per_game Player box stats for each game played so far
 #' @param schedule Current season schedule
-#' @return data.frame of points earned by each fantasy team
+#' @return list of data.frames of points earned by each fantasy team player, for each fantasy team
 #' @import dplyr
 #' @import purrr
 #' @import tibble
@@ -25,59 +25,45 @@ get_roster_points_per_game <- function(
       player_boxes_per_game
     ) ==
       0
-  ) {
-    column_names <- c(
-      "game_date",
-      names(
-        team_rosters
+  ) {} else {
+    fantasy_points_per_game_id <- player_boxes_per_game |>
+      map(
+        get_roster_points_from_game,
+        team_rosters = team_rosters,
+        schedule = schedule
       )
-    )
 
-    roster_points_per_game <- data.frame(
-      matrix(
-        ncol = length(
-          column_names
-        ),
-        nrow = 0
-      )
-    )
-
-    colnames(roster_points_per_game) <- column_names
-
-    return(
-      roster_points_per_game
-    )
-  } else {
-    return(
-      player_boxes_per_game |>
-        map(
-          get_roster_points_from_game,
-          team_rosters = team_rosters,
-          schedule = schedule
-        ) |>
-        bind_rows() |>
-        mutate(
-          game_id = names(
-            player_boxes_per_game
+    fantasy_points_per_roster <- lapply(
+      names(team_rosters),
+      function(team_name) {
+        {
+          map(
+            fantasy_points_per_game_id,
+            `[[`,
+            team_name
+          ) %>%
+            do.call(
+              rbind,
+              .
+            ) %>%
+            `rownames<-`(NULL)
+        } |>
+          mutate(
+            player_id = as.numeric(player_id)
           ) |>
-            as.numeric()
-        ) |>
-        merge(
-          schedule,
-          by = "game_id"
-        ) |>
-        select(
-          c(
+          arrange(player_id, game_id) |>
+          select(
+            player_id,
             game_id,
-            game_date,
-            names(
-              team_rosters
-            )
+            everything()
           )
-        ) |>
-        column_to_rownames(
-          "game_id"
-        )
+      }
+    )
+
+    names(fantasy_points_per_roster) <- names(team_rosters)
+
+    return(
+      fantasy_points_per_roster
     )
   }
 }

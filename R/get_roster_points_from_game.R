@@ -16,68 +16,77 @@ get_roster_points_from_game <- function(
   player_box_for_game,
   schedule
 ) {
-  game_points <- list()
-
   game_from_schedule <- schedule |>
     filter(
       game_id == player_box_for_game$skaters$game_id[[1]]
     )
 
-  for (team_name in names(team_rosters)) {
-    game_points[[team_name]] <- player_box_for_game$skaters |>
-      filter(
-        player_id %in% team_rosters[team_name][[1]]$player_id
-      ) |>
-      mutate(
-        sum = rowSums(
-          across(
-            c(
-              goals,
-              assists
-            )
-          )
-        )
-      ) |>
+  fantasy_points_per_player <- rbind(
+    player_box_for_game$skaters |>
       select(
-        sum
-      ) |>
-      sum()
+        c(
+          player_id,
+          first_name,
+          last_name,
+          position,
+          team_id,
+          game_id,
+          goals,
+          assists
+        )
+      ),
+    player_box_for_game$goalies |>
+      select(
+        c(
+          player_id,
+          first_name,
+          last_name,
+          position,
+          team_id,
+          game_id,
+          goals,
+          assists
+        )
+      )
+  ) |>
+    mutate(
+      wins = case_when(
+        team_id ==
+          game_from_schedule |>
+            select(
+              winner_id
+            ) |>
+            pull() ~ 1,
+        .default = 0
+      ),
+      ot_losses = case_when(
+        (team_id !=
+          game_from_schedule |>
+            select(
+              winner_id
+            ) |>
+            pull()) &
+          (game_from_schedule |>
+            select(
+              game_status
+            ) |>
+            pull() ==
+            "Final OT") ~ 1,
+        .default = 0
+      )
+    )
 
-    game_points[[team_name]] <- game_points[[team_name]] +
-      2 *
-        team_rosters[team_name][[1]] |>
-          filter(
-            team ==
-              game_from_schedule |>
-                select(
-                  winner
-                ) |>
-                pull()
-          ) |>
-          nrow()
-
-    if (
-      game_from_schedule |>
-        select(
-          winner
-        ) |>
-        pull() ==
-        "Final OT"
-    ) {
-      if (game_from_schedule$home_team == game_from_schedule$winner) {
-        loser <- game_from_schedule$away_team
-      } else {
-        loser <- game_from_schedule$home_team
-      }
-
-      game_points[[team_name]] <- game_points[[team_name]] +
-        team_rosters[team_name][[1]] |>
-          filter(
-            team == loser
-          ) |>
-          nrow()
+  fantasy_points_per_game_id <- lapply(
+    names(team_rosters),
+    function(team_name) {
+      fantasy_points_per_player |>
+        filter(
+          player_id %in% team_rosters[team_name][[1]]$player_id
+        )
     }
-  }
+  )
 
-  return(game_points)
+  names(fantasy_points_per_game_id) <- names(team_rosters)
+
+  return(fantasy_points_per_game_id)
 }

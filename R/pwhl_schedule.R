@@ -96,6 +96,14 @@ pwhl_schedule <- function(
               "Tie",
             TRUE ~ NA_character_
           ),
+          winner_id = dplyr::case_when(
+            .data$home_score == '' | .data$away_score == "-" ~ '-',
+            .data$home_score > .data$away_score ~ .data$home_team_id,
+            .data$away_score > .data$home_score ~ .data$away_team_id,
+            .data$home_score == .data$away_score & .data$home_score != "-" ~
+              "Tie",
+            TRUE ~ NA_character_
+          ),
           season = season
         ) %>%
         dplyr::select(
@@ -110,6 +118,7 @@ pwhl_schedule <- function(
             "home_score",
             "away_score",
             "winner",
+            "winner_id",
             "venue",
             "venue_url"
           )
