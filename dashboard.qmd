@@ -517,12 +517,13 @@ if (
       names_to = "Team",
       values_to = "Points"
     ) |>
-    rename("Game" = game_idx)
+    rename("Game" = game_idx) |>
+    merge(data.frame(Team = names(team_colours), Colours = team_colours)
+    )
 
   #TODO this needs to be moved ig
   standings <- standings |>
-    mutate(
-      colours = team_colours
+    merge(data.frame(Name = names(team_colours), Colours = team_colours)
     )
 
   data |>
@@ -531,20 +532,17 @@ if (
       aes(
         x = Game,
         y = Points,
-        colour = Team
-      ),
+        colour = Colours),
       linewidth = 2
     ) +
-    scale_color_manual(values = standings$colours) +
     geom_point(
       data = standings,
       aes(
         x = max(data$Game),
         y = Points,
-        colour = Name
+        colour = Colours
       ),
-      size = 10,
-      colour = standings$colours
+      size = 15
     ) +
     geom_image(
       data = standings,
@@ -554,6 +552,7 @@ if (
         image = Team
       )
     ) +
+    scale_color_identity() +
     guides(colour = guide_legend(override.aes = list(size = 10))) +
     theme_minimal()
 }
