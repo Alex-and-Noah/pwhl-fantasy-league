@@ -106,16 +106,224 @@ standings <- fantasy_teams_and_standings["standings"][[1]] |>
 standings <- standings |>
     merge(data.frame(Name = names(team_colours), Colours = team_colours)
 )
-
-# if (typeof(last_game_day) != "logical") {
-#   last_game_day <- last_game_day |>
-#     mutate(
-#       roster_points_per_game[game_id, ]
-#     )
-# }
 ```
 
 # Overview
+
+## Row
+
+```{r "todays games"}
+if (
+  nrow(
+    todays_games
+  ) ==
+    0
+) {
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games today :(",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
+} else {
+  todays_games |>
+    mutate(
+      temp = "-"
+    ) |>
+    select(
+      c(
+        "away_team_code",
+        "away_team_logo",
+        "away_score",
+        "game_status",
+        "home_score",
+        "home_team_logo",
+        "home_team_code"
+      )
+    ) |>
+    gt() |>
+    cols_align(
+      align = "center",
+      columns = everything()
+    ) |>
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_body(
+        columns = game_status
+      )
+    ) |>
+    tab_header(
+      format(
+        last_game_day_date,
+        "Today's games (%B %e, %Y)"
+      )
+    ) |>
+    text_transform(
+      locations = cells_body(
+        columns = c(
+          "away_team_logo",
+          "home_team_logo"
+        )
+      ),
+      fn = function(x) {
+        web_image(
+          url = x,
+          height = "5vh"
+        )
+      }
+    ) |>
+    cols_label(
+      away_team_code = "",
+      away_team_logo = "Away",
+      away_score = "",
+      game_status = "",
+      home_score = "",
+      home_team_logo = "Home",
+      home_team_code = ""
+    ) |>
+    tab_options(
+    table.background.color = "#F5F5F5",
+    column_labels.background.color = "#2B2D42",
+    table.font.size = px(16),
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    table_body.hlines.color = "transparent",
+    table_body.border.bottom.color = "transparent",
+    column_labels.border.bottom.color = "transparent",
+    column_labels.border.top.color = "transparent"
+  ) |> 
+  tab_style_body(
+    style = cell_borders(
+      sides = c("top", "right", "left", "bottom"),
+      weight = px(0) # Remove row borders
+    ),
+    fn = function(x) { is.numeric(x) | is.character(x) }
+  ) |> 
+  opt_css(
+    css = "
+
+    table tr:nth-child(odd) {
+      background-color: #e0dedeff;
+    }
+
+    .gt_col_heading {
+      position: sticky !important;
+      top: 0px !important;
+      z-index: 10 !important;
+    }
+    "
+  )
+}
+
+```
+
+## Row
+
+```{r "standings overview"}
+#| title: "Standings (with today's changes)"
+delta_points <- get_fantasy_teams_and_standings(
+  all_teams=all_teams,
+  schedule_to_date=todays_games,
+  schedule=schedule
+)["standings"][[1]]
+
+delta_points <- delta_points[
+  match(
+    standings$Name,
+    delta_points$Name
+  ),
+]
+
+standings |>
+  arrange(
+    desc(
+      Points
+    )
+  )|>
+  mutate(
+    delta = delta_points$Points
+  ) |>
+  mutate(
+    Points = paste0(
+      Points,
+      " (+",
+      delta,
+      ")"
+    )
+  ) |>
+  select(
+    c(
+      Name,
+      Team,
+      Points,
+      Colours
+    )
+  ) |>
+  gt() |>
+  text_transform(
+    locations = cells_body(
+      columns = Team
+    ),
+    fn = function(x) {
+      web_image(
+        url = x,
+        height = "5vh"
+      )
+    }
+  ) |>
+   tab_style(
+    style = list(
+      cell_fill(color =  from_column(column = "Colours")),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_body(
+      columns = Team
+    )
+  ) |>
+  cols_hide(Colours) |>
+  cols_align(
+    columns = everything(),
+    align = "center"
+  ) |>
+    tab_options(
+    table.background.color = "#F5F5F5",
+    column_labels.background.color = "#2B2D42",
+    table.font.size = px(16),
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    table_body.hlines.color = "transparent",
+    table_body.border.bottom.color = "transparent",
+    column_labels.border.bottom.color = "transparent",
+    column_labels.border.top.color = "transparent"
+  ) |> 
+  tab_style_body(
+    style = cell_borders(
+      sides = c("top", "right", "left", "bottom"),
+      weight = px(0) # Remove row borders
+    ),
+    fn = function(x) { is.numeric(x) | is.character(x) }
+  ) |> 
+  opt_css(
+    css = "
+
+    table tr:nth-child(odd) {
+      background-color: #e0dedeff;
+    }
+
+    .gt_col_heading {
+      position: sticky !important;
+      top: 0px !important;
+      z-index: 10 !important;
+    }
+    "
+  )
+```
 
 ## Row
 
@@ -160,116 +368,7 @@ value_box(
 )
 ```
 
-```{r "todays games"}
-if (
-  nrow(
-    todays_games
-  ) ==
-    0
-) {
-  value_box(
-    title = "No data available",
-    showcase = bs_icon(
-      "hourglass-split",
-      size = "6vh"
-    ),
-    value = tags$p(
-      "No games today :(",
-      style = "font-size: 4vh;"
-    ),
-    theme = "danger"
-  )
-} else {
-  todays_games |>
-    mutate(
-      temp = "-"
-    ) |>
-    select(
-      c(
-        "home_team_code",
-        "home_team_logo",
-        "home_score",
-        "game_status",
-        "away_score",
-        "away_team_logo",
-        "away_team_code"
-      )
-    ) |>
-    gt() |>
-    cols_align(
-      align = "center",
-      columns = everything()
-    ) |>
-    tab_style(
-      style = cell_text(weight = "bold"),
-      locations = cells_body(
-        columns = game_status
-      )
-    ) |>
-    tab_header(
-      format(
-        last_game_day_date,
-        "Today's games (%B %e, %Y)"
-      )
-    ) |>
-    text_transform(
-      locations = cells_body(
-        columns = c(
-          "home_team_logo",
-          "away_team_logo"
-        )
-      ),
-      fn = function(x) {
-        web_image(
-          url = x,
-          height = "5vh"
-        )
-      }
-    ) |>
-    cols_label(
-      home_team_code = "",
-      home_team_logo = "Home",
-      home_score = "",
-      game_status = "",
-      away_score = "",
-      away_team_logo = "Away",
-      away_team_code = ""
-    ) |>
-    tab_options(
-    table.background.color = "#F5F5F5",
-    column_labels.background.color = "#2B2D42",
-    table.font.size = px(16),
-    table.border.top.color = "transparent",
-    table.border.bottom.color = "transparent",
-    table_body.hlines.color = "transparent",
-    table_body.border.bottom.color = "transparent",
-    column_labels.border.bottom.color = "transparent",
-    column_labels.border.top.color = "transparent"
-  ) |> 
-  tab_style_body(
-    style = cell_borders(
-      sides = c("top", "right", "left", "bottom"),
-      weight = px(0) # Remove row borders
-    ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
-  opt_css(
-    css = "
-
-    table tr:nth-child(odd) {
-      background-color: #e0dedeff;
-    }
-
-    .gt_col_heading {
-      position: sticky !important;
-      top: 0px !important;
-      z-index: 10 !important;
-    }
-    "
-  )
-}
-
-```
+## Row
 
 ```{r "prize pool thermometer"}
 
@@ -278,13 +377,13 @@ temps[, temp1 := shift(temp, 1)]
 
 ggplot(temps, aes(x = 1)) +
     geom_segment(
-      aes(y = 0, yend = 100),
+      aes(y = 0, yend = 10*length(team_rosters)),
       linewidth = 10,
       lineend = c("round"),
       color = "black"
     ) +
     geom_segment(
-      aes(y = 0, yend = 100),
+      aes(y = 0, yend = 10*length(team_rosters)),
       linewidth = 9,
       lineend = c("round"),
       color = "white"
@@ -318,103 +417,6 @@ Need help making your team? Generate a random regulation team [here](#team-gener
 
 ## Row
 
-```{r "standings overview"}
-#| title: "Standings (with today's changes)"
-delta_points <- get_fantasy_teams_and_standings(
-  all_teams=all_teams,
-  schedule_to_date=todays_games,
-  schedule=schedule
-)["standings"][[1]]
-
-delta_points <- delta_points[
-  match(
-    standings$Name,
-    delta_points$Name
-  ),
-]
-
-standings |>
-  mutate(
-    delta = delta_points$Points
-  ) |>
-  mutate(
-    Points = paste0(
-      Points,
-      " (+",
-      delta,
-      ")"
-    )
-  ) |>
-  select(
-    c(
-      Name,
-      Team,
-      Points,
-      Colours
-    )
-  ) |>
-  gt() |>
-  text_transform(
-    locations = cells_body(
-      columns = Team
-    ),
-    fn = function(x) {
-      web_image(
-        url = x,
-        height = "5vh"
-      )
-    }
-  ) |>
-   tab_style(
-    style = list(
-      cell_fill(color =  from_column(column = "Colours")),
-      cell_text(weight = "bold")
-      ),
-    locations = cells_body(
-      columns = Team
-    )
-  ) |>
-  cols_hide(Colours) |>
-  cols_align(
-    columns = Team,
-    align = "center"
-  ) |>
-    tab_options(
-    table.background.color = "#F5F5F5",
-    column_labels.background.color = "#2B2D42",
-    table.font.size = px(16),
-    table.border.top.color = "transparent",
-    table.border.bottom.color = "transparent",
-    table_body.hlines.color = "transparent",
-    table_body.border.bottom.color = "transparent",
-    column_labels.border.bottom.color = "transparent",
-    column_labels.border.top.color = "transparent"
-  ) |> 
-  tab_style_body(
-    style = cell_borders(
-      sides = c("top", "right", "left", "bottom"),
-      weight = px(0) # Remove row borders
-    ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
-  opt_css(
-    css = "
-
-    table tr:nth-child(odd) {
-      background-color: #e0dedeff;
-    }
-
-    .gt_col_heading {
-      position: sticky !important;
-      top: 0px !important;
-      z-index: 10 !important;
-    }
-    "
-  )
-```
-
-## Row
-
 ```{r "Text: last update (data)"}
 #| content: valuebox
 #| title: "Last updated"
@@ -427,40 +429,6 @@ list(
 )
 ```
 
-# Draft Info
-
-## Row
-
-::: {.card title="Rules"}
-Choose your fantasy team name, colour, logo and roster in the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing). (If you want some inspiration for your draft, you can check out the [team generator](#team-generator))<br>
-&nbsp;&nbsp;&nbsp;&nbsp;🔴🟡🔵**Team Colour:** Valid hexadecimal colour code<br>
-&nbsp;&nbsp;&nbsp;&nbsp;👩‍👩‍👧📷🖥️**Team Image:** Valid link to any image on the web<br><br>
-Your team should have exactly the following (the Google Sheet dropdowns force this structure, don't worry!):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**🏒 6 forwards**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**🛡️ 4 defenders**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**🥅 2 goalies**<br><br>
-😮‍💨 Players/goalies aren't restricted to a single fantasy team so if someone took a player you like, you can take them too!<br><br>
-↔️ **Trades:** Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!<br><br>
-🕐 **Deadline:** You can use all of November's pre-season and regular season games to scout your roster and aim to lock it in by **November 30th, 2025**! After this date, the Google Sheet will be 👁️**View Only**👁️<br><br>
-💰💵💸 **Prize pool (Optional):** E-transfer $10 to Alex or Noah to enter in the fantasy prize pool! More information TBD but you could **WIN BIGGGG! (Send an e-transfer or intent to e-transfer by the roster deadline to enter the prize pool)**
-:::
-
-## Row
-
-::: {.card title="Scoring"}
-Your fantasy team's score is updated daily with data from the previous day's games. Each day, each member of your fantasy roster will contribute a number of points to your team's overall score, following the scheme below:
-
-🏒 1 point per goal<br>
-🤝 1 point per assist<br>
-✨ 2 points per win*<br>
-😖 0 points per loss<br>
-🥇 1 point per OT loss
-
-You can check how your and everyone else's teams are doing [here](#team-standings). Note that eventually, only **regular season games** will contribute to your fantasy teams score.
-
-*: Note that if your play did not play in a game in which their team won, thei will *not* contribute points to your score (this includes dressed goalies that did not get subbed in).
-:::
-
 # Team Standings
 
 ## Row
@@ -468,6 +436,11 @@ You can check how your and everyone else's teams are doing [here](#team-standing
 ```{r "standings full"}
 #| title: "Standings"
 standings |>
+  arrange(
+    desc(
+      Points
+    )
+  ) |>
   gt() |>
   text_transform(
     locations = cells_body(
@@ -491,7 +464,7 @@ standings |>
   ) |>
   cols_hide(Colours) |>
   cols_align(
-    columns = Team,
+    columns = everything(),
     align = "center"
   ) |>
     tab_options(
@@ -697,32 +670,78 @@ res <- purrr::map_chr(
         "        height = '50px'",
         "    )",
         ")",
-        "team_rosters[[name]] |>",
+        "",
+        "merge(",
+        "    team_rosters[[name]],",
+        "    fantasy_roster_points[[name]],",
+        "    by = 'player_id',",
+        "    all.x = TRUE",
+        ") |>",
         "    select(",
         "        c(",
-        "            'jersey_number',",
-        "            'player_headshot',",
-        "            'player_name',",
-        "            'position',",
-        "            'primary_hand',",
-        "            'dob',",
-        "            'home_town'",
+        "            jersey_number,",
+        "            player_headshot,",
+        "            player_name,",
+        "            position.x,",
+        "            fantasy_points,",
+        "            goals,",
+        "            assists,",
+        "            wins,",
+        "            ot_losses",
         "        )",
+        "    ) |>",
+        "    replace_na(",
+        "        list(",
+        "            fantasy_points = 0,",
+        "            goals = 0,",
+        "            assists = 0,",
+        "            wins = 0,",
+        "            ot_losses = 0",
+        "        )",
+        "    ) |>",
+        "    arrange(",
+        "        factor(",
+        "            position.x,",
+        "            levels = c(",
+        "                'F',",
+        "                'D',",
+        "                'G'",
+        "            )",
+        "        ),",
+        "        jersey_number",
         "    ) |>",
         "    rename(",
         "        c(",
         "            '#' = 'jersey_number',",
         "            Headshot = 'player_headshot',",
         "            Name = 'player_name',",
-        "            Pos = 'position',",
-        "            Shoots = 'primary_hand',",
-        "            DOB = 'dob',",
-        "            'Home town' = 'home_town'",
+        "            Pos = 'position.x',",
+        "            Pts = 'fantasy_points',",
+        "            G = 'goals',",
+        "            A = 'assists',",
+        "            W = 'wins',",
+        "            OTL = 'ot_losses'",
+        "        )",
+        "    ) %>%",
+        "    rbind(",
+        "        c(",
+        "            '',",
+        "            '',",
+        "            '',",
+        "            'Total',",
+        "            sum(.$Pts),",
+        "            sum(.$G),",
+        "            sum(.$A),",
+        "            2 * sum(.$W),",
+        "            sum(.$OTL)",
         "        )",
         "    ) |>",
-        "   gt() |>",
-        "   text_transform(",
-        "        locations = cells_body(columns = Headshot),",
+        "    gt() |>",
+        "    text_transform(",
+        "        locations = cells_body(",
+        "            columns = Headshot,",
+        "            rows = 1:(length(Headshot) - 1)",
+        "        ),",
         "        fn = function(x) {",
         "            web_image(",
         "                url = x,",
@@ -730,37 +749,52 @@ res <- purrr::map_chr(
         "            )",
         "        }",
         "    ) |>",
+        "    cols_align(",
+        "        align = 'center',",
+        "        columns = c(",
+        "            '#',",
+        "            Headshot,",
+        "            Pos,",
+        "            Pts,",
+        "            G,",
+        "            A,",
+        "            OTL",
+        "        )",
+        "    ) |>",
         "    tab_options(",
-        "    table.background.color = '#F5F5F5',",
-        "    column_labels.background.color = '#2B2D42',",
-        "    table.font.size = px(16),",
-        "    table.border.top.color = 'transparent',",
-        "    table.border.bottom.color = 'transparent',",
-        "    table_body.hlines.color = 'transparent',",
-        "    table_body.border.bottom.color = 'transparent',",
-        "    column_labels.border.bottom.color = 'transparent',",
-        "    column_labels.border.top.color = 'transparent'",
-        "  ) |> ",
-        "  tab_style_body(",
-        "    style = cell_borders(",
-        "      sides = c('top', 'right', 'left', 'bottom'),",
-        "      weight = px(0) # Remove row borders",
-        "    ),",
-        "    fn = function(x) { is.numeric(x) | is.character(x) }",
-        "  ) |> ",
-        "  opt_css(",
-        "    css = '",
-        "    table tr:nth-child(odd) {",
-        "      background-color: #e0dedeff;",
-        "    }",
-        "    .gt_col_heading {",
-        "      position: sticky !important;",
-        "      top: 0px !important;",
-        "      z-index: 10 !important;",
-        "    }",
-        "    '",
-        "  )",
-
+        "        table.background.color = '#F5F5F5',",
+        "        column_labels.background.color = '#2B2D42',",
+        "        table.font.size = px(16),",
+        "        table.border.top.color = 'transparent',",
+        "        table.border.bottom.color = 'transparent',",
+        "        table_body.hlines.color = 'transparent',",
+        "        table_body.border.bottom.color = 'transparent',",
+        "        column_labels.border.bottom.color = 'transparent',",
+        "        column_labels.border.top.color = 'transparent'",
+        "    ) |>",
+        "    tab_style_body(",
+        "        style = cell_borders(",
+        "            sides = c('top', 'right', 'left', 'bottom'),",
+        "            weight = px(0) # Remove row borders",
+        "        ),",
+        "        fn = function(x) {",
+        "            is.numeric(x) | is.character(x)",
+        "        }",
+        "    ) |>",
+        "    opt_css(",
+        "        css = '",
+        "        table tr:nth-child(odd) {",
+        "        background-color: #e0dedeff;",
+        "        }",
+        "        .gt_col_heading {",
+        "        position: sticky !important;",
+        "        top: 0px !important;",
+        "        z-index: 10 !important;",
+        "        }",
+        "        '",
+        "    )",
+        "",
+        "",
         "```",
         "",
         ""
@@ -777,7 +811,7 @@ cat(res, sep = '\n')
 
 # Schedule
 
-```{r "Schedule"}
+```{r "schedule"}
 
 schedule |>
     select(
@@ -785,10 +819,8 @@ schedule |>
             game_date,
             game_status,
             away_team_logo,
-            # away_team_code,
             away_score,
             home_team_logo,
-            # home_team_code,
             home_score
         )
     ) |>
@@ -871,7 +903,7 @@ schedule |>
 
 Select one of the rows in this table to use (or take some inspo from)
 
-```{r generate-team}
+```{r "random team generator"}
 
 seed <- 1
 
@@ -919,3 +951,37 @@ library(DT)
 random_teams |> datatable()
 
 ```
+
+# Draft Info
+
+## Row
+
+::: {.card title="Rules"}
+Choose your fantasy team name, colour, logo and roster in the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing). (If you want some inspiration for your draft, you can check out the [team generator](#team-generator))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;🔴🟡🔵**Team Colour:** Valid hexadecimal colour code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;👩‍👩‍👧📷🖥️**Team Image:** Valid link to any image on the web<br><br>
+Your team should have exactly the following (the Google Sheet dropdowns force this structure, don't worry!):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**🏒 6 forwards**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**🛡️ 4 defenders**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**🥅 2 goalies**<br><br>
+😮‍💨 Players/goalies aren't restricted to a single fantasy team so if someone took a player you like, you can take them too!<br><br>
+↔️ **Trades:** Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!<br><br>
+🕐 **Deadline:** You can use all of November's pre-season and regular season games to scout your roster and aim to lock it in by **November 30th, 2025**! After this date, the Google Sheet will be 👁️**View Only**👁️<br><br>
+💰💵💸 **Prize pool (Optional):** E-transfer $10 to Alex or Noah to enter in the fantasy prize pool! More information TBD but you could **WIN BIGGGG! (Send an e-transfer or intent to e-transfer by the roster deadline to enter the prize pool)**
+:::
+
+## Row
+
+::: {.card title="Scoring"}
+Your fantasy team's score is updated daily with data from the previous day's games. Each day, each member of your fantasy roster will contribute a number of points to your team's overall score, following the scheme below:
+
+🏒 1 point per goal<br>
+🤝 1 point per assist<br>
+✨ 2 points per win\*<br>
+😖 0 points per loss\*<br>
+🥇 1 point per OT loss\*
+
+You can check how your and everyone else's teams are doing [here](#team-standings). Note that eventually, only **regular season games** will contribute to your fantasy teams score.
+
+\*Note that if your play did not play in a game in which their team won, they will *not* contribute points to your score (this includes dressed goalies that did not get subbed in).
+:::
