@@ -13,6 +13,8 @@ get_fantasy_teams_and_standings <- function(
   schedule
 ) {
   is_valid_hex_color <- function(color) {
+    set.seed(1)
+
     if (
       grepl(
         "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
@@ -21,7 +23,7 @@ get_fantasy_teams_and_standings <- function(
     ) {
       return(color)
     } else {
-      return("#000000")
+      return(sample(colors(), 1))
     }
   }
 
