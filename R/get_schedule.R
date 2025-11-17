@@ -112,6 +112,14 @@ get_schedule <- function(
       )
   }
 
+  todays_games <- schedule |>
+    filter(
+      game_date ==
+        ymd(
+          current_date
+        )
+    )
+
   if (
     as.character(
       next_game_day_date
@@ -144,6 +152,7 @@ get_schedule <- function(
       last_game_day_date = last_game_day_date,
       next_game_day_date = next_game_day_date,
       last_game_day = last_game_day,
+      todays_games = todays_games,
       next_game_day = next_game_day
     )
   )

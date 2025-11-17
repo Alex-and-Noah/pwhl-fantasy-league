@@ -16,65 +16,85 @@ get_roster_points_from_game <- function(
   player_box_for_game,
   schedule
 ) {
-  game_from_schedule <- schedule |>
-    filter(
-      game_id == player_box_for_game$skaters$game_id[[1]]
+  if (
+    nrow(
+      player_box_for_game$skaters
+    ) ==
+      0
+  ) {
+    fantasy_points_per_player <- data.frame(
+      player_id = integer(),
+      first_name = character(),
+      last_name = character(),
+      position = character(),
+      team_id = integer(),
+      game_id = integer(),
+      goals = integer(),
+      assists = integer(),
+      wins = integer(),
+      ot_losses = integer()
     )
+  } else {
+    game_from_schedule <- schedule |>
+      filter(
+        game_id == player_box_for_game$skaters$game_id[[1]]
+      )
 
-  fantasy_points_per_player <- rbind(
-    player_box_for_game$skaters |>
-      select(
-        c(
-          player_id,
-          first_name,
-          last_name,
-          position,
-          team_id,
-          game_id,
-          goals,
-          assists
+    fantasy_points_per_player <- rbind(
+      player_box_for_game$skaters |>
+        select(
+          c(
+            player_id,
+            first_name,
+            last_name,
+            position,
+            team_id,
+            game_id,
+            goals,
+            assists
+          )
+        ),
+      player_box_for_game$goalies |>
+        select(
+          c(
+            player_id,
+            first_name,
+            last_name,
+            position,
+            team_id,
+            game_id,
+            goals,
+            assists
+          )
         )
-      ),
-    player_box_for_game$goalies |>
-      select(
-        c(
-          player_id,
-          first_name,
-          last_name,
-          position,
-          team_id,
-          game_id,
-          goals,
-          assists
+    ) |>
+      mutate(
+        wins = case_when(
+          team_id ==
+            game_from_schedule |>
+              select(
+                winner_id
+              ) |>
+              pull() ~ 1,
+          .default = 0
+        ),
+        ot_losses = case_when(
+          (team_id !=
+            game_from_schedule |>
+              select(
+                winner_id
+              ) |>
+              pull()) &
+            (game_from_schedule |>
+              select(
+                game_status
+              ) |>
+              pull() ==
+              "Final OT") ~ 1,
+          .default = 0
         )
       )
-  ) |>
-    mutate(
-      wins = case_when(
-        team_id ==
-          game_from_schedule |>
-            select(
-              winner_id
-            ) |>
-            pull() ~ 1,
-        .default = 0
-      ),
-      ot_losses = case_when(
-        (team_id !=
-          game_from_schedule |>
-            select(
-              winner_id
-            ) |>
-            pull()) &
-          (game_from_schedule |>
-            select(
-              game_status
-            ) |>
-            pull() ==
-            "Final OT") ~ 1,
-        .default = 0
-      )
-    )
+  }
 
   fantasy_points_per_game_id <- lapply(
     names(team_rosters),

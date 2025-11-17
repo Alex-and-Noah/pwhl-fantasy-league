@@ -263,6 +263,53 @@ pwhl_player_box <- function(game_id) {
       message(glue::glue(
         "{Sys.time()}: Invalid game_id or no player box data available! Try using `phf_schedule` to find a game ID to look up!"
       ))
+
+      skaters <- data.frame(
+        player_id = integer(),
+        first_name = character(),
+        last_name = character(),
+        position = character(),
+        goals = integer(),
+        assists = integer(),
+        points = integer(),
+        penalty_minutes = character(),
+        plus_minus = integer(),
+        faceoff_attempts = integer(),
+        faceoff_wins = integer(),
+        shots = integer(),
+        hits = integer(),
+        blocked_shots = integer(),
+        toi = character(),
+        starting = character(),
+        team_id = integer(),
+        game_id = integer(),
+        league = character()
+      )
+
+      goalies <- data.frame(
+        player_id = integer(),
+        first_name = character(),
+        last_name = character(),
+        position = character(),
+        goals = integer(),
+        assists = integer(),
+        points = integer(),
+        penalty_minutes = character(),
+        plus_mins = integer(),
+        faceoff_attempts = integer(),
+        faceoff_wins = integer(),
+        toi = character(),
+        shots_against = integer(),
+        goals_against = integer(),
+        saves = integer(),
+        starting = character(),
+        team_id = integer(),
+        game_id = integer(),
+        league = character()
+      )
+
+      player_box <<- c(list(skaters), list(goalies))
+      names(player_box) <<- c("skaters", "goalies")
     },
     warning = function(w) {},
     finally = {}

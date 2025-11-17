@@ -74,6 +74,7 @@ schedule_to_date <- schedules["schedule_to_date"][[1]]
 last_game_day_date <- schedules["last_game_day_date"][[1]]
 next_game_day_date <- schedules["next_game_day_date"][[1]]
 last_game_day <- schedules["last_game_day"][[1]]
+todays_games <- schedules["todays_games"][[1]]
 next_game_day <- schedules["next_game_day"][[1]]
 ```
 
@@ -148,10 +149,10 @@ value_box(
 )
 ```
 
-```{r "last game day"}
+```{r "todays games"}
 if (
   nrow(
-    roster_points_per_game
+    todays_games
   ) ==
     0
 ) {
@@ -162,13 +163,13 @@ if (
       size = "6vh"
     ),
     value = tags$p(
-      "No games played yet this season",
+      "No games today :(",
       style = "font-size: 4vh;"
     ),
     theme = "danger"
   )
 } else {
-  last_game_day |>
+  todays_games |>
     mutate(
       temp = "-"
     ) |>
@@ -177,17 +178,27 @@ if (
         "home_team_code",
         "home_team_logo",
         "home_score",
-        "temp",
+        "game_status",
         "away_score",
         "away_team_logo",
         "away_team_code"
       )
     ) |>
     gt() |>
+    cols_align(
+      align = "center",
+      columns = everything()
+    ) |>
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_body(
+        columns = game_status
+      )
+    ) |>
     tab_header(
       format(
         last_game_day_date,
-        "Last game day (%B %e, %Y)"
+        "Today's games (%B %e, %Y)"
       )
     ) |>
     text_transform(
@@ -208,7 +219,7 @@ if (
       home_team_code = "",
       home_team_logo = "Home",
       home_score = "",
-      temp = "",
+      game_status = "",
       away_score = "",
       away_team_logo = "Away",
       away_team_code = ""
@@ -285,7 +296,8 @@ ggplot(temps, aes(x = 1)) +
     ) +
     theme(
       plot.title = element_text(size = 50, hjust = 0.5)
-    )
+    ) +
+    coord_flip()
 
 ```
 
@@ -293,12 +305,35 @@ ggplot(temps, aes(x = 1)) +
 
 Need help making your team? Generate a random regulation team [here](#team-generator) to paste into the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing)
 
-
 ## Row
 
 ```{r "standings overview"}
-#| title: "Standings"
+#| title: "Standings (with today's changes)"
+delta_points <- get_fantasy_teams_and_standings(
+  all_teams=all_teams,
+  schedule_to_date=todays_games,
+  schedule=schedule
+)["standings"][[1]]
+
+delta_points <- delta_points[
+  match(
+    standings$Name,
+    delta_points$Name
+  ),
+]
+
 standings |>
+  mutate(
+    delta = delta_points$Points
+  ) |>
+  mutate(
+    Points = paste0(
+      Points,
+      " (+",
+      delta,
+      ")"
+    )
+  ) |>
   select(
     c(
       Name,
