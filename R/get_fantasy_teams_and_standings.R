@@ -13,8 +13,6 @@ get_fantasy_teams_and_standings <- function(
   schedule
 ) {
   is_valid_hex_color <- function(color) {
-    set.seed(1)
-
     if (
       grepl(
         "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
@@ -27,7 +25,7 @@ get_fantasy_teams_and_standings <- function(
     }
   }
 
-  v = Vectorize(is_valid_hex_color)
+  v <- Vectorize(is_valid_hex_color)
 
   rosters_names_gsheet <- get_google_sheet(
     sheet_id = 0
