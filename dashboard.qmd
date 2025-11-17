@@ -271,7 +271,7 @@ if (
 
 ```
 
-```{r}
+```{r "prize pool thermometer"}
 
 temps <- data.table(temp = seq(from = 0, to = pool, by = 0.01))
 temps[, temp1 := shift(temp, 1)]
@@ -557,22 +557,6 @@ if (
     theme = "danger"
   )
 } else {
-  data <- roster_points_per_game |>
-    mutate(
-      across(
-        names(team_rosters),
-        ~ .x |> as.numeric() |> cumsum()
-      ),
-      game_idx = 1:nrow(
-        roster_points_per_game
-      )
-    ) |>
-    pivot_longer(
-      cols = names(team_rosters),
-      names_to = "Team",
-      values_to = "Points"
-    ) |>
-    rename("Game" = game_idx)
 
   data <- roster_points_per_game |> lapply(
     function(x) x |> mutate(
@@ -652,7 +636,13 @@ if (
       Team,
       !!!team_images
     )
-  ) |> merge(data.frame(Team = names(team_colours), Colours = team_colours)
+  ) |>
+  merge(
+    data.frame(
+      Team = names(team_colours),
+      Colours = team_colours
+    )
+  )
 
   data |>
     ggplot() +
