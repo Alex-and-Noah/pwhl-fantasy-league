@@ -41,6 +41,17 @@ get_all_teams <- function(
     game_type = game_type
   )
 
+  all_teams <- all_teams %>%
+    mutate(
+      team_logo = teams[
+        match(
+          .$team_id,
+          teams$team_id
+        ),
+        "team_logo"
+      ]
+    )
+
   return(
     list(
       team_logo_urls = team_logo_urls,
