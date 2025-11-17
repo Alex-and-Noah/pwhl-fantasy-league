@@ -21,11 +21,11 @@ get_fantasy_teams_and_standings <- function(
     ) {
       return(color)
     } else {
-      return("#000000")
+      return(sample(colors(), 1))
     }
   }
 
-  v = Vectorize(is_valid_hex_color)
+  v <- Vectorize(is_valid_hex_color)
 
   rosters_names_gsheet <- get_google_sheet(
     sheet_id = 0
