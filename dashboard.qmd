@@ -494,9 +494,14 @@ standings |>
 #| title: "Standings over time"
 
 if (
-  nrow(
-    roster_points_per_game
-  ) ==
+  schedule_to_date |>
+  filter(
+    game_status %in% c(
+      "Final",
+      "Final OT"
+    )
+  ) |>
+  nrow() ==
     0
 ) {
   value_box(
@@ -528,6 +533,86 @@ if (
       values_to = "Points"
     ) |>
     rename("Game" = game_idx)
+
+  data <- roster_points_per_game |> lapply(
+    function(x) x |> mutate(
+      earliest_game_id = schedule_to_date$game_id[1]
+    ) |>
+    expand(
+      game_id = as.numeric(schedule_to_date$game_id),
+      earliest_game_id
+    ) |> select(
+      -earliest_game_id
+    ) %>% left_join(
+      x,
+      by = c(
+        "game_id"
+      )
+    ) |> mutate(
+      goals = ifelse(
+        is.na(goals),
+        0,
+        goals
+      ),
+      assists = ifelse(
+        is.na(assists),
+        0,
+        assists
+      ),
+      wins = ifelse(
+        is.na(wins),
+        0,
+        wins
+      ),
+      ot_losses = ifelse(
+        is.na(ot_losses),
+        0,
+        ot_losses
+      ),
+      wins = 2*wins,
+    ) %>%
+    mutate(
+      fantasy_points = rowSums(
+        select(
+          .,
+          c(
+            goals,
+            assists,
+            wins,
+            ot_losses
+          )
+        )
+      )
+    ) |>
+    arrange(
+      game_id
+    ) |> select(
+      c(
+        game_id,
+        fantasy_points
+      )
+    ) |> group_by(
+      game_id
+    ) |> summarise(
+      daily_scores = sum(fantasy_points)
+    ) |>
+    mutate(
+      daily_scores = cumsum(daily_scores),
+      game_id = row_number()
+    )
+  ) |> bind_rows(
+    .id = "Team"
+  ) |>
+  rename(
+    "Game" = game_id,
+    "Points" = daily_scores
+  ) |>
+  mutate(
+    team_image = recode(
+      Team,
+      !!!team_images
+    )
+  )
 
   #TODO this needs to be moved ig
   standings <- standings |>
