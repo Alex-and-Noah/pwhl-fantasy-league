@@ -5,7 +5,7 @@ library(dplyr)
 #' team rosters with stats and team codes
 #'
 #' @param season_id Current season ID
-#' @param season Current season
+#' @param season_yr Current season year
 #' @param game_type Current season game type
 #' @return data.frames of PWHL team/player data
 #' @import dplyr
@@ -17,7 +17,7 @@ library(dplyr)
 
 get_all_teams <- function(
   season_id,
-  season,
+  season_yr,
   game_type
 ) {
   team_logo_urls <- get_team_logo_urls(
@@ -36,9 +36,8 @@ get_all_teams <- function(
     )
 
   all_teams <- team_stats(
-    season = season,
-    teams = teams,
-    game_type = game_type
+    season_id = season_id,
+    teams = teams
   )
 
   all_teams <- all_teams %>%

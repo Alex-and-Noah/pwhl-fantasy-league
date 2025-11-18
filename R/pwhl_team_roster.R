@@ -10,7 +10,7 @@ library(lubridate)
 #' @description PWHL Rosters lookup
 #'
 #' @param teams data.frame of PWHL teams
-#' @param season Season (YYYY) to pull the roster from, the concluding year in XXXX-YY format
+#' @param season_id Season ID to pull the roster from
 #' @param team Team to pull the roster data for
 #' @param regular Bool for whether to pull regular or pre-season rosters
 #' @return A data frame with roster data
@@ -24,35 +24,27 @@ library(lubridate)
 #' @export
 #' @examples
 #' \donttest{
-#'   try(pwhl_team_roster(season = 2023, team = "Toronto"))
+#'   try(pwhl_team_roster(season_yr = 2023, team = "Toronto"))
 #' }
 
 pwhl_team_roster <- function(
   teams,
-  team_label_arg,
-  season,
-  game_type
+  team_label,
+  season_id
 ) {
-  team_id <- teams %>%
-    filter(
-      .data$team_label == team_label_arg
-    ) %>%
-    select(
-      team_id
-    )
+  team_label_arg <- team_label
 
-  seasons <- pwhl_season_id() %>%
+  team_id <- teams |>
     filter(
-      season_yr == season,
-      game_type_label == game_type
-    )
-
-  season_id <- seasons$season_id
+      team_label == team_label_arg
+    ) |>
+    select(team_id) |>
+    pull()
 
   # base_url <- "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=roster&team_id=1&season_id=2&key=694cfeed58c932ee&client_code=pwhl&site_id=8&league_id=1&lang=en&callback=angular.callbacks._h"
   full_url <- paste0(
     "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=roster&team_id=",
-    team_id$team_id,
+    team_id,
     "&season_id=",
     season_id,
     "&key=694cfeed58c932ee&client_code=pwhl&site_id=8&league_id=1&lang=en&callback=angular.callbacks._h"
@@ -197,7 +189,7 @@ pwhl_team_roster <- function(
             time_length(
               as.Date(
                 paste0(
-                  season,
+                  season_yr,
                   "-01-01"
                 )
               ) -
@@ -217,13 +209,13 @@ pwhl_team_roster <- function(
             TRUE,
             FALSE
           ),
-          season = season,
+          season_yr = season_yr,
           player_id = as.numeric(player_id),
-          team_id = as.numeric(team_id$team_id),
+          team_id = as.numeric(team_id),
           team = team_label_arg
         ) %>%
         relocate("team_id", .after = player_id) %>%
-        relocate("season", .after = team_id)
+        relocate("season_yr", .after = team_id)
     },
     error = function(e) {
       message(

@@ -22,7 +22,7 @@ pool <- 30
 
 ```{r "Get season dates and type"}
 current_date = today()
-# current_date = "2025-11-17"
+current_date = "2025-11-17"
 
 seasons_dates_and_types <- get_seasons_dates_and_types()
 

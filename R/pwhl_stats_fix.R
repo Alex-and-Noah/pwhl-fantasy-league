@@ -4,7 +4,7 @@ library(magrittr)
 #' @description PWHL Stats lookup
 #'
 #' @param position either goalie or skater. If skater, need to select a team.
-#' @param season Season (YYYY) to pull the roster from, the concluding year in XXXX-YY format
+#' @param season_yr Season year (YYYY) to pull the roster from, the concluding year in XXXX-YY format
 #' @param team Team to pull the roster data for
 #' @param regular Bool for whether to pull regular or pre-season rosters
 #' @return A data frame with roster data
@@ -17,19 +17,18 @@ library(magrittr)
 
 pwhl_stats_fix <- function(
   position = "goalie",
-  team_label_arg = "Boston",
+  team_label = "Boston",
   teams = NULL,
-  season = 2023,
-  game_type = "preseason"
+  season_id = 2
 ) {
-  team_id <- teams %>%
-    dplyr::filter(.data$team_label == team_label_arg) %>%
-    dplyr::select(team_id)
+  team_label_arg <- team_label
 
-  seasons <- pwhl_season_id() %>%
-    dplyr::filter(season_yr == season, game_type_label == game_type)
-
-  season_id <- seasons$season_id
+  team_id <- teams |>
+    filter(
+      team_label == team_label_arg
+    ) |>
+    select(team_id) |>
+    pull()
 
   tryCatch(
     expr = {
