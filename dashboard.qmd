@@ -113,14 +113,25 @@ standings <- standings |>
 ```
 
 ```{r "Get preseason Fantasy teams and standings"}
+season_id_for_preseason <- case_when(
+  game_type == "preseason" ~ season_id,
+  game_type == "regular" ~ season_id-1,
+  game_type == "playoffs" ~ season_id-2,
+  TRUE ~ season_id
+)
+
 schedules_preseason <- get_schedule_info(
-  7,
+  season_id_for_preseason,
   season_schedules_by_id,
   team_codes,
   team_logo_urls,
   season_dates_and_types,
   next_game_day_date,
-  "2025-11-17"
+  season_dates_and_types |>
+    filter(
+      season_id == season_id_for_preseason
+    ) |>
+    pull(end_date)
 )
 
 schedule_preseason <- schedules_preseason["schedule"][[1]] |>
