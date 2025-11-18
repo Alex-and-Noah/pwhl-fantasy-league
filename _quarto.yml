@@ -6,6 +6,6 @@ format:
         href: https://github.com/alexmcsw/pwhl-fantasy-league
     theme:
       - brand
-      # - styles.scss
+      - styles.scss
     scrolling: true 
     expandable: false
