@@ -142,7 +142,11 @@ get_schedule <- function(
 
   schedule_to_date <- schedule |>
     filter(
-      game_date < ymd(current_date)
+      game_status %in%
+        c(
+          "Final",
+          "Final OT"
+        )
     )
 
   return(

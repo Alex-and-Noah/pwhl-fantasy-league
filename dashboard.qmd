@@ -305,14 +305,14 @@ if (
 }
 
 
-standings |>
+standings|>
+  mutate(
+    delta = delta_points$Points
+  ) |>
   arrange(
     desc(
       Points
     )
-  )|>
-  mutate(
-    delta = delta_points$Points
   ) |>
   mutate(
     Points = paste0(
