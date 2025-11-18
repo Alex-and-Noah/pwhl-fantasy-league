@@ -22,22 +22,24 @@ pool <- 30
 
 ```{r "Get season dates and type"}
 current_date = today()
-current_date = "2025-11-17"
+# current_date = "2025-11-17"
 
-season_dates_and_type <- get_season_dates_and_type()
+seasons_dates_and_types <- get_seasons_dates_and_types()
+
+season_dates_and_types <- seasons_dates_and_types["season_dates_and_types"][[1]]
+season_schedules_by_id <- seasons_dates_and_types["season_schedules_by_id"][[1]]
+season_schedules_by_year <- seasons_dates_and_types["season_schedules_by_year"][[1]]
 
 days_for_current_date <- get_days_for_current_date(
   current_date,
-  season_dates_and_type
+  season_dates_and_types
 )
 
-last_game_day_date <- days_for_current_date$last_game_day_date |>
-  as.character()
 next_game_day_date <- days_for_current_date$next_game_day_date |>
   as.character()
 season_id <- days_for_current_date$season_id |>
   as.numeric()
-season <- days_for_current_date$season |>
+season_yr <- days_for_current_date$season_yr |>
   as.numeric()
 game_type <- days_for_current_date$game_type |>
   as.character()
@@ -46,7 +48,7 @@ game_type <- days_for_current_date$game_type |>
 ```{r "Get team and schedule data"}
 team_data_frames <- get_all_teams(
   season_id,
-  season,
+  season_yr,
   game_type
 )
 
@@ -212,7 +214,7 @@ if (
     ) |>
     tab_header(
       format(
-        last_game_day_date,
+        current_date,
         "Today's games (%B %e, %Y)"
       )
     ) |>

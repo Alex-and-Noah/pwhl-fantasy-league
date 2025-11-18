@@ -1,28 +1,27 @@
 library(dplyr)
 library(rlang)
 
-#' @title  **Get PWHL Last/Next Game Dates and Game Info for Current Date**
-#' @description Foir the current date, get the last/next game days, the season
+#' @title  **Get PWHL Next Game Dates and Game Info for Current Date**
+#' @description Foir the current date, get the next game days, the season
 #' ID, the season and the season type
 #'
 #' @param current_date Current Date
-#' @param season_dates_and_type data.frame of all PWHL season dates and types
-#' @return Named list of last/next games, season ID, season  and game type
+#' @param season_dates_and_types data.frame of all PWHL season dates and types
+#' @return Named list of next games, season ID, season  and game type
 #' @import dplyr
 #' @import rlang
 #' @export
 
 get_days_for_current_date <- function(
   current_date,
-  season_dates_and_type
+  season_dates_and_types
 ) {
-  idx_for_current_date <- season_dates_and_type |>
+  idx_for_current_date <- season_dates_and_types |>
     (\(x) x$start_date < current_date & x$end_date >= current_date)() |>
     which()
 
-  last_game_day_date <- "tbd"
   next_game_day_date <- "tbd"
-  season_id <- season_dates_and_type[
+  season_id <- season_dates_and_types[
     idx_for_current_date,
     "season_id"
   ]
@@ -33,26 +32,17 @@ get_days_for_current_date <- function(
     ) ==
       0
   ) {
-    idx_for_current_date <- season_dates_and_type |>
+    idx_for_current_date <- season_dates_and_types |>
       (\(x) x$start_date >= current_date)() |>
       which() |>
       first()
 
-    if (idx_for_current_date == 1) {
-      last_game_day_date <- NULL
-    } else {
-      last_game_day_date <- season_dates_and_type[
-        idx_for_current_date - 1,
-        "end_date"
-      ]
-    }
-
-    next_game_day_date <- season_dates_and_type[
+    next_game_day_date <- season_dates_and_types[
       idx_for_current_date,
       "start_date"
     ]
 
-    season_id <- season_dates_and_type[
+    season_id <- season_dates_and_types[
       idx_for_current_date,
       "season_id"
     ]
@@ -64,14 +54,9 @@ get_days_for_current_date <- function(
     )
   ) {
     idx_for_current_date <- rownames(
-      season_dates_and_type
+      season_dates_and_types
     ) |>
       max()
-
-    last_game_day_date <- season_dates_and_type[
-      idx_for_current_date,
-      "end_date"
-    ]
 
     next_game_day_date <- NULL
     season_id <- NULL
@@ -82,7 +67,7 @@ get_days_for_current_date <- function(
       season_id
     )
   ) {
-    season = season_dates_and_type |>
+    season_yr = season_dates_and_types |>
       filter(
         season_id == .env$season_id
       ) |>
@@ -91,7 +76,7 @@ get_days_for_current_date <- function(
       ) |>
       as.numeric()
 
-    game_type <- season_dates_and_type |>
+    game_type <- season_dates_and_types |>
       filter(
         season_id == .env$season_id
       ) |>
@@ -103,10 +88,9 @@ get_days_for_current_date <- function(
 
   return(
     data.frame(
-      last_game_day_date = last_game_day_date,
       next_game_day_date = next_game_day_date,
       season_id = season_id,
-      season = season,
+      season_yr = season_yr,
       game_type = game_type
     )
   )
