@@ -26,6 +26,8 @@ get_days_for_current_date <- function(
     "season_id"
   ]
 
+  season_id_for_schedule <- season_id
+
   if (
     length(
       idx_for_current_date
@@ -33,17 +35,27 @@ get_days_for_current_date <- function(
       0
   ) {
     idx_for_current_date <- season_dates_and_types |>
+      (\(x) x$start_date < current_date)() |>
+      which() |>
+      last()
+
+    idx_for_next_date <- season_dates_and_types |>
       (\(x) x$start_date >= current_date)() |>
       which() |>
       first()
 
     next_game_day_date <- season_dates_and_types[
-      idx_for_current_date,
+      idx_for_next_date,
       "start_date"
     ]
 
     season_id <- season_dates_and_types[
       idx_for_current_date,
+      "season_id"
+    ]
+
+    season_id_for_schedule <- season_dates_and_types[
+      idx_for_next_date,
       "season_id"
     ]
   }
@@ -60,6 +72,7 @@ get_days_for_current_date <- function(
 
     next_game_day_date <- NULL
     season_id <- NULL
+    season_id_for_schedule <- NULL
   }
 
   if (
@@ -90,6 +103,7 @@ get_days_for_current_date <- function(
     data.frame(
       next_game_day_date = next_game_day_date,
       season_id = season_id,
+      season_id_for_schedule = season_id_for_schedule,
       season_yr = season_yr,
       game_type = game_type
     )

@@ -25,7 +25,31 @@ get_roster_points_per_game <- function(
       player_boxes_per_game
     ) ==
       0
-  ) {} else {
+  ) {
+    fantasy_points_per_roster <- lapply(
+      names(team_rosters),
+      function(team_name) {
+        data.frame(
+          player_id = integer(),
+          game_id = integer(),
+          first_name = character(),
+          last_name = character(),
+          position = character(),
+          team_id = integer(),
+          goals = integer(),
+          assists = integer(),
+          wins = integer(),
+          ot_losses = integer()
+        )
+      }
+    )
+
+    names(fantasy_points_per_roster) <- names(team_rosters)
+
+    return(
+      fantasy_points_per_roster
+    )
+  } else {
     fantasy_points_per_game_id <- player_boxes_per_game |>
       map(
         get_roster_points_from_game,

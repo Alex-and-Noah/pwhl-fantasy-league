@@ -30,16 +30,26 @@ compute_standings <- function(
 
   names(fantasy_team_scores) <- names(fantasy_roster_points)
 
-  standings <- fantasy_team_scores[order(
-    unlist(fantasy_team_scores),
-    decreasing = TRUE
-  )] |>
+  standings <- fantasy_team_scores |>
     stack() |>
     set_names(
       c(
         "points",
         "team_name"
       )
+    ) |>
+    mutate(
+      team_name = factor(
+        team_name,
+        levels = str_sort(
+          unique(team_name),
+          locale = "C"
+        )
+      )
+    ) |>
+    arrange(
+      desc(points),
+      team_name
     )
 
   standings <- standings |>
