@@ -28,6 +28,93 @@ get_all_teams <- function(
     season_id = season_id
   )
 
+  team_colours <- list(
+    "Boston" = c(
+      "#173F35",
+      "#FFFFFF",
+      "#B5E3D8",
+      "#FFFFFF"
+    ),
+    "Minnesota" = c(
+      "#250E62",
+      "#FFFFFF",
+      "#A77BCA",
+      "#FFFFFF"
+    ),
+    "Montreal" = c(
+      "#862633",
+      "#FFFFFF",
+      "#041E42",
+      "#FFFFFF"
+    ),
+    "New York" = c(
+      "#00BFB3",
+      "#FFFFFF",
+      "#041E42",
+      "#FFFFFF"
+    ),
+    "Ottawa" = c(
+      "#A6192E",
+      "#FFFFFF",
+      "#4B4F54",
+      "#FFFFFF"
+    ),
+    "Seattle" = c(
+      "#0C5256",
+      "#FFFFFF",
+      "#E1DBC9",
+      "#FFFFFF"
+    ),
+    "Toronto" = c(
+      "#0067B9",
+      "#FFFFFF",
+      "#0C2340",
+      "#FFFFFF"
+    ),
+    "Vancouver" = c(
+      "#0F4777",
+      "#FFFFFF",
+      "#EEE9D8",
+      "#FFFFFF"
+    )
+  )
+
+  teams <- teams |>
+    mutate(
+      colour_1 = unlist(
+        lapply(
+          team_label,
+          function(x) {
+            team_colours[[x]][1]
+          }
+        )
+      ),
+      colour_2 = unlist(
+        lapply(
+          team_label,
+          function(x) {
+            team_colours[[x]][2]
+          }
+        )
+      ),
+      colour_3 = unlist(
+        lapply(
+          team_label,
+          function(x) {
+            team_colours[[x]][3]
+          }
+        )
+      ),
+      colour_4 = unlist(
+        lapply(
+          team_label,
+          function(x) {
+            team_colours[[x]][4]
+          }
+        )
+      )
+    )
+
   team_codes <- teams$team_code
 
   names(team_codes) <- teams$team_label |>
@@ -48,6 +135,20 @@ get_all_teams <- function(
           teams$team_id
         ),
         "team_logo"
+      ],
+      team_colour_1 = teams[
+        match(
+          .$team_id,
+          teams$team_id
+        ),
+        "colour_1"
+      ],
+      team_colour_2 = teams[
+        match(
+          .$team_id,
+          teams$team_id
+        ),
+        "colour_3"
       ]
     )
 

@@ -31,6 +31,7 @@ generate_pwhl_roster_gt_table <- function(
             c(
                 jersey_number,
                 team_logo,
+                team_colour_1,
                 player_headshot,
                 player_name,
                 position.x,
@@ -79,13 +80,18 @@ generate_pwhl_roster_gt_table <- function(
             Headshot = paste0(
                 "<img src='",
                 Headshot,
-                "' style='width:50px;height:50px;border:1px solid black;'/>"
+                "' style='width:50px;height:50px;border:1px solid",
+                team_colour_1,
+                ";border-radius:50%;'/>"
             ),
             Logo = paste0(
                 "<img src='",
                 Logo,
                 "' style='width:30px;height:30px;'/>"
             )
+        ) |>
+        select(
+            -team_colour_1
         ) %>%
         rbind(
             c(
