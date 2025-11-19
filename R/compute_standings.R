@@ -7,6 +7,7 @@ library(magrittr)
 #' @param fantasy_roster_points data.frame of points earned by each fantasy
 #' roster, per game
 #' @param team_images Images associated to each team
+#' @param team_colours Named vector of team colours
 #' @return A data frame with aggregated fantasy team standings
 #' @import dplyr
 #' @import magrittr
@@ -14,7 +15,8 @@ library(magrittr)
 
 compute_standings <- function(
   fantasy_roster_points,
-  team_images
+  team_images,
+  team_colours
 ) {
   fantasy_team_scores <- lapply(
     names(fantasy_roster_points),
@@ -47,16 +49,20 @@ compute_standings <- function(
         )
       )
     ) |>
-    arrange(
-      desc(points),
-      team_name
-    )
-
-  standings <- standings |>
+    merge(
+      data.frame(
+        team_name = names(team_colours),
+        Colours = team_colours
+      )
+    ) |>
     mutate(
       Team = recode(
         team_name,
         !!!team_images
+      ),
+      Team = case_when(
+        is.na(Team) ~ "logo.svg",
+        .default = Team
       )
     ) |>
     rename(
@@ -67,8 +73,13 @@ compute_standings <- function(
       c(
         "Name",
         "Team",
-        "Points"
+        "Points",
+        "Colours"
       )
+    ) |>
+    arrange(
+      desc(Points),
+      Name
     )
 
   return(standings)

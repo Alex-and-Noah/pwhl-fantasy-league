@@ -4,13 +4,15 @@
 #' @param all_teams All PWHL player info and stats
 #' @param schedule_to_date Current season schedule up to current_date
 #' @param schedule Entire schedule for current season
+#' @param team_colours Named vector of team colours
 #' @return data.frames of fantasy team/roster scores and standings
 #' @export
 
 get_fantasy_teams_and_standings <- function(
   all_teams,
   schedule_to_date,
-  schedule
+  schedule,
+  team_colours
 ) {
   is_valid_hex_color <- function(color) {
     if (
@@ -78,7 +80,8 @@ get_fantasy_teams_and_standings <- function(
 
   standings <- compute_standings(
     fantasy_roster_points,
-    team_images
+    team_images,
+    team_colours
   )
 
   return(

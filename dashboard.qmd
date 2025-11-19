@@ -86,7 +86,8 @@ next_game_day <- schedules["next_game_day"][[1]]
 fantasy_teams_and_standings <- get_fantasy_teams_and_standings(
   all_teams,
   schedule_to_date,
-  schedule
+  schedule,
+  team_colours
 )
 
 team_images <- fantasy_teams_and_standings["team_images"][[1]]
@@ -99,16 +100,11 @@ fantasy_roster_points <- fantasy_teams_and_standings[
   "fantasy_roster_points"
 ][[1]]
 
-standings <- fantasy_teams_and_standings["standings"][[1]] |>
-  mutate(
-    Team = case_when(
-      is.na(Team) ~ "logo.svg",
-      .default = Team
-    )
-  )
-
-standings <- standings |>
-    merge(data.frame(Name = names(team_colours), Colours = team_colours)
+standings<- compute_standings_changes_indicator(
+  all_teams,
+  schedule_to_date,
+  schedule,
+  fantasy_teams_and_standings["standings"][[1]]
 )
 ```
 
@@ -158,16 +154,11 @@ fantasy_roster_points_preseason <- fantasy_teams_and_standings[
   "fantasy_roster_points"
 ][[1]]
 
-standings_preseason <- fantasy_teams_and_standings["standings"][[1]] |>
-  mutate(
-    Team = case_when(
-      is.na(Team) ~ "logo.svg",
-      .default = Team
-    )
-  )
-
-standings_preseason <- standings_preseason |>
-    merge(data.frame(Name = names(team_colours), Colours = team_colours)
+standings_preseason <- compute_standings_changes_indicator(
+  all_teams,
+  schedule_to_date_preseason,
+  schedule_preseason,
+  fantasy_teams_and_standings["standings"][[1]]
 )
 ```
 
@@ -320,11 +311,6 @@ standings|>
   mutate(
     delta = delta_points$Points
   ) |>
-  arrange(
-    desc(
-      Points
-    )
-  ) |>
   mutate(
     Points = paste0(
       Points,
@@ -334,14 +320,17 @@ standings|>
     )
   ) |>
   select(
-    c(
-      Name,
-      Team,
-      Points,
-      Colours
-    )
+    -delta
   ) |>
   gt() |>
+  fmt_icon(
+    columns = Change,
+    fill_color = c(
+      "arrow-up" = "#128800ff",
+      "arrow-down" = "#c50101ff",
+      height = "1.5em"
+    )
+  ) |>
   text_transform(
     locations = cells_body(
       columns = Team
@@ -518,6 +507,14 @@ standings |>
     )
   ) |>
   gt() |>
+  fmt_icon(
+    columns = Change,
+    fill_color = c(
+      "arrow-up" = "#128800ff",
+      "arrow-down" = "#c50101ff",
+      height = "1.5em"
+    )
+  ) |>
   text_transform(
     locations = cells_body(
       columns = Team
@@ -585,7 +582,16 @@ standings_preseason |>
       Points
     )
   ) |>
+  mutate(across(where(is.character), ~ na_if(., "")))|>
   gt() |>
+  fmt_icon(
+    columns = Change,
+    fill_color = c(
+      "arrow-up" = "#128800ff",
+      "arrow-down" = "#c50101ff",
+      height = "1.5em"
+    )
+  ) |>
   text_transform(
     locations = cells_body(
       columns = Team
