@@ -74,6 +74,18 @@ generate_pwhl_roster_gt_table <- function(
                 W = 'wins',
                 OTL = 'ot_losses'
             )
+        ) |>
+        mutate(
+            Headshot = paste0(
+                "<img src='",
+                Headshot,
+                "' style='width:50px;height:50px;border:1px solid black;'/>"
+            ),
+            Logo = paste0(
+                "<img src='",
+                Logo,
+                "' style='width:30px;height:30px;'/>"
+            )
         ) %>%
         rbind(
             c(
@@ -90,30 +102,36 @@ generate_pwhl_roster_gt_table <- function(
             )
         ) |>
         gt() |>
-        text_transform(
-            locations = cells_body(
-                columns = Headshot,
-                rows = 1:(length(Headshot) - 1)
-            ),
-            fn = function(x) {
-                web_image(
-                    url = x,
-                    height = '50px'
-                )
-            }
+        fmt_markdown(
+            columns = c(
+                Headshot,
+                Logo
+            )
         ) |>
-        text_transform(
-            locations = cells_body(
-                columns = Logo,
-                rows = 1:(length(Headshot) - 1)
-            ),
-            fn = function(x) {
-                web_image(
-                    url = x,
-                    height = '30px'
-                )
-            }
-        ) |>
+        # text_transform(
+        #     locations = cells_body(
+        #         columns = Headshot,
+        #         rows = 1:(length(Headshot) - 1)
+        #     ),
+        #     fn = function(x) {
+        #         web_image(
+        #             url = x,
+        #             height = '50px'
+        #         )
+        #     }
+        # ) |>
+        # text_transform(
+        #     locations = cells_body(
+        #         columns = Logo,
+        #         rows = 1:(length(Headshot) - 1)
+        #     ),
+        #     fn = function(x) {
+        #         web_image(
+        #             url = x,
+        #             height = '30px'
+        #         )
+        #     }
+        # ) |>
         cols_align(
             align = "center",
             columns = c(
