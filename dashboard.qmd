@@ -17,7 +17,7 @@ invisible(
   )
 )
 
-pool <- 30
+pool <- 40
 ```
 
 ```{r "Get season dates and type"}
@@ -322,6 +322,13 @@ standings|>
   select(
     -delta
   ) |>
+  mutate(
+      Change = case_when(
+          Change == "-1" ~ "arrow-down",
+          Change == "0" ~ NA,
+          Change == "1" ~ "arrow-up"
+      )
+  ) |>
   gt() |>
   fmt_icon(
     columns = Change,
@@ -355,6 +362,11 @@ standings|>
   cols_align(
     columns = everything(),
     align = "center"
+  ) |>
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = ""
   ) |>
     tab_options(
     table.background.color = "#F5F5F5",
@@ -547,6 +559,11 @@ standings |>
     columns = everything(),
     align = "center"
   ) |>
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = ""
+  ) |>
     tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
@@ -629,6 +646,11 @@ standings_preseason |>
   cols_align(
     columns = everything(),
     align = "center"
+  ) |>
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = ""
   ) |>
     tab_options(
     table.background.color = "#F5F5F5",
