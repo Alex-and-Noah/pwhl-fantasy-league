@@ -28,9 +28,9 @@ compute_standings_changes_indicator <- function(
         ) <
             2
     ) {
-        stangins <- standings |>
+        standings <- standings |>
             mutate(
-                Change = NA
+                Change = "0"
             )
     } else {
         schedule_to_day_before_date <- schedule_to_date |>
@@ -50,15 +50,6 @@ compute_standings_changes_indicator <- function(
         ) -
             seq_len(nrow(standings))) |>
             sign()
-
-        standings <- standings |>
-            mutate(
-                Change = case_when(
-                    Change == "-1" ~ "arrow-down",
-                    Change == "0" ~ NA,
-                    Change == "1" ~ "arrow-up"
-                )
-            )
     }
 
     return(standings)

@@ -506,6 +506,13 @@ standings |>
       Points
     )
   ) |>
+  mutate(
+      Change = case_when(
+          Change == "-1" ~ "arrow-down",
+          Change == "0" ~ NA,
+          Change == "1" ~ "arrow-up"
+      )
+  ) |>
   gt() |>
   fmt_icon(
     columns = Change,
@@ -582,7 +589,13 @@ standings_preseason |>
       Points
     )
   ) |>
-  mutate(across(where(is.character), ~ na_if(., "")))|>
+  mutate(
+      Change = case_when(
+          Change == "-1" ~ "arrow-down",
+          Change == "0" ~ NA,
+          Change == "1" ~ "arrow-up"
+      )
+  ) |>
   gt() |>
   fmt_icon(
     columns = Change,
