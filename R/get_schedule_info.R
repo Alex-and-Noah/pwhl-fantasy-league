@@ -85,7 +85,8 @@ get_schedule_info <- function(
     filter(
       game_date ==
         ymd(
-          current_date
+          current_date,
+          tz = "EST"
         )
     )
 
