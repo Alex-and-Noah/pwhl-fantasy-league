@@ -109,13 +109,18 @@ get_schedule_info <- function(
         )
     )
 
+  grepl(
+    "^\\d{1,2}:\\d{2}\\s(am|pm)\\s(EST|EDT|CST|CDT|MST|MDT|PST|PDT)$",
+    "Final"
+  )
+
   schedule_to_date <- schedule |>
     filter(
-      game_status %in%
-        c(
-          "Final",
-          "Final OT"
-        )
+      !grepl(
+        "^\\d{1,2}:\\d{2}\\s(am|pm)\\s(EST|EDT|CST|CDT|MST|MDT|PST|PDT)$",
+        game_status
+      ) &
+        game_status != "TBD"
     )
 
   return(
