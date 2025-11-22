@@ -17,7 +17,7 @@ invisible(
   )
 )
 
-pool <- 40
+pool <- 70
 ```
 
 ```{r "Get season dates and type"}
