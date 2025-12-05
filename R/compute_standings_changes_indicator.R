@@ -6,6 +6,7 @@ library(lubridate)
 #'
 #' @param all_teams All PWHL player info and stats
 #' @param schedule_to_date Current season schedule up to current_date
+#' @param current_date The current date
 #' @param schedule Entire schedule for current season
 #' @param standings Current fantasy standings
 #' @return data.frame of points earned by each fantasy team
@@ -16,6 +17,7 @@ library(lubridate)
 compute_standings_changes_indicator <- function(
     all_teams,
     schedule_to_date,
+    current_date,
     schedule,
     standings
 ) {
@@ -35,7 +37,7 @@ compute_standings_changes_indicator <- function(
     } else {
         schedule_to_day_before_date <- schedule_to_date |>
             filter(
-                game_date <= last(game_date) - days(1)
+                game_date < current_date,
             )
 
         yesterdays_standings <- get_fantasy_teams_and_standings(
