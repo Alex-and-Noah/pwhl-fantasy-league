@@ -160,6 +160,7 @@ fantasy_roster_points_preseason <- fantasy_teams_and_standings[
 standings_preseason <- compute_standings_changes_indicator(
   all_teams,
   schedule_to_date_preseason,
+  current_date,
   schedule_preseason,
   fantasy_teams_and_standings["standings"][[1]]
 )
