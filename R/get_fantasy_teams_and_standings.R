@@ -47,17 +47,52 @@ get_fantasy_teams_and_standings <- function(
     )
 
   rosters_names <- rosters_names_gsheet |>
-    select(!(team_name:team_image)) |>
+    select(
+      !(team_name:team_image)
+    ) |>
     t() |>
     data.frame() |>
     set_names(
       rosters_names_gsheet$team_name
     )
 
+  df <- as.data.frame(
+    matrix(
+      rep(
+        NA,
+        length(rosters_names)
+      ),
+      nrow = 1
+    )
+  )
+
+  names(df) <- names(rosters_names)
+  rownames(df) <- "last_game_id_of_trade_date"
+
+  for (team_name in names(df)) {
+    if (!is.na(rosters_names["trade_date", team_name])) {
+      df["last_game_id_of_trade_date", team_name] <- schedule |>
+        filter(
+          game_date <= mdy(rosters_names["trade_date", team_name])
+        ) |>
+        select(game_id) |>
+        last() |>
+        pull()
+    }
+  }
+
+  rosters_names <- rbind(
+    rosters_names,
+    df
+  )
+
+  row_names <- row.names(rosters_names[1])
+
   team_rosters <- rosters_names |>
     map(
       filter_for_roster_names,
-      all_teams = all_teams
+      all_teams = all_teams,
+      row_names = row_names
     )
 
   player_boxes_per_game <- list()

@@ -10,11 +10,26 @@ library(magrittr)
 #' @export
 
 filter_for_roster_names <- function(
+  roster_names,
   all_teams,
-  roster_names
+  row_names
 ) {
+  names(roster_names) <- row_names
+
   all_teams %>%
     filter(
       player_name %in% roster_names
+    ) %>%
+    mutate(
+      acquired = ifelse(
+        player_name == roster_names["new_player"],
+        roster_names["last_game_id_of_trade_date"],
+        NA
+      ),
+      let_go = ifelse(
+        player_name == roster_names["old_player"],
+        roster_names["last_game_id_of_trade_date"],
+        NA
+      )
     )
 }

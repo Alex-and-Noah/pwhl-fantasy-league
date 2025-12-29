@@ -56,6 +56,8 @@ compute_fantasy_roster_points <- function(
             assists = sum(.$assists),
             wins = sum(.$wins),
             ot_losses = sum(.$ot_losses),
+            acquired = "",
+            let_go = "",
             fantasy_points = sum(.$fantasy_points)
           )
         ) |>

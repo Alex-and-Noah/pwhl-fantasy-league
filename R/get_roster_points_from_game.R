@@ -98,10 +98,56 @@ get_roster_points_from_game <- function(
 
   fantasy_points_per_game_id <- lapply(
     names(team_rosters),
-    function(team_name) {
+    function(
+      team_name
+    ) {
+      team_roster <- team_rosters[team_name][[1]]
+
       fantasy_points_per_player |>
-        filter(
-          player_id %in% team_rosters[team_name][[1]]$player_id
+        mutate(
+          player_id = as.double(player_id)
+        ) |>
+        inner_join(
+          team_roster |>
+            select(
+              c(
+                "player_id",
+                "acquired",
+                "let_go"
+              )
+            ),
+          by = c(
+            "player_id"
+          )
+        ) |>
+        mutate(
+          goals = ifelse(
+            ((is.na(acquired)) | (acquired < game_id)) &
+              ((is.na(let_go)) | (game_id <= let_go)),
+            goals,
+            0
+          ),
+          assists = ifelse(
+            ((is.na(acquired)) | (acquired < game_id)) &
+              ((is.na(let_go)) |
+                (game_id <= let_go)),
+            assists,
+            0
+          ),
+          wins = ifelse(
+            ((is.na(acquired)) | (acquired < game_id)) &
+              ((is.na(let_go)) |
+                (game_id <= let_go)),
+            wins,
+            0
+          ),
+          ot_losses = ifelse(
+            ((is.na(acquired)) | (acquired < game_id)) &
+              ((is.na(let_go)) |
+                (game_id <= let_go)),
+            ot_losses,
+            0
+          )
         )
     }
   )
