@@ -9,6 +9,7 @@ library(gt)
 #' @param name Fantasy team name
 #' @param team_rosters Fantasy team rosters
 #' @param fantasy_roster_points Fantasy team roster points
+#' @param schedule PWHL schedule
 #' @return gt() table of fantasy roster
 #' @import tidyr
 #' @import dplyr
@@ -19,12 +20,48 @@ library(gt)
 generate_pwhl_roster_gt_table <- function(
     name,
     team_rosters,
-    fantasy_roster_points
+    fantasy_roster_points,
+    schedule
 ) {
+    if (
+        length(
+            team_rosters[[name]] |>
+                filter(
+                    !is.na(acquired)
+                )
+        ) >
+            0
+    ) {
+        trade_date <- schedule |>
+            filter(
+                game_id ==
+                    team_rosters[[name]] |>
+                        filter(
+                            !is.na(acquired)
+                        ) |>
+                        select(
+                            acquired
+                        ) |>
+                        pull()
+            ) |>
+            select(
+                game_date
+            ) |>
+            pull()
+    }
+
     data <- merge(
         team_rosters[[name]],
         fantasy_roster_points[[name]],
-        by = "player_id",
+        by = c(
+            "player_id",
+            "acquired",
+            "let_go",
+            "first_name",
+            "last_name",
+            "position",
+            "team_id"
+        ),
         all.x = TRUE
     ) |>
         select(
@@ -34,12 +71,14 @@ generate_pwhl_roster_gt_table <- function(
                 team_colour_1,
                 player_headshot,
                 player_name,
-                position.x,
+                position,
                 fantasy_points,
                 goals,
                 assists,
                 wins,
-                ot_losses
+                ot_losses,
+                acquired,
+                let_go
             )
         ) |>
         replace_na(
@@ -53,7 +92,7 @@ generate_pwhl_roster_gt_table <- function(
         ) |>
         arrange(
             factor(
-                position.x,
+                position,
                 levels = c(
                     "F",
                     "D",
@@ -68,7 +107,7 @@ generate_pwhl_roster_gt_table <- function(
                 Logo = 'team_logo',
                 Headshot = 'player_headshot',
                 Name = 'player_name',
-                Pos = 'position.x',
+                Pos = 'position',
                 Pts = 'fantasy_points',
                 G = 'goals',
                 A = 'assists',
@@ -104,7 +143,9 @@ generate_pwhl_roster_gt_table <- function(
                 sum(.$G),
                 sum(.$A),
                 2 * sum(.$W),
-                sum(.$OTL)
+                sum(.$OTL),
+                NA,
+                NA
             )
         ) |>
         gt() |>
@@ -149,6 +190,38 @@ generate_pwhl_roster_gt_table <- function(
                 G,
                 A,
                 OTL
+            )
+        ) |>
+        tab_footnote(
+            footnote = paste0(
+                "Acquired ",
+                format(
+                    trade_date,
+                    "%b %d, %Y"
+                )
+            ),
+            locations = cells_body(
+                columns = Name,
+                rows = !is.na(acquired)
+            ),
+        ) |>
+        tab_footnote(
+            footnote = paste0(
+                "Let go ",
+                format(
+                    trade_date,
+                    "%b %d, %Y"
+                )
+            ),
+            locations = cells_body(
+                columns = Name,
+                rows = !is.na(let_go)
+            ),
+        ) |>
+        cols_hide(
+            c(
+                acquired,
+                let_go
             )
         ) |>
         tab_options(

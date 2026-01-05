@@ -1065,6 +1065,7 @@ res <- purrr::map_chr(
         "    name,",
         "    team_rosters_preseason,",
         "    fantasy_roster_points_preseason",
+        "    schedule",
         ")",
         "",
         "```",
