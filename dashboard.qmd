@@ -842,6 +842,106 @@ standings_preseason |>
   )
 ```
 
+# Team Rosters
+
+::: {.panel-tabset}
+
+```{r "team rosters"}
+#| output: asis
+res <- purrr::map_chr(
+  unique(names(team_rosters)),
+  function(name) {
+    knitr::knit_child(
+      text = c(
+        "## `r name`",
+        "",
+        "```{r}",
+        "#| echo: false",
+        "html(",
+        "    web_image(",
+        "        url = standings |>",
+        "          filter(",
+        "            Name == name",
+        "          ) |>",
+        "          select(",
+        "            Team",
+        "          ) |>",
+        "          pull(),",
+        "        height = '50px'",
+        "    )",
+        ")",
+        "",
+        "generate_pwhl_roster_gt_table(",
+        "    name,",
+        "    team_rosters,",
+        "    fantasy_roster_points,",
+        "    schedule",
+        ")",
+        "",
+        "```",
+        "",
+        ""
+      ),
+      envir = environment(),
+      quiet = TRUE
+    )
+  }
+)
+
+cat(res, sep = '\n')
+```
+:::
+
+# Team Rosters (Pre-season)
+
+::: {.panel-tabset}
+
+```{r "team rosters preseason"}
+#| output: asis
+res <- purrr::map_chr(
+  unique(names(team_rosters)),
+  function(name) {
+    knitr::knit_child(
+      text = c(
+        "## `r name`",
+        "",
+        "```{r}",
+        "#| echo: false",
+        "html(",
+        "    web_image(",
+        "        url = standings |>",
+        "          filter(",
+        "            Name == name",
+        "          ) |>",
+        "          select(",
+        "            Team",
+        "          ) |>",
+        "          pull(),",
+        "        height = '50px'",
+        "    )",
+        ")",
+        "",
+        "generate_pwhl_roster_gt_table(",
+        "    name,",
+        "    team_rosters_preseason,",
+        "    fantasy_roster_points_preseason,",
+        "    schedule",
+        ")",
+        "",
+        "```",
+        "",
+        ""
+      ),
+      envir = environment(),
+      quiet = TRUE
+    )
+  }
+)
+
+cat(res, sep = '\n')
+```
+:::
+
 ## Row {.tabset}
 
 ```{r "standings over time"}
@@ -1134,105 +1234,6 @@ if (
     theme_minimal()
 }
 ```
-
-# Team Rosters
-
-::: {.panel-tabset}
-
-```{r "team rosters"}
-#| output: asis
-res <- purrr::map_chr(
-  unique(names(team_rosters)),
-  function(name) {
-    knitr::knit_child(
-      text = c(
-        "## `r name`",
-        "",
-        "```{r}",
-        "#| echo: false",
-        "html(",
-        "    web_image(",
-        "        url = standings |>",
-        "          filter(",
-        "            Name == name",
-        "          ) |>",
-        "          select(",
-        "            Team",
-        "          ) |>",
-        "          pull(),",
-        "        height = '50px'",
-        "    )",
-        ")",
-        "",
-        "generate_pwhl_roster_gt_table(",
-        "    name,",
-        "    team_rosters,",
-        "    fantasy_roster_points",
-        ")",
-        "",
-        "```",
-        "",
-        ""
-      ),
-      envir = environment(),
-      quiet = TRUE
-    )
-  }
-)
-
-cat(res, sep = '\n')
-```
-:::
-
-# Team Rosters (Pre-season)
-
-::: {.panel-tabset}
-
-```{r "team rosters preseason"}
-#| output: asis
-res <- purrr::map_chr(
-  unique(names(team_rosters)),
-  function(name) {
-    knitr::knit_child(
-      text = c(
-        "## `r name`",
-        "",
-        "```{r}",
-        "#| echo: false",
-        "html(",
-        "    web_image(",
-        "        url = standings |>",
-        "          filter(",
-        "            Name == name",
-        "          ) |>",
-        "          select(",
-        "            Team",
-        "          ) |>",
-        "          pull(),",
-        "        height = '50px'",
-        "    )",
-        ")",
-        "",
-        "generate_pwhl_roster_gt_table(",
-        "    name,",
-        "    team_rosters_preseason,",
-        "    fantasy_roster_points_preseason",
-        "    schedule",
-        ")",
-        "",
-        "```",
-        "",
-        ""
-      ),
-      envir = environment(),
-      quiet = TRUE
-    )
-  }
-)
-
-cat(res, sep = '\n')
-```
-:::
 
 # Schedule
 

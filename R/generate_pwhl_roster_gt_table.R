@@ -23,33 +23,6 @@ generate_pwhl_roster_gt_table <- function(
     fantasy_roster_points,
     schedule
 ) {
-    if (
-        length(
-            team_rosters[[name]] |>
-                filter(
-                    !is.na(acquired)
-                )
-        ) >
-            0
-    ) {
-        trade_date <- schedule |>
-            filter(
-                game_id ==
-                    team_rosters[[name]] |>
-                        filter(
-                            !is.na(acquired)
-                        ) |>
-                        select(
-                            acquired
-                        ) |>
-                        pull()
-            ) |>
-            select(
-                game_date
-            ) |>
-            pull()
-    }
-
     data <- merge(
         team_rosters[[name]],
         fantasy_roster_points[[name]],
@@ -191,33 +164,64 @@ generate_pwhl_roster_gt_table <- function(
                 A,
                 OTL
             )
-        ) |>
-        tab_footnote(
-            footnote = paste0(
-                "Acquired ",
-                format(
-                    trade_date,
-                    "%b %d, %Y"
+        )
+
+    if (
+        nrow(
+            team_rosters[[name]] |>
+                filter(
+                    !is.na(acquired)
                 )
-            ),
-            locations = cells_body(
-                columns = Name,
-                rows = !is.na(acquired)
-            ),
-        ) |>
-        tab_footnote(
-            footnote = paste0(
-                "Let go ",
-                format(
-                    trade_date,
-                    "%b %d, %Y"
-                )
-            ),
-            locations = cells_body(
-                columns = Name,
-                rows = !is.na(let_go)
-            ),
-        ) |>
+        ) >
+            0
+    ) {
+        trade_date <- schedule |>
+            filter(
+                game_id ==
+                    team_rosters[[name]] |>
+                        filter(
+                            !is.na(acquired)
+                        ) |>
+                        select(
+                            acquired
+                        ) |>
+                        pull()
+            ) |>
+            select(
+                game_date
+            ) |>
+            pull()
+
+        data <- data |>
+            tab_footnote(
+                footnote = paste0(
+                    "Acquired ",
+                    format(
+                        trade_date,
+                        "%b %d, %Y"
+                    )
+                ),
+                locations = cells_body(
+                    columns = Name,
+                    rows = !is.na(acquired)
+                ),
+            ) |>
+            tab_footnote(
+                footnote = paste0(
+                    "Let go ",
+                    format(
+                        trade_date,
+                        "%b %d, %Y"
+                    )
+                ),
+                locations = cells_body(
+                    columns = Name,
+                    rows = !is.na(let_go)
+                ),
+            )
+    }
+
+    data <- data |>
         cols_hide(
             c(
                 acquired,
