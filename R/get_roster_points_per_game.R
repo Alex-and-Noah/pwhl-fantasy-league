@@ -21,8 +21,8 @@ get_roster_points_per_game <- function(
   schedule
 ) {
   if (
-    length(
-      player_boxes_per_game
+    nrow(
+      player_boxes_per_game[[1]]$skaters
     ) ==
       0
   ) {
@@ -30,16 +30,18 @@ get_roster_points_per_game <- function(
       names(team_rosters),
       function(team_name) {
         data.frame(
-          player_id = integer(),
-          game_id = integer(),
-          first_name = character(),
-          last_name = character(),
-          position = character(),
-          team_id = integer(),
-          goals = integer(),
-          assists = integer(),
-          wins = integer(),
-          ot_losses = integer()
+          player_id = as.integer(),
+          first_name = as.character(),
+          last_name = as.character(),
+          position = as.character(),
+          team_id = as.integer(),
+          game_id = as.integer(),
+          goals = as.integer(),
+          assists = as.integer(),
+          wins = as.integer(),
+          ot_losses = as.integer(),
+          acquired = as.character(),
+          let_go = as.character()
         )
       }
     )
