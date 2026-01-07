@@ -522,6 +522,9 @@ if (
       player_headshot.y = "",
       let_go = "Let go"
     ) |>
+    tab_header(
+      "Trades"
+    ) |>
     tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
