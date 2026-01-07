@@ -444,16 +444,50 @@ if (
       by.x="name",
       by.y="Name"
     ) |>
+    merge(
+      all_teams,
+      by.x = "acquired",
+      by.y = "player_name"
+    ) |>
+    merge(
+      all_teams,
+      by.x = "let_go",
+      by.y = "player_name"
+    ) |>
+    mutate(
+        player_headshot.x = paste0(
+            "<img src='",
+            player_headshot.x,
+            "' style='width:50px;height:50px;border:1px solid",
+            team_colour_1.x,
+            ";border-radius:50%;'/>"
+        ),
+        player_headshot.y = paste0(
+            "<img src='",
+            player_headshot.y,
+            "' style='width:50px;height:50px;border:1px solid",
+            team_colour_1.y,
+            ";border-radius:50%;'/>"
+        )
+    ) |>
     select(
       c(
         Team,
         date,
+        player_headshot.x,
         acquired,
+        player_headshot.y,
         let_go,
         Colours
       )
     ) |>
     gt() |>
+    fmt_markdown(
+        columns = c(
+            player_headshot.x,
+            player_headshot.y
+        )
+    ) |>
     text_transform(
       locations = cells_body(
         columns = Team
@@ -474,14 +508,18 @@ if (
         columns = Team
       )
     ) |>
-    cols_hide(Colours) |>
+    cols_hide(
+      Colours
+    ) |>
     cols_align(
       columns = everything(),
       align = "center"
     ) |>
     cols_label(
       date = "Date",
+      player_headshot.x = "",
       acquired = "Acquired",
+      player_headshot.y = "",
       let_go = "Let go"
     ) |>
     tab_options(
