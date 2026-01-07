@@ -177,7 +177,7 @@ generate_pwhl_roster_gt_table <- function(
                             !is.na(acquired)
                         ) |>
                         select(
-                            acquired.x
+                            acquired
                         ) |>
                         pull()
             ) |>
@@ -189,7 +189,7 @@ generate_pwhl_roster_gt_table <- function(
         data <- data |>
             tab_footnote(
                 footnote = paste0(
-                    "acquired.x ",
+                    "Acquired ",
                     format(
                         trade_date,
                         "%b %d, %Y"
