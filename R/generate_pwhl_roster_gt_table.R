@@ -27,13 +27,7 @@ generate_pwhl_roster_gt_table <- function(
         team_rosters[[name]],
         fantasy_roster_points[[name]],
         by = c(
-            "player_id",
-            "acquired",
-            "let_go",
-            "first_name",
-            "last_name",
-            "position",
-            "team_id"
+            "player_id"
         ),
         all.x = TRUE
     ) |>
@@ -44,14 +38,14 @@ generate_pwhl_roster_gt_table <- function(
                 team_colour_1,
                 player_headshot,
                 player_name,
-                position,
+                position.x,
                 fantasy_points,
                 goals,
                 assists,
                 wins,
                 ot_losses,
-                acquired,
-                let_go
+                acquired.x,
+                let_go.x
             )
         ) |>
         replace_na(
@@ -65,7 +59,7 @@ generate_pwhl_roster_gt_table <- function(
         ) |>
         arrange(
             factor(
-                position,
+                position.x,
                 levels = c(
                     "F",
                     "D",
@@ -80,7 +74,7 @@ generate_pwhl_roster_gt_table <- function(
                 Logo = 'team_logo',
                 Headshot = 'player_headshot',
                 Name = 'player_name',
-                Pos = 'position',
+                Pos = 'position.x',
                 Pts = 'fantasy_points',
                 G = 'goals',
                 A = 'assists',
@@ -183,7 +177,7 @@ generate_pwhl_roster_gt_table <- function(
                             !is.na(acquired)
                         ) |>
                         select(
-                            acquired
+                            acquired.x
                         ) |>
                         pull()
             ) |>
@@ -195,7 +189,7 @@ generate_pwhl_roster_gt_table <- function(
         data <- data |>
             tab_footnote(
                 footnote = paste0(
-                    "Acquired ",
+                    "acquired.x ",
                     format(
                         trade_date,
                         "%b %d, %Y"
@@ -203,7 +197,7 @@ generate_pwhl_roster_gt_table <- function(
                 ),
                 locations = cells_body(
                     columns = Name,
-                    rows = !is.na(acquired)
+                    rows = !is.na(acquired.x)
                 ),
             ) |>
             tab_footnote(
@@ -216,7 +210,7 @@ generate_pwhl_roster_gt_table <- function(
                 ),
                 locations = cells_body(
                     columns = Name,
-                    rows = !is.na(let_go)
+                    rows = !is.na(let_go.x)
                 ),
             )
     }
@@ -224,8 +218,8 @@ generate_pwhl_roster_gt_table <- function(
     data <- data |>
         cols_hide(
             c(
-                acquired,
-                let_go
+                acquired.x,
+                let_go.x
             )
         ) |>
         tab_options(
