@@ -97,7 +97,7 @@ get_schedule_info <- function(
       "tbd"
   ) {
     next_game_day_date <- Filter(
-      function(x) ymd(x) >= ymd(current_date),
+      function(x) ymd(x) > ymd(current_date),
       schedule$game_date
     )[[1]]
   }
