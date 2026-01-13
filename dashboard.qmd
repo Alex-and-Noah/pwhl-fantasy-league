@@ -845,110 +845,10 @@ standings_preseason |>
   )
 ```
 
-# Team Rosters
+## Row
 
-::: {.panel-tabset}
-
-```{r "team rosters"}
-#| output: asis
-res <- purrr::map_chr(
-  unique(names(team_rosters)),
-  function(name) {
-    knitr::knit_child(
-      text = c(
-        "## `r name`",
-        "",
-        "```{r}",
-        "#| echo: false",
-        "html(",
-        "    web_image(",
-        "        url = standings |>",
-        "          filter(",
-        "            Name == name",
-        "          ) |>",
-        "          select(",
-        "            Team",
-        "          ) |>",
-        "          pull(),",
-        "        height = '50px'",
-        "    )",
-        ")",
-        "",
-        "generate_pwhl_roster_gt_table(",
-        "    name,",
-        "    team_rosters,",
-        "    fantasy_roster_points,",
-        "    schedule",
-        ")",
-        "",
-        "```",
-        "",
-        ""
-      ),
-      envir = environment(),
-      quiet = TRUE
-    )
-  }
-)
-
-cat(res, sep = '\n')
-```
-:::
-
-# Team Rosters (Pre-season)
-
-::: {.panel-tabset}
-
-```{r "team rosters preseason"}
-#| output: asis
-res <- purrr::map_chr(
-  unique(names(team_rosters)),
-  function(name) {
-    knitr::knit_child(
-      text = c(
-        "## `r name`",
-        "",
-        "```{r}",
-        "#| echo: false",
-        "html(",
-        "    web_image(",
-        "        url = standings |>",
-        "          filter(",
-        "            Name == name",
-        "          ) |>",
-        "          select(",
-        "            Team",
-        "          ) |>",
-        "          pull(),",
-        "        height = '50px'",
-        "    )",
-        ")",
-        "",
-        "generate_pwhl_roster_gt_table(",
-        "    name,",
-        "    team_rosters_preseason,",
-        "    fantasy_roster_points_preseason,",
-        "    schedule",
-        ")",
-        "",
-        "```",
-        "",
-        ""
-      ),
-      envir = environment(),
-      quiet = TRUE
-    )
-  }
-)
-
-cat(res, sep = '\n')
-```
-:::
-
-## Row {.tabset}
-
-```{r "standings over time"}
-#| title: "Regular season"
+```{r "standings over time", fig.width=12,fig.height=5}
+#| title: "Standings over time"
 if (
   schedule_to_date |>
   filter(
@@ -1060,30 +960,44 @@ if (
     )
   )
 
+  data <- data |> group_by(
+    Game
+  ) |> arrange(
+    desc(Points),
+    Team,
+    .by_group = TRUE
+  ) |> mutate(
+    Standings = row_number()
+  ) |> ungroup()
+
   data |>
     ggplot() +
     geom_line(
       aes(
         x = Game,
-        y = Points,
+        y = Standings,
         colour = Colours),
       linewidth = 2
     ) +
     geom_point(
-      data = standings,
+      data = data |> filter(
+        Game == max(Game)
+      ),
       aes(
-        x = max(data$Game),
-        y = Points,
+        x = Game,
+        y = Standings,
         colour = Colours
       ),
       size = 15
     ) +
     geom_image(
-      data = standings,
+      data = data |> filter(
+        Game == max(Game)
+      ),
       aes(
-        x = max(data$Game),
-        y = Points,
-        image = Team
+        x = Game,
+        y = Standings,
+        image = team_image
       )
     ) +
     scale_color_identity() +
@@ -1092,7 +1006,7 @@ if (
 }
 ```
 
-```{r "standings over time preseason"}
+<!-- ```{r "standings over time preseason"}
 #| title: "Pre-season"
 
 if (
@@ -1236,7 +1150,107 @@ if (
     guides(colour = guide_legend(override.aes = list(size = 10))) +
     theme_minimal()
 }
+``` -->
+
+# Team Rosters
+
+::: {.panel-tabset}
+
+```{r "team rosters"}
+#| output: asis
+res <- purrr::map_chr(
+  unique(names(team_rosters)),
+  function(name) {
+    knitr::knit_child(
+      text = c(
+        "## `r name`",
+        "",
+        "```{r}",
+        "#| echo: false",
+        "html(",
+        "    web_image(",
+        "        url = standings |>",
+        "          filter(",
+        "            Name == name",
+        "          ) |>",
+        "          select(",
+        "            Team",
+        "          ) |>",
+        "          pull(),",
+        "        height = '50px'",
+        "    )",
+        ")",
+        "",
+        "generate_pwhl_roster_gt_table(",
+        "    name,",
+        "    team_rosters,",
+        "    fantasy_roster_points,",
+        "    schedule",
+        ")",
+        "",
+        "```",
+        "",
+        ""
+      ),
+      envir = environment(),
+      quiet = TRUE
+    )
+  }
+)
+
+cat(res, sep = '\n')
 ```
+:::
+
+# Team Rosters (Pre-season)
+
+::: {.panel-tabset}
+
+```{r "team rosters preseason"}
+#| output: asis
+res <- purrr::map_chr(
+  unique(names(team_rosters)),
+  function(name) {
+    knitr::knit_child(
+      text = c(
+        "## `r name`",
+        "",
+        "```{r}",
+        "#| echo: false",
+        "html(",
+        "    web_image(",
+        "        url = standings |>",
+        "          filter(",
+        "            Name == name",
+        "          ) |>",
+        "          select(",
+        "            Team",
+        "          ) |>",
+        "          pull(),",
+        "        height = '50px'",
+        "    )",
+        ")",
+        "",
+        "generate_pwhl_roster_gt_table(",
+        "    name,",
+        "    team_rosters_preseason,",
+        "    fantasy_roster_points_preseason,",
+        "    schedule",
+        ")",
+        "",
+        "```",
+        "",
+        ""
+      ),
+      envir = environment(),
+      quiet = TRUE
+    )
+  }
+)
+
+cat(res, sep = '\n')
+```
+:::
 
 # Schedule
 
