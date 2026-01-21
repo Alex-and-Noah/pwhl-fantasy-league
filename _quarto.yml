@@ -3,7 +3,7 @@ format:
     logo: logo.svg
     nav-buttons: 
       - icon: github
-        href: https://github.com/alexmcsw/pwhl-fantasy-league
+        href: https://github.com/Alex-and-Noah/pwhl-fantasy-league
     theme:
       - brand
       - styles.scss
