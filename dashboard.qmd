@@ -669,6 +669,330 @@ list(
 
 ## Row {.tabset}
 
+```{r "standings over time", fig.width=12,fig.height=5}
+#| title: "Regular Season"
+if (
+  schedule_to_date |>
+  filter(
+    game_status %in% c(
+      "Final",
+      "Final OT"
+    )
+  ) |>
+  nrow() ==
+    0
+) {
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games played yet this season",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
+} else {
+
+  data <- roster_points_per_game |> lapply(
+    function(x) x |> mutate(
+      earliest_game_id = schedule_to_date$game_id[1]
+    ) |>
+    expand(
+      game_id = as.numeric(schedule_to_date$game_id),
+      earliest_game_id
+    ) |> select(
+      -earliest_game_id
+    ) %>% left_join(
+      x,
+      by = c(
+        "game_id"
+      )
+    ) |> mutate(
+      goals = ifelse(
+        is.na(goals),
+        0,
+        goals
+      ),
+      assists = ifelse(
+        is.na(assists),
+        0,
+        assists
+      ),
+      wins = ifelse(
+        is.na(wins),
+        0,
+        wins
+      ),
+      ot_losses = ifelse(
+        is.na(ot_losses),
+        0,
+        ot_losses
+      ),
+      wins = 2*wins,
+    ) %>%
+    mutate(
+      fantasy_points = rowSums(
+        select(
+          .,
+          c(
+            goals,
+            assists,
+            wins,
+            ot_losses
+          )
+        )
+      )
+    ) |>
+    arrange(
+      game_id
+    ) |> select(
+      c(
+        game_id,
+        fantasy_points
+      )
+    ) |> group_by(
+      game_id
+    ) |> summarise(
+      daily_scores = sum(fantasy_points)
+    ) |>
+    mutate(
+      daily_scores = cumsum(daily_scores),
+      game_id = row_number()
+    )
+  ) |> bind_rows(
+    .id = "Team"
+  ) |>
+  rename(
+    "Game" = game_id,
+    "Points" = daily_scores
+  ) |>
+  mutate(
+    team_image = recode(
+      Team,
+      !!!team_images
+    )
+  ) |>
+  merge(
+    data.frame(
+      Team = names(team_colours),
+      Colours = team_colours
+    )
+  )
+
+  data <- data |> group_by(
+    Game
+  ) |> arrange(
+    desc(Points),
+    Team,
+    .by_group = TRUE
+  ) |> mutate(
+    Standings = row_number()
+  ) |> ungroup()
+
+  data |>
+    ggplot() +
+    geom_line(
+      aes(
+        x = Game,
+        y = Standings,
+        colour = Colours),
+      linewidth = 2
+    ) +
+    geom_point(
+      data = data |> filter(
+        Game == max(Game)
+      ),
+      aes(
+        x = Game,
+        y = Standings,
+        colour = Colours
+      ),
+      size = 15
+    ) +
+    geom_image(
+      data = data |> filter(
+        Game == max(Game)
+      ),
+      aes(
+        x = Game,
+        y = Standings,
+        image = team_image
+      )
+    ) +
+    scale_color_identity() +
+    scale_y_reverse() + 
+    guides(colour = guide_legend(override.aes = list(size = 10))) +
+    theme_minimal() + 
+    theme(axis.text.y = element_blank())
+}
+```
+
+```{r "standings over time preseason", fig.width=12,fig.height=5}
+#| title: "Pre-season"
+if (
+  schedule_to_date_preseason |>
+  filter(
+    game_status %in% c(
+      "Final",
+      "Final OT"
+    )
+  ) |>
+  nrow() ==
+    0
+) {
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games played yet this season",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
+} else {
+
+  data <- roster_points_per_game_preseason |> lapply(
+    function(x) x |> mutate(
+      earliest_game_id = schedule_to_date_preseason$game_id[1]
+    ) |>
+    expand(
+      game_id = as.numeric(schedule_to_date_preseason$game_id),
+      earliest_game_id
+    ) |> select(
+      -earliest_game_id
+    ) %>% left_join(
+      x,
+      by = c(
+        "game_id"
+      )
+    ) |> mutate(
+      goals = ifelse(
+        is.na(goals),
+        0,
+        goals
+      ),
+      assists = ifelse(
+        is.na(assists),
+        0,
+        assists
+      ),
+      wins = ifelse(
+        is.na(wins),
+        0,
+        wins
+      ),
+      ot_losses = ifelse(
+        is.na(ot_losses),
+        0,
+        ot_losses
+      ),
+      wins = 2*wins,
+    ) %>%
+    mutate(
+      fantasy_points = rowSums(
+        select(
+          .,
+          c(
+            goals,
+            assists,
+            wins,
+            ot_losses
+          )
+        )
+      )
+    ) |>
+    arrange(
+      game_id
+    ) |> select(
+      c(
+        game_id,
+        fantasy_points
+      )
+    ) |> group_by(
+      game_id
+    ) |> summarise(
+      daily_scores = sum(fantasy_points)
+    ) |>
+    mutate(
+      daily_scores = cumsum(daily_scores),
+      game_id = row_number()
+    )
+  ) |> bind_rows(
+    .id = "Team"
+  ) |>
+  rename(
+    "Game" = game_id,
+    "Points" = daily_scores
+  ) |>
+  mutate(
+    team_image = recode(
+      Team,
+      !!!team_images
+    )
+  ) |>
+  merge(
+    data.frame(
+      Team = names(team_colours),
+      Colours = team_colours
+    )
+  )
+
+  data <- data |> group_by(
+    Game
+  ) |> arrange(
+    desc(Points),
+    Team,
+    .by_group = TRUE
+  ) |> mutate(
+    Standings = row_number()
+  ) |> ungroup()
+
+  data |>
+    ggplot() +
+    geom_line(
+      aes(
+        x = Game,
+        y = Standings,
+        colour = Colours),
+      linewidth = 2
+    ) +
+    geom_point(
+      data = data |> filter(
+        Game == max(Game)
+      ),
+      aes(
+        x = Game,
+        y = Standings,
+        colour = Colours
+      ),
+      size = 15
+    ) +
+    geom_image(
+      data = data |> filter(
+        Game == max(Game)
+      ),
+      aes(
+        x = Game,
+        y = Standings,
+        image = team_image
+      )
+    ) +
+    scale_color_identity() +
+    scale_y_reverse() + 
+    guides(colour = guide_legend(override.aes = list(size = 10))) +
+    theme_minimal() + 
+    theme(axis.text.y = element_blank())
+}
+```
+
+## Row {.tabset}
+
 ```{r "standings full"}
 #| title: "Regular season"
 standings |>
@@ -844,313 +1168,6 @@ standings_preseason |>
     "
   )
 ```
-
-## Row
-
-```{r "standings over time", fig.width=12,fig.height=5}
-#| title: "Standings over time"
-if (
-  schedule_to_date |>
-  filter(
-    game_status %in% c(
-      "Final",
-      "Final OT"
-    )
-  ) |>
-  nrow() ==
-    0
-) {
-  value_box(
-    title = "No data available",
-    showcase = bs_icon(
-      "hourglass-split",
-      size = "6vh"
-    ),
-    value = tags$p(
-      "No games played yet this season",
-      style = "font-size: 4vh;"
-    ),
-    theme = "danger"
-  )
-} else {
-
-  data <- roster_points_per_game |> lapply(
-    function(x) x |> mutate(
-      earliest_game_id = schedule_to_date$game_id[1]
-    ) |>
-    expand(
-      game_id = as.numeric(schedule_to_date$game_id),
-      earliest_game_id
-    ) |> select(
-      -earliest_game_id
-    ) %>% left_join(
-      x,
-      by = c(
-        "game_id"
-      )
-    ) |> mutate(
-      goals = ifelse(
-        is.na(goals),
-        0,
-        goals
-      ),
-      assists = ifelse(
-        is.na(assists),
-        0,
-        assists
-      ),
-      wins = ifelse(
-        is.na(wins),
-        0,
-        wins
-      ),
-      ot_losses = ifelse(
-        is.na(ot_losses),
-        0,
-        ot_losses
-      ),
-      wins = 2*wins,
-    ) %>%
-    mutate(
-      fantasy_points = rowSums(
-        select(
-          .,
-          c(
-            goals,
-            assists,
-            wins,
-            ot_losses
-          )
-        )
-      )
-    ) |>
-    arrange(
-      game_id
-    ) |> select(
-      c(
-        game_id,
-        fantasy_points
-      )
-    ) |> group_by(
-      game_id
-    ) |> summarise(
-      daily_scores = sum(fantasy_points)
-    ) |>
-    mutate(
-      daily_scores = cumsum(daily_scores),
-      game_id = row_number()
-    )
-  ) |> bind_rows(
-    .id = "Team"
-  ) |>
-  rename(
-    "Game" = game_id,
-    "Points" = daily_scores
-  ) |>
-  mutate(
-    team_image = recode(
-      Team,
-      !!!team_images
-    )
-  ) |>
-  merge(
-    data.frame(
-      Team = names(team_colours),
-      Colours = team_colours
-    )
-  )
-
-  data <- data |> group_by(
-    Game
-  ) |> arrange(
-    desc(Points),
-    Team,
-    .by_group = TRUE
-  ) |> mutate(
-    Standings = row_number()
-  ) |> ungroup()
-
-  data |>
-    ggplot() +
-    geom_line(
-      aes(
-        x = Game,
-        y = Standings,
-        colour = Colours),
-      linewidth = 2
-    ) +
-    geom_point(
-      data = data |> filter(
-        Game == max(Game)
-      ),
-      aes(
-        x = Game,
-        y = Standings,
-        colour = Colours
-      ),
-      size = 15
-    ) +
-    geom_image(
-      data = data |> filter(
-        Game == max(Game)
-      ),
-      aes(
-        x = Game,
-        y = Standings,
-        image = team_image
-      )
-    ) +
-    scale_color_identity() +
-    guides(colour = guide_legend(override.aes = list(size = 10))) +
-    theme_minimal()
-}
-```
-
-<!-- ```{r "standings over time preseason"}
-#| title: "Pre-season"
-
-if (
-  schedule_to_date_preseason |>
-  filter(
-    game_status %in% c(
-      "Final",
-      "Final OT"
-    )
-  ) |>
-  nrow() ==
-    0
-) {
-  value_box(
-    title = "No data available",
-    showcase = bs_icon(
-      "hourglass-split",
-      size = "6vh"
-    ),
-    value = tags$p(
-      "No games played yet this season",
-      style = "font-size: 4vh;"
-    ),
-    theme = "danger"
-  )
-} else {
-
-  data <- roster_points_per_game_preseason |> lapply(
-    function(x) x |> mutate(
-      earliest_game_id = schedule_to_date_preseason$game_id[1]
-    ) |>
-    expand(
-      game_id = as.numeric(schedule_to_date_preseason$game_id),
-      earliest_game_id
-    ) |> select(
-      -earliest_game_id
-    ) %>% left_join(
-      x,
-      by = c(
-        "game_id"
-      )
-    ) |> mutate(
-      goals = ifelse(
-        is.na(goals),
-        0,
-        goals
-      ),
-      assists = ifelse(
-        is.na(assists),
-        0,
-        assists
-      ),
-      wins = ifelse(
-        is.na(wins),
-        0,
-        wins
-      ),
-      ot_losses = ifelse(
-        is.na(ot_losses),
-        0,
-        ot_losses
-      ),
-      wins = 2*wins,
-    ) %>%
-    mutate(
-      fantasy_points = rowSums(
-        select(
-          .,
-          c(
-            goals,
-            assists,
-            wins,
-            ot_losses
-          )
-        )
-      )
-    ) |>
-    arrange(
-      game_id
-    ) |> select(
-      c(
-        game_id,
-        fantasy_points
-      )
-    ) |> group_by(
-      game_id
-    ) |> summarise(
-      daily_scores = sum(fantasy_points)
-    ) |>
-    mutate(
-      daily_scores = cumsum(daily_scores),
-      game_id = row_number()
-    )
-  ) |> bind_rows(
-    .id = "Team"
-  ) |>
-  rename(
-    "Game" = game_id,
-    "Points" = daily_scores
-  ) |>
-  mutate(
-    team_image = recode(
-      Team,
-      !!!team_images
-    )
-  ) |>
-  merge(
-    data.frame(
-      Team = names(team_colours),
-      Colours = team_colours
-    )
-  )
-
-  data |>
-    ggplot() +
-    geom_line(
-      aes(
-        x = Game,
-        y = Points,
-        colour = Colours),
-      linewidth = 2
-    ) +
-    geom_point(
-      data = standings_preseason,
-      aes(
-        x = max(data$Game),
-        y = Points,
-        colour = Colours
-      ),
-      size = 15
-    ) +
-    geom_image(
-      data = standings_preseason,
-      aes(
-        x = max(data$Game),
-        y = Points,
-        image = Team
-      )
-    ) +
-    scale_color_identity() +
-    guides(colour = guide_legend(override.aes = list(size = 10))) +
-    theme_minimal()
-}
-``` -->
 
 # Team Rosters
 
