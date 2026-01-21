@@ -826,7 +826,10 @@ if (
     scale_y_reverse() + 
     guides(colour = guide_legend(override.aes = list(size = 10))) +
     theme_minimal() + 
-    theme(axis.text.y = element_blank())
+    theme(axis.text.y = element_blank(),
+    plot.background = element_rect(fill = "#cacaca")
+  )
+    
 }
 ```
 
