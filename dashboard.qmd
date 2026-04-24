@@ -22,15 +22,18 @@ pool <- 80
 
 ```{r "Get season dates and type"}
 current_date = today(
-  tzone="EST"
+  tzone = "EST"
 )
-# current_date = "2025-12-04"
+
+current_date = as.Date("2026-04-24")
 
 seasons_dates_and_types <- get_seasons_dates_and_types()
 
 season_dates_and_types <- seasons_dates_and_types["season_dates_and_types"][[1]]
 season_schedules_by_id <- seasons_dates_and_types["season_schedules_by_id"][[1]]
-season_schedules_by_year <- seasons_dates_and_types["season_schedules_by_year"][[1]]
+season_schedules_by_year <- seasons_dates_and_types[
+  "season_schedules_by_year"
+][[1]]
 
 days_for_current_date <- get_days_for_current_date(
   current_date,
@@ -74,9 +77,9 @@ schedules <- get_schedule_info(
 )
 
 schedule <- schedules["schedule"][[1]] |>
-    mutate(
-        game_date = game_date |> as.Date()
-    )
+  mutate(
+    game_date = game_date |> as.Date()
+  )
 
 schedule_to_date <- schedules["schedule_to_date"][[1]]
 next_game_day_date <- schedules["next_game_day_date"][[1]]
@@ -102,7 +105,7 @@ fantasy_roster_points <- fantasy_teams_and_standings[
   "fantasy_roster_points"
 ][[1]]
 
-standings<- compute_standings_changes_indicator(
+standings <- compute_standings_changes_indicator(
   all_teams,
   schedule_to_date,
   current_date,
@@ -114,8 +117,8 @@ standings<- compute_standings_changes_indicator(
 ```{r "Get preseason Fantasy teams and standings"}
 season_id_for_preseason <- case_when(
   game_type == "preseason" ~ season_id,
-  game_type == "regular" ~ season_id-1,
-  game_type == "playoffs" ~ season_id-2,
+  game_type == "regular" ~ season_id - 1,
+  game_type == "playoffs" ~ season_id - 2,
   TRUE ~ season_id
 )
 
@@ -134,9 +137,9 @@ schedules_preseason <- get_schedule_info(
 )
 
 schedule_preseason <- schedules_preseason["schedule"][[1]] |>
-    mutate(
-        game_date = game_date |> as.Date()
-    )
+  mutate(
+    game_date = game_date |> as.Date()
+  )
 
 schedule_to_date_preseason <- schedules_preseason["schedule_to_date"][[1]]
 next_game_day_date_preseason <- schedules_preseason["next_game_day_date"][[1]]
@@ -169,6 +172,24 @@ standings_preseason <- compute_standings_changes_indicator(
 # Overview
 
 ## Row
+
+## Row
+```{r, "announcement"}
+if (Sys.Date() >= as.Date("2026-04-23")) {
+  value_box(
+    title = "Stay tuned!",
+    showcase = bs_icon(
+      "trophy",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "The site is frozen!! Finale results presented at awards ceremony at Alex and Noah's during playoffs.",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
+}
+```
 
 ```{r "todays games"}
 if (
@@ -246,25 +267,27 @@ if (
       home_team_code = ""
     ) |>
     tab_options(
-    table.background.color = "#F5F5F5",
-    column_labels.background.color = "#2B2D42",
-    table.font.size = px(16),
-    table.border.top.color = "transparent",
-    table.border.bottom.color = "transparent",
-    table_body.hlines.color = "transparent",
-    table_body.border.bottom.color = "transparent",
-    column_labels.border.bottom.color = "transparent",
-    column_labels.border.top.color = "transparent"
-  ) |> 
-  tab_style_body(
-    style = cell_borders(
-      sides = c("top", "right", "left", "bottom"),
-      weight = px(0) # Remove row borders
-    ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
-  opt_css(
-    css = "
+      table.background.color = "#F5F5F5",
+      column_labels.background.color = "#2B2D42",
+      table.font.size = px(16),
+      table.border.top.color = "transparent",
+      table.border.bottom.color = "transparent",
+      table_body.hlines.color = "transparent",
+      table_body.border.bottom.color = "transparent",
+      column_labels.border.bottom.color = "transparent",
+      column_labels.border.top.color = "transparent"
+    ) |>
+    tab_style_body(
+      style = cell_borders(
+        sides = c("top", "right", "left", "bottom"),
+        weight = px(0) # Remove row borders
+      ),
+      fn = function(x) {
+        is.numeric(x) | is.character(x)
+      }
+    ) |>
+    opt_css(
+      css = "
 
     table tr:nth-child(odd) {
       background-color: #e0dedeff;
@@ -276,25 +299,24 @@ if (
       z-index: 10 !important;
     }
     "
-  )
+    )
 }
-
 ```
 
 ## Row
 
 ```{r "standings overview"}
 #| title: "Standings (with today's changes)"
-
 if (
   nrow(
     todays_games
-  ) != 0
+  ) !=
+    0
 ) {
   delta_points <- get_fantasy_teams_and_standings(
-    all_teams=all_teams,
-    schedule_to_date=todays_games,
-    schedule=schedule
+    all_teams = all_teams,
+    schedule_to_date = todays_games,
+    schedule = schedule
   )["standings"][[1]]
 
   delta_points <- delta_points[
@@ -311,7 +333,7 @@ if (
 }
 
 
-standings|>
+standings |>
   mutate(
     delta = delta_points$Points
   ) |>
@@ -327,11 +349,11 @@ standings|>
     -delta
   ) |>
   mutate(
-      Change = case_when(
-          Change == "-1" ~ "arrow-down",
-          Change == "0" ~ NA,
-          Change == "1" ~ "arrow-up"
-      )
+    Change = case_when(
+      Change == "-1" ~ "arrow-down",
+      Change == "0" ~ NA,
+      Change == "1" ~ "arrow-up"
+    )
   ) |>
   gt() |>
   fmt_icon(
@@ -353,11 +375,11 @@ standings|>
       )
     }
   ) |>
-   tab_style(
+  tab_style(
     style = list(
-      cell_fill(color =  from_column(column = "Colours")),
+      cell_fill(color = from_column(column = "Colours")),
       cell_text(weight = "bold")
-      ),
+    ),
     locations = cells_body(
       columns = Team
     )
@@ -372,7 +394,7 @@ standings|>
     rows = everything(),
     missing_text = ""
   ) |>
-    tab_options(
+  tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
     table.font.size = px(16),
@@ -382,14 +404,16 @@ standings|>
     table_body.border.bottom.color = "transparent",
     column_labels.border.bottom.color = "transparent",
     column_labels.border.top.color = "transparent"
-  ) |> 
+  ) |>
   tab_style_body(
     style = cell_borders(
       sides = c("top", "right", "left", "bottom"),
       weight = px(0) # Remove row borders
     ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
+    fn = function(x) {
+      is.numeric(x) | is.character(x)
+    }
+  ) |>
   opt_css(
     css = "
 
@@ -441,8 +465,8 @@ if (
   trades_df |>
     merge(
       standings,
-      by.x="name",
-      by.y="Name"
+      by.x = "name",
+      by.y = "Name"
     ) |>
     merge(
       all_teams,
@@ -455,20 +479,20 @@ if (
       by.y = "player_name"
     ) |>
     mutate(
-        player_headshot.x = paste0(
-            "<img src='",
-            player_headshot.x,
-            "' style='width:50px;height:50px;border:1px solid",
-            team_colour_1.x,
-            ";border-radius:50%;'/>"
-        ),
-        player_headshot.y = paste0(
-            "<img src='",
-            player_headshot.y,
-            "' style='width:50px;height:50px;border:1px solid",
-            team_colour_1.y,
-            ";border-radius:50%;'/>"
-        )
+      player_headshot.x = paste0(
+        "<img src='",
+        player_headshot.x,
+        "' style='width:50px;height:50px;border:1px solid",
+        team_colour_1.x,
+        ";border-radius:50%;'/>"
+      ),
+      player_headshot.y = paste0(
+        "<img src='",
+        player_headshot.y,
+        "' style='width:50px;height:50px;border:1px solid",
+        team_colour_1.y,
+        ";border-radius:50%;'/>"
+      )
     ) |>
     select(
       c(
@@ -483,10 +507,10 @@ if (
     ) |>
     gt() |>
     fmt_markdown(
-        columns = c(
-            player_headshot.x,
-            player_headshot.y
-        )
+      columns = c(
+        player_headshot.x,
+        player_headshot.y
+      )
     ) |>
     text_transform(
       locations = cells_body(
@@ -501,9 +525,9 @@ if (
     ) |>
     tab_style(
       style = list(
-        cell_fill(color =  from_column(column = "Colours")),
+        cell_fill(color = from_column(column = "Colours")),
         cell_text(weight = "bold")
-        ),
+      ),
       locations = cells_body(
         columns = Team
       )
@@ -526,25 +550,27 @@ if (
       "Trades"
     ) |>
     tab_options(
-    table.background.color = "#F5F5F5",
-    column_labels.background.color = "#2B2D42",
-    table.font.size = px(16),
-    table.border.top.color = "transparent",
-    table.border.bottom.color = "transparent",
-    table_body.hlines.color = "transparent",
-    table_body.border.bottom.color = "transparent",
-    column_labels.border.bottom.color = "transparent",
-    column_labels.border.top.color = "transparent"
-  ) |> 
-  tab_style_body(
-    style = cell_borders(
-      sides = c("top", "right", "left", "bottom"),
-      weight = px(0) # Remove row borders
-    ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
-  opt_css(
-    css = "
+      table.background.color = "#F5F5F5",
+      column_labels.background.color = "#2B2D42",
+      table.font.size = px(16),
+      table.border.top.color = "transparent",
+      table.border.bottom.color = "transparent",
+      table_body.hlines.color = "transparent",
+      table_body.border.bottom.color = "transparent",
+      column_labels.border.bottom.color = "transparent",
+      column_labels.border.top.color = "transparent"
+    ) |>
+    tab_style_body(
+      style = cell_borders(
+        sides = c("top", "right", "left", "bottom"),
+        weight = px(0) # Remove row borders
+      ),
+      fn = function(x) {
+        is.numeric(x) | is.character(x)
+      }
+    ) |>
+    opt_css(
+      css = "
 
     table tr:nth-child(odd) {
       background-color: #e0dedeff;
@@ -556,9 +582,8 @@ if (
       z-index: 10 !important;
     }
     "
-  )
+    )
 }
-
 ```
 
 ## Row
@@ -607,44 +632,44 @@ value_box(
 ## Row
 
 ```{r "prize pool thermometer"}
-
 temps <- data.table(temp = seq(from = 0, to = pool, by = 0.01))
 temps[, temp1 := shift(temp, 1)]
 
 ggplot(temps, aes(x = 1)) +
-    geom_segment(
-      aes(y = 0, yend = 10*length(team_rosters)),
-      linewidth = 10,
-      lineend = c("round"),
-      color = "black"
-    ) +
-    geom_segment(
-      aes(y = 0, yend = 10*length(team_rosters)),
-      linewidth = 9,
-      lineend = c("round"),
-      color = "white"
-    ) +
-    geom_segment(
-      data = temps[1:1000],
-      aes(y = temp, yend = temp1), color = "#5F259F",
-      lineend = c("round"),
-      linewidth = 9
-    ) +
-    geom_segment(
-      data = temps[-(1:1000)],
-      aes(y = temp, yend = temp1), color = "#5F259F",
-      lineend = c("square"),
-      linewidth = 9
-    ) +
-    theme_void() +
-    labs(
-      title = paste0("Prize pool: ", pool, "$")
-    ) +
-    theme(
-      plot.title = element_text(size = 50, hjust = 0.5)
-    ) +
-    coord_flip()
-
+  geom_segment(
+    aes(y = 0, yend = 10 * length(team_rosters)),
+    linewidth = 10,
+    lineend = c("round"),
+    color = "black"
+  ) +
+  geom_segment(
+    aes(y = 0, yend = 10 * length(team_rosters)),
+    linewidth = 9,
+    lineend = c("round"),
+    color = "white"
+  ) +
+  geom_segment(
+    data = temps[1:1000],
+    aes(y = temp, yend = temp1),
+    color = "#5F259F",
+    lineend = c("round"),
+    linewidth = 9
+  ) +
+  geom_segment(
+    data = temps[-(1:1000)],
+    aes(y = temp, yend = temp1),
+    color = "#5F259F",
+    lineend = c("square"),
+    linewidth = 9
+  ) +
+  theme_void() +
+  labs(
+    title = paste0("Prize pool: ", pool, "$")
+  ) +
+  theme(
+    plot.title = element_text(size = 50, hjust = 0.5)
+  ) +
+  coord_flip()
 ```
 
 ## Row
@@ -673,13 +698,14 @@ list(
 #| title: "Regular Season"
 if (
   schedule_to_date |>
-  filter(
-    game_status %in% c(
-      "Final",
-      "Final OT"
-    )
-  ) |>
-  nrow() ==
+    filter(
+      game_status %in%
+        c(
+          "Final",
+          "Final OT"
+        )
+    ) |>
+    nrow() ==
     0
 ) {
   value_box(
@@ -695,102 +721,116 @@ if (
     theme = "danger"
   )
 } else {
-
-  data <- roster_points_per_game |> lapply(
-    function(x) x |> mutate(
-      earliest_game_id = schedule_to_date$game_id[1]
-    ) |>
-    expand(
-      game_id = as.numeric(schedule_to_date$game_id),
-      earliest_game_id
-    ) |> select(
-      -earliest_game_id
-    ) %>% left_join(
-      x,
-      by = c(
-        "game_id"
-      )
-    ) |> mutate(
-      goals = ifelse(
-        is.na(goals),
-        0,
-        goals
-      ),
-      assists = ifelse(
-        is.na(assists),
-        0,
-        assists
-      ),
-      wins = ifelse(
-        is.na(wins),
-        0,
-        wins
-      ),
-      ot_losses = ifelse(
-        is.na(ot_losses),
-        0,
-        ot_losses
-      ),
-      wins = 2*wins,
-    ) %>%
-    mutate(
-      fantasy_points = rowSums(
-        select(
-          .,
-          c(
-            goals,
-            assists,
-            wins,
-            ot_losses
+  data <- roster_points_per_game |>
+    lapply(
+      function(x) {
+        x |>
+          mutate(
+            earliest_game_id = schedule_to_date$game_id[1]
+          ) |>
+          expand(
+            game_id = as.numeric(schedule_to_date$game_id),
+            earliest_game_id
+          ) |>
+          select(
+            -earliest_game_id
+          ) %>%
+          left_join(
+            x,
+            by = c(
+              "game_id"
+            )
+          ) |>
+          mutate(
+            goals = ifelse(
+              is.na(goals),
+              0,
+              goals
+            ),
+            assists = ifelse(
+              is.na(assists),
+              0,
+              assists
+            ),
+            wins = ifelse(
+              is.na(wins),
+              0,
+              wins
+            ),
+            ot_losses = ifelse(
+              is.na(ot_losses),
+              0,
+              ot_losses
+            ),
+            wins = 2 * wins,
+          ) %>%
+          mutate(
+            fantasy_points = rowSums(
+              select(
+                .,
+                c(
+                  goals,
+                  assists,
+                  wins,
+                  ot_losses
+                )
+              )
+            )
+          ) |>
+          arrange(
+            game_id
+          ) |>
+          select(
+            c(
+              game_id,
+              fantasy_points
+            )
+          ) |>
+          group_by(
+            game_id
+          ) |>
+          summarise(
+            daily_scores = sum(fantasy_points)
+          ) |>
+          mutate(
+            daily_scores = cumsum(daily_scores),
+            game_id = row_number()
           )
-        )
+      }
+    ) |>
+    bind_rows(
+      .id = "Team"
+    ) |>
+    rename(
+      "Game" = game_id,
+      "Points" = daily_scores
+    ) |>
+    mutate(
+      team_image = recode(
+        Team,
+        !!!team_images
       )
+    ) |>
+    merge(
+      data.frame(
+        Team = names(team_colours),
+        Colours = team_colours
+      )
+    )
+
+  data <- data |>
+    group_by(
+      Game
     ) |>
     arrange(
-      game_id
-    ) |> select(
-      c(
-        game_id,
-        fantasy_points
-      )
-    ) |> group_by(
-      game_id
-    ) |> summarise(
-      daily_scores = sum(fantasy_points)
+      desc(Points),
+      Team,
+      .by_group = TRUE
     ) |>
     mutate(
-      daily_scores = cumsum(daily_scores),
-      game_id = row_number()
-    )
-  ) |> bind_rows(
-    .id = "Team"
-  ) |>
-  rename(
-    "Game" = game_id,
-    "Points" = daily_scores
-  ) |>
-  mutate(
-    team_image = recode(
-      Team,
-      !!!team_images
-    )
-  ) |>
-  merge(
-    data.frame(
-      Team = names(team_colours),
-      Colours = team_colours
-    )
-  )
-
-  data <- data |> group_by(
-    Game
-  ) |> arrange(
-    desc(Points),
-    Team,
-    .by_group = TRUE
-  ) |> mutate(
-    Standings = row_number()
-  ) |> ungroup()
+      Standings = row_number()
+    ) |>
+    ungroup()
 
   data |>
     ggplot() +
@@ -798,13 +838,15 @@ if (
       aes(
         x = Game,
         y = Standings,
-        colour = Colours),
+        colour = Colours
+      ),
       linewidth = 2
     ) +
     geom_point(
-      data = data |> filter(
-        Game == max(Game)
-      ),
+      data = data |>
+        filter(
+          Game == max(Game)
+        ),
       aes(
         x = Game,
         y = Standings,
@@ -813,9 +855,10 @@ if (
       size = 15
     ) +
     geom_image(
-      data = data |> filter(
-        Game == max(Game)
-      ),
+      data = data |>
+        filter(
+          Game == max(Game)
+        ),
       aes(
         x = Game,
         y = Standings,
@@ -823,10 +866,13 @@ if (
       )
     ) +
     scale_color_identity() +
-    scale_y_reverse() + 
+    scale_y_reverse() +
     guides(colour = guide_legend(override.aes = list(size = 10))) +
-    theme_minimal() + 
-    theme(axis.text.y = element_blank())
+    theme_minimal() +
+    theme(
+      axis.text.y = element_blank(),
+      plot.background = element_rect(fill = "#e0e0e0")
+    )
 }
 ```
 
@@ -834,13 +880,14 @@ if (
 #| title: "Pre-season"
 if (
   schedule_to_date_preseason |>
-  filter(
-    game_status %in% c(
-      "Final",
-      "Final OT"
-    )
-  ) |>
-  nrow() ==
+    filter(
+      game_status %in%
+        c(
+          "Final",
+          "Final OT"
+        )
+    ) |>
+    nrow() ==
     0
 ) {
   value_box(
@@ -856,102 +903,116 @@ if (
     theme = "danger"
   )
 } else {
-
-  data <- roster_points_per_game_preseason |> lapply(
-    function(x) x |> mutate(
-      earliest_game_id = schedule_to_date_preseason$game_id[1]
-    ) |>
-    expand(
-      game_id = as.numeric(schedule_to_date_preseason$game_id),
-      earliest_game_id
-    ) |> select(
-      -earliest_game_id
-    ) %>% left_join(
-      x,
-      by = c(
-        "game_id"
-      )
-    ) |> mutate(
-      goals = ifelse(
-        is.na(goals),
-        0,
-        goals
-      ),
-      assists = ifelse(
-        is.na(assists),
-        0,
-        assists
-      ),
-      wins = ifelse(
-        is.na(wins),
-        0,
-        wins
-      ),
-      ot_losses = ifelse(
-        is.na(ot_losses),
-        0,
-        ot_losses
-      ),
-      wins = 2*wins,
-    ) %>%
-    mutate(
-      fantasy_points = rowSums(
-        select(
-          .,
-          c(
-            goals,
-            assists,
-            wins,
-            ot_losses
+  data <- roster_points_per_game_preseason |>
+    lapply(
+      function(x) {
+        x |>
+          mutate(
+            earliest_game_id = schedule_to_date_preseason$game_id[1]
+          ) |>
+          expand(
+            game_id = as.numeric(schedule_to_date_preseason$game_id),
+            earliest_game_id
+          ) |>
+          select(
+            -earliest_game_id
+          ) %>%
+          left_join(
+            x,
+            by = c(
+              "game_id"
+            )
+          ) |>
+          mutate(
+            goals = ifelse(
+              is.na(goals),
+              0,
+              goals
+            ),
+            assists = ifelse(
+              is.na(assists),
+              0,
+              assists
+            ),
+            wins = ifelse(
+              is.na(wins),
+              0,
+              wins
+            ),
+            ot_losses = ifelse(
+              is.na(ot_losses),
+              0,
+              ot_losses
+            ),
+            wins = 2 * wins,
+          ) %>%
+          mutate(
+            fantasy_points = rowSums(
+              select(
+                .,
+                c(
+                  goals,
+                  assists,
+                  wins,
+                  ot_losses
+                )
+              )
+            )
+          ) |>
+          arrange(
+            game_id
+          ) |>
+          select(
+            c(
+              game_id,
+              fantasy_points
+            )
+          ) |>
+          group_by(
+            game_id
+          ) |>
+          summarise(
+            daily_scores = sum(fantasy_points)
+          ) |>
+          mutate(
+            daily_scores = cumsum(daily_scores),
+            game_id = row_number()
           )
-        )
+      }
+    ) |>
+    bind_rows(
+      .id = "Team"
+    ) |>
+    rename(
+      "Game" = game_id,
+      "Points" = daily_scores
+    ) |>
+    mutate(
+      team_image = recode(
+        Team,
+        !!!team_images
       )
+    ) |>
+    merge(
+      data.frame(
+        Team = names(team_colours),
+        Colours = team_colours
+      )
+    )
+
+  data <- data |>
+    group_by(
+      Game
     ) |>
     arrange(
-      game_id
-    ) |> select(
-      c(
-        game_id,
-        fantasy_points
-      )
-    ) |> group_by(
-      game_id
-    ) |> summarise(
-      daily_scores = sum(fantasy_points)
+      desc(Points),
+      Team,
+      .by_group = TRUE
     ) |>
     mutate(
-      daily_scores = cumsum(daily_scores),
-      game_id = row_number()
-    )
-  ) |> bind_rows(
-    .id = "Team"
-  ) |>
-  rename(
-    "Game" = game_id,
-    "Points" = daily_scores
-  ) |>
-  mutate(
-    team_image = recode(
-      Team,
-      !!!team_images
-    )
-  ) |>
-  merge(
-    data.frame(
-      Team = names(team_colours),
-      Colours = team_colours
-    )
-  )
-
-  data <- data |> group_by(
-    Game
-  ) |> arrange(
-    desc(Points),
-    Team,
-    .by_group = TRUE
-  ) |> mutate(
-    Standings = row_number()
-  ) |> ungroup()
+      Standings = row_number()
+    ) |>
+    ungroup()
 
   data |>
     ggplot() +
@@ -959,13 +1020,15 @@ if (
       aes(
         x = Game,
         y = Standings,
-        colour = Colours),
+        colour = Colours
+      ),
       linewidth = 2
     ) +
     geom_point(
-      data = data |> filter(
-        Game == max(Game)
-      ),
+      data = data |>
+        filter(
+          Game == max(Game)
+        ),
       aes(
         x = Game,
         y = Standings,
@@ -974,9 +1037,10 @@ if (
       size = 15
     ) +
     geom_image(
-      data = data |> filter(
-        Game == max(Game)
-      ),
+      data = data |>
+        filter(
+          Game == max(Game)
+        ),
       aes(
         x = Game,
         y = Standings,
@@ -984,10 +1048,13 @@ if (
       )
     ) +
     scale_color_identity() +
-    scale_y_reverse() + 
+    scale_y_reverse() +
     guides(colour = guide_legend(override.aes = list(size = 10))) +
-    theme_minimal() + 
-    theme(axis.text.y = element_blank())
+    theme_minimal() +
+    theme(
+      axis.text.y = element_blank(),
+      plot.background = element_rect(fill = "#e0e0e0")
+    )
 }
 ```
 
@@ -1002,11 +1069,11 @@ standings |>
     )
   ) |>
   mutate(
-      Change = case_when(
-          Change == "-1" ~ "arrow-down",
-          Change == "0" ~ NA,
-          Change == "1" ~ "arrow-up"
-      )
+    Change = case_when(
+      Change == "-1" ~ "arrow-down",
+      Change == "0" ~ NA,
+      Change == "1" ~ "arrow-up"
+    )
   ) |>
   gt() |>
   fmt_icon(
@@ -1028,11 +1095,11 @@ standings |>
       )
     }
   ) |>
-   tab_style(
+  tab_style(
     style = list(
       cell_fill(color = from_column(column = "Colours")),
       cell_text(weight = "bold")
-      ),
+    ),
     locations = cells_body(
       columns = Team
     )
@@ -1047,7 +1114,7 @@ standings |>
     rows = everything(),
     missing_text = ""
   ) |>
-    tab_options(
+  tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
     table.font.size = px(16),
@@ -1057,14 +1124,16 @@ standings |>
     table_body.border.bottom.color = "transparent",
     column_labels.border.bottom.color = "transparent",
     column_labels.border.top.color = "transparent"
-  ) |> 
+  ) |>
   tab_style_body(
     style = cell_borders(
       sides = c("top", "right", "left", "bottom"),
       weight = px(0) # Remove row borders
     ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
+    fn = function(x) {
+      is.numeric(x) | is.character(x)
+    }
+  ) |>
   opt_css(
     css = "
 
@@ -1090,11 +1159,11 @@ standings_preseason |>
     )
   ) |>
   mutate(
-      Change = case_when(
-          Change == "-1" ~ "arrow-down",
-          Change == "0" ~ NA,
-          Change == "1" ~ "arrow-up"
-      )
+    Change = case_when(
+      Change == "-1" ~ "arrow-down",
+      Change == "0" ~ NA,
+      Change == "1" ~ "arrow-up"
+    )
   ) |>
   gt() |>
   fmt_icon(
@@ -1116,11 +1185,11 @@ standings_preseason |>
       )
     }
   ) |>
-   tab_style(
+  tab_style(
     style = list(
       cell_fill(color = from_column(column = "Colours")),
       cell_text(weight = "bold")
-      ),
+    ),
     locations = cells_body(
       columns = Team
     )
@@ -1135,7 +1204,7 @@ standings_preseason |>
     rows = everything(),
     missing_text = ""
   ) |>
-    tab_options(
+  tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
     table.font.size = px(16),
@@ -1145,14 +1214,16 @@ standings_preseason |>
     table_body.border.bottom.color = "transparent",
     column_labels.border.bottom.color = "transparent",
     column_labels.border.top.color = "transparent"
-  ) |> 
+  ) |>
   tab_style_body(
     style = cell_borders(
       sides = c("top", "right", "left", "bottom"),
       weight = px(0) # Remove row borders
     ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
+    fn = function(x) {
+      is.numeric(x) | is.character(x)
+    }
+  ) |>
   opt_css(
     css = "
 
@@ -1275,59 +1346,58 @@ cat(res, sep = '\n')
 
 ```{r "schedule"}
 #| title: "Regular season"
-
 schedule |>
-    select(
-        c(
-            game_date,
-            game_status,
-            away_team_logo,
-            away_score,
-            home_team_logo,
-            home_score
-        )
+  select(
+    c(
+      game_date,
+      game_status,
+      away_team_logo,
+      away_score,
+      home_team_logo,
+      home_score
+    )
+  ) |>
+  mutate(
+    game_date = as.Date(
+      game_date,
+      format = "%Y-%m-%d"
     ) |>
-    mutate(
-        game_date = as.Date(
-                game_date,
-                format="%Y-%m-%d"
-            ) |>
-            format(
-                "%a, %b %e"
-            )
-    ) |>
-    gt() |>
-    fmt_image(
-        columns = c(
-            away_team_logo,
-            home_team_logo
-        )
-    ) |>
-    cols_align(
-        align = "center",
-        columns = c(
-            game_status,
-            away_score,
-            home_score
-        )
-    ) |>
-    cols_width(
-        game_date ~ pct(20),
-        game_status ~ pct(20),
-        away_team_logo ~ pct(10),
-        away_score ~ pct(10),
-        home_team_logo ~ pct(10),
-        home_score ~ pct(10)
-    ) |>
-    cols_label(
-        game_date = "Date",
-        game_status = "Time",
-        away_team_logo = "Away",
-        away_score = "Score",
-        home_team_logo = "Home",
-        home_score = "Score"
-    ) |>
-    tab_options(
+      format(
+        "%a, %b %e"
+      )
+  ) |>
+  gt() |>
+  fmt_image(
+    columns = c(
+      away_team_logo,
+      home_team_logo
+    )
+  ) |>
+  cols_align(
+    align = "center",
+    columns = c(
+      game_status,
+      away_score,
+      home_score
+    )
+  ) |>
+  cols_width(
+    game_date ~ pct(20),
+    game_status ~ pct(20),
+    away_team_logo ~ pct(10),
+    away_score ~ pct(10),
+    home_team_logo ~ pct(10),
+    home_score ~ pct(10)
+  ) |>
+  cols_label(
+    game_date = "Date",
+    game_status = "Time",
+    away_team_logo = "Away",
+    away_score = "Score",
+    home_team_logo = "Home",
+    home_score = "Score"
+  ) |>
+  tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
     table.font.size = px(16),
@@ -1337,14 +1407,16 @@ schedule |>
     table_body.border.bottom.color = "transparent",
     column_labels.border.bottom.color = "transparent",
     column_labels.border.top.color = "transparent"
-  ) |> 
+  ) |>
   tab_style_body(
     style = cell_borders(
       sides = c("top", "right", "left", "bottom"),
       weight = px(0) # Remove row borders
     ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
+    fn = function(x) {
+      is.numeric(x) | is.character(x)
+    }
+  ) |>
   opt_css(
     css = "
 
@@ -1363,59 +1435,58 @@ schedule |>
 
 ```{r "schedule preseason"}
 #| title: "Pre-season"
-
 schedule_preseason |>
-    select(
-        c(
-            game_date,
-            game_status,
-            away_team_logo,
-            away_score,
-            home_team_logo,
-            home_score
-        )
+  select(
+    c(
+      game_date,
+      game_status,
+      away_team_logo,
+      away_score,
+      home_team_logo,
+      home_score
+    )
+  ) |>
+  mutate(
+    game_date = as.Date(
+      game_date,
+      format = "%Y-%m-%d"
     ) |>
-    mutate(
-        game_date = as.Date(
-                game_date,
-                format="%Y-%m-%d"
-            ) |>
-            format(
-                "%a, %b %e"
-            )
-    ) |>
-    gt() |>
-    fmt_image(
-        columns = c(
-            away_team_logo,
-            home_team_logo
-        )
-    ) |>
-    cols_align(
-        align = "center",
-        columns = c(
-            game_status,
-            away_score,
-            home_score
-        )
-    ) |>
-    cols_width(
-        game_date ~ pct(20),
-        game_status ~ pct(20),
-        away_team_logo ~ pct(10),
-        away_score ~ pct(10),
-        home_team_logo ~ pct(10),
-        home_score ~ pct(10)
-    ) |>
-    cols_label(
-        game_date = "Date",
-        game_status = "Time",
-        away_team_logo = "Away",
-        away_score = "Score",
-        home_team_logo = "Home",
-        home_score = "Score"
-    ) |>
-    tab_options(
+      format(
+        "%a, %b %e"
+      )
+  ) |>
+  gt() |>
+  fmt_image(
+    columns = c(
+      away_team_logo,
+      home_team_logo
+    )
+  ) |>
+  cols_align(
+    align = "center",
+    columns = c(
+      game_status,
+      away_score,
+      home_score
+    )
+  ) |>
+  cols_width(
+    game_date ~ pct(20),
+    game_status ~ pct(20),
+    away_team_logo ~ pct(10),
+    away_score ~ pct(10),
+    home_team_logo ~ pct(10),
+    home_score ~ pct(10)
+  ) |>
+  cols_label(
+    game_date = "Date",
+    game_status = "Time",
+    away_team_logo = "Away",
+    away_score = "Score",
+    home_team_logo = "Home",
+    home_score = "Score"
+  ) |>
+  tab_options(
     table.background.color = "#F5F5F5",
     column_labels.background.color = "#2B2D42",
     table.font.size = px(16),
@@ -1425,14 +1496,16 @@ schedule_preseason |>
     table_body.border.bottom.color = "transparent",
     column_labels.border.bottom.color = "transparent",
     column_labels.border.top.color = "transparent"
-  ) |> 
+  ) |>
   tab_style_body(
     style = cell_borders(
       sides = c("top", "right", "left", "bottom"),
       weight = px(0) # Remove row borders
     ),
-    fn = function(x) { is.numeric(x) | is.character(x) }
-  ) |> 
+    fn = function(x) {
+      is.numeric(x) | is.character(x)
+    }
+  ) |>
   opt_css(
     css = "
 
@@ -1455,52 +1528,88 @@ schedule_preseason |>
 Select one of the rows in this table to use (or take some inspo from)
 
 ```{r "random team generator"}
-
 seed <- 1
 
-random_teams <- data.frame(matrix(ncol = 12, nrow = 0)) |> set_names("F1", "F2", "F3", "F4", "F5", "F6", "D1", "D2", "D3", "D4", "G1", "G2")
+random_teams <- data.frame(matrix(ncol = 12, nrow = 0)) |>
+  set_names(
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "G1",
+    "G2"
+  )
 
 for (i in 1:50) {
-  random_team <- all_teams |> mutate(
-    position = case_when(
-      position == "C" ~ "F",
-      position == "LW" ~ "F",
-      position == "RW" ~ "F",
-      position == "LD" ~ "D",
-      position == "RD" ~ "D",
-      .default = position
-    )
-  ) |> 
+  random_team <- all_teams |>
+    mutate(
+      position = case_when(
+        position == "C" ~ "F",
+        position == "LW" ~ "F",
+        position == "RW" ~ "F",
+        position == "LD" ~ "D",
+        position == "RD" ~ "D",
+        .default = position
+      )
+    ) |>
     group_by(position) |>
     slice_sample(
       n = 6
-    ) |> ungroup()
+    ) |>
+    ungroup()
 
-    random_teams <- rbind(
-      random_teams,
-      rbind(
-        random_team |> filter(position == "F") |> select(player_name),
-        random_team |> filter(position == "D") |> slice(1:4) |> select(player_name),
-        random_team |> filter(position == "G") |> slice(1:2) |> select(player_name)
-      ) |> transpose() |> set_names(
-        "F1", "F2", "F3", "F4", "F5", "F6", "D1", "D2", "D3", "D4", "G1", "G2"
+  random_teams <- rbind(
+    random_teams,
+    rbind(
+      random_team |> filter(position == "F") |> select(player_name),
+      random_team |>
+        filter(position == "D") |>
+        slice(1:4) |>
+        select(player_name),
+      random_team |>
+        filter(position == "G") |>
+        slice(1:2) |>
+        select(player_name)
+    ) |>
+      transpose() |>
+      set_names(
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "G1",
+        "G2"
       )
-    )
-  
+  )
 }
 
 random_teams <- cbind(
   Team_name = slice_sample(read.csv("static/common_words.csv"), n = 50),
-  Team_colour = sample(rgb(
-  t(col2rgb(colors())),
-  maxColorValue = 255
-), 50), random_teams
+  Team_colour = sample(
+    rgb(
+      t(col2rgb(colors())),
+      maxColorValue = 255
+    ),
+    50
+  ),
+  random_teams
 )
 
 library(DT)
 
 random_teams |> datatable()
-
 ```
 
 # Draft Info
