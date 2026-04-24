@@ -15,10 +15,10 @@ get_team_logo_urls <- function(
   team_logo_urls <- list(
     BOS = "https://upload.wikimedia.org/wikipedia/en/b/bc/BostonFleet.png",
     MIN = "https://upload.wikimedia.org/wikipedia/en/a/ae/MinnesotaFrost.png",
-    MTL = "https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Montreal_Victoire_Logo.svg/800px-Montreal_Victoire_Logo.svg.png",
-    NY = "https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/New_York_Sirens_Logo.svg/1024px-New_York_Sirens_Logo.svg.png",
+    MTL = "https://upload.wikimedia.org/wikipedia/en/9/93/Montreal_Victoire_Logo.svg",
+    NY = "https://upload.wikimedia.org/wikipedia/en/f/f9/New_York_Sirens_Logo.svg",
     OTT = "https://upload.wikimedia.org/wikipedia/en/thumb/4/40/Ottawa_Charge_Logo.svg/1280px-Ottawa_Charge_Logo.svg.png",
-    TOR = "https://upload.wikimedia.org/wikipedia/en/thumb/5/51/Toronto_Sceptres.svg/800px-Toronto_Sceptres.svg.png"
+    TOR = "https://upload.wikimedia.org/wikipedia/en/5/51/Toronto_Sceptres.svg"
   )
 
   if (season_id >= 7) {
