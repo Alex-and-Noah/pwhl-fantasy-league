@@ -17,7 +17,7 @@ get_team_logo_urls <- function(
     MIN = "https://upload.wikimedia.org/wikipedia/en/a/ae/MinnesotaFrost.png",
     MTL = "https://upload.wikimedia.org/wikipedia/en/9/93/Montreal_Victoire_Logo.svg",
     NY = "https://upload.wikimedia.org/wikipedia/en/f/f9/New_York_Sirens_Logo.svg",
-    OTT = "https://upload.wikimedia.org/wikipedia/en/thumb/4/40/Ottawa_Charge_Logo.svg/1280px-Ottawa_Charge_Logo.svg.png",
+    OTT = "https://upload.wikimedia.org/wikipedia/en/4/40/Ottawa_Charge_Logo.svg",
     TOR = "https://upload.wikimedia.org/wikipedia/en/5/51/Toronto_Sceptres.svg"
   )
 
@@ -25,7 +25,7 @@ get_team_logo_urls <- function(
     team_logo_urls <- c(
       team_logo_urls,
       SEA = "https://upload.wikimedia.org/wikipedia/en/6/6c/Seattle_Torrent_logo.png",
-      VAN = "https://upload.wikimedia.org/wikipedia/en/thumb/7/73/Vancouver_Goldeneyes_logo.png/250px-Vancouver_Goldeneyes_logo.png"
+      VAN = "https://upload.wikimedia.org/wikipedia/en/7/73/Vancouver_Goldeneyes_logo.png"
     )
   }
 
