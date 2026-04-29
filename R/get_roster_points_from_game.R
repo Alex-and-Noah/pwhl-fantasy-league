@@ -41,7 +41,6 @@ get_roster_points_from_game <- function(
         game_id == player_box_for_game$skaters$game_id[[1]]
       )
     if (expanded) {
-      browser()
       fantasy_points_per_player <- rbind(
         player_box_for_game$skaters,
         player_box_for_game$goalies |>
