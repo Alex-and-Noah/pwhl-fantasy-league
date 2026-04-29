@@ -4,17 +4,15 @@ library(dplyr)
 #' @title  **Stuff**
 #' @description etc.
 #'
-#' @param fantasy_teams_and_standings
+#' @param df
 #' @return data.frame of points earned by each fantasy team
 #' @import dplyr
 #' @export
 
 compute_alt_awards <- function(
-  fantasy_teams_and_standings
+  df
 ) {
-  expanded_points <- fantasy_teams_and_standings$expanded_roster_stats
-
-  map(expanded_points, get_sums) |>
+  map(df, get_sums) |>
     bind_rows(.id = "Team") |>
     select(-c(player_id, game_id, team_id, faceoff_pct, acquired, let_go))
 }
