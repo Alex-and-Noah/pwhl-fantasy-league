@@ -29,6 +29,10 @@ get_schedule_info <- function(
   next_game_day_date,
   current_date
 ) {
+  if (next_game_day_date == "tbd") {
+    next_game_day_date <- "2026-04-26"
+  }
+
   schedule <- season_schedules_by_id[season_id][[1]]
 
   schedule$home_team_code <- team_codes[
