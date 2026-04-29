@@ -159,36 +159,36 @@ get_roster_points_from_game <- function(
           by = c(
             "player_id"
           )
-        ) |>
-        mutate(
-          goals = ifelse(
-            ((is.na(acquired)) | (acquired < game_id)) &
-              ((is.na(let_go)) | (game_id <= let_go)),
-            goals,
-            0
-          ),
-          assists = ifelse(
-            ((is.na(acquired)) | (acquired < game_id)) &
-              ((is.na(let_go)) |
-                (game_id <= let_go)),
-            assists,
-            0
-          ),
-          wins = ifelse(
-            ((is.na(acquired)) | (acquired < game_id)) &
-              ((is.na(let_go)) |
-                (game_id <= let_go)),
-            wins,
-            0
-          ),
-          ot_losses = ifelse(
-            ((is.na(acquired)) | (acquired < game_id)) &
-              ((is.na(let_go)) |
-                (game_id <= let_go)),
-            ot_losses,
-            0
-          )
         )
+      # mutate(
+      #   goals = ifelse(
+      #     ((is.na(acquired)) | (acquired < game_id)) &
+      #       ((is.na(let_go)) | (game_id <= let_go)),
+      #     goals,
+      #     0
+      #   ),
+      #   assists = ifelse(
+      #     ((is.na(acquired)) | (acquired < game_id)) &
+      #       ((is.na(let_go)) |
+      #         (game_id <= let_go)),
+      #     assists,
+      #     0
+      #   ),
+      #   wins = ifelse(
+      #     ((is.na(acquired)) | (acquired < game_id)) &
+      #       ((is.na(let_go)) |
+      #         (game_id <= let_go)),
+      #     wins,
+      #     0
+      #   ),
+      #   ot_losses = ifelse(
+      #     ((is.na(acquired)) | (acquired < game_id)) &
+      #       ((is.na(let_go)) |
+      #         (game_id <= let_go)),
+      #     ot_losses,
+      #     0
+      #   )
+      # )
     }
   )
 

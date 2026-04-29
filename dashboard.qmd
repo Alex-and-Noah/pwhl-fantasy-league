@@ -104,6 +104,9 @@ roster_points_per_game <- fantasy_teams_and_standings[
 fantasy_roster_points <- fantasy_teams_and_standings[
   "fantasy_roster_points"
 ][[1]]
+expanded_roster_points_per_game <- fantasy_teams_and_standings[
+  "expanded_roster_stats"
+][[1]]
 
 standings <- compute_standings_changes_indicator(
   all_teams,
@@ -166,6 +169,60 @@ standings_preseason <- compute_standings_changes_indicator(
   current_date,
   schedule_preseason,
   fantasy_teams_and_standings["standings"][[1]]
+)
+```
+
+```{r "Compute trade effectiveness"}
+lapply(
+  names(roster_points_per_game),
+  function(team_name) {
+    earned_points_from_trade <- roster_points_per_game[[team_name]] |>
+      filter(
+        !is.na(acquired) & acquired < game_id
+      ) |> mutate(
+        fantasy_points = sum(
+          c(
+            goals,
+            assists,
+            wins,
+            wins,
+            ot_losses
+          )
+        )
+      ) |>
+      slice(1) |>
+      select(
+        fantasy_points
+      ) |>
+      pull()
+
+    lost_points_from_trade <- roster_points_per_game[[team_name]] |>
+      filter(
+        !is.na(let_go) & let_go < game_id
+      ) |> mutate(
+        fantasy_points = sum(
+          c(
+            goals,
+            assists,
+            wins,
+            wins,
+            ot_losses
+          )
+        )
+      ) |>
+      slice(1) |>
+      select(
+        fantasy_points
+      ) |>
+      pull()
+
+    return(
+      c(
+        earned_points_from_trade,
+        lost_points_from_trade
+      )
+    )
+  }
 )
 ```
 
