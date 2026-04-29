@@ -117,6 +117,7 @@ get_schedule_info <- function(
 
   schedule_to_date <- schedule |>
     filter(
+      (game_date <= current_date) &
       !grepl(
         "^\\d{1,2}:\\d{2}\\s(am|pm)\\s(EST|EDT|CST|CDT|MST|MDT|PST|PDT)$",
         game_status
