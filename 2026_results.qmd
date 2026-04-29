@@ -122,6 +122,83 @@ expanded_roster_stats <- fantasy_teams_and_standings[
   compute_alt_awards()
 ```
 
+```{r "Compute trade effectiveness"}
+trade_results <- lapply(
+  names(roster_points_per_game),
+  function(team_name) {
+    earned_points_from_trade <- roster_points_per_game[[team_name]] |>
+      filter(
+        !is.na(acquired) & acquired < game_id
+      ) |> mutate(
+        fantasy_points = sum(
+          c(
+            goals,
+            assists,
+            wins,
+            wins,
+            ot_losses
+          )
+        )
+      ) |>
+      slice(1) |>
+      select(
+        fantasy_points
+      ) |>
+      pull()
+
+    lost_points_from_trade <- roster_points_per_game[[team_name]] |>
+      filter(
+        !is.na(let_go) & let_go < game_id
+      ) |> mutate(
+        fantasy_points = sum(
+          c(
+            goals,
+            assists,
+            wins,
+            wins,
+            ot_losses
+          )
+        )
+      ) |>
+      slice(1) |>
+      select(
+        fantasy_points
+      ) |>
+      pull()
+
+    if (
+      identical(
+      earned_points_from_trade,
+        numeric(0)
+      )
+    ) {
+      earned_points_from_trade <- 0
+    }
+
+    if (
+      identical(
+      lost_points_from_trade,
+        numeric(0)
+      )
+    ) {
+      lost_points_from_trade <- 0
+    }
+
+    return(
+      list(
+        earned_points_from_trade = earned_points_from_trade,
+        lost_points_from_trade = lost_points_from_trade
+      )
+    )
+  }
+)
+
+trade_results <- data.frame(
+  bind_rows(trade_results),
+  row.names = names(team_rosters)
+)
+```
+
 ## Categories
 
 - 🛼 Most/least points per player ⛸️
