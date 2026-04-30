@@ -25,6 +25,8 @@ current_date = today(
   tzone = "EST"
 )
 
+current_date = as.Date("2026-04-25")
+
 seasons_dates_and_types <- get_seasons_dates_and_types()
 
 season_dates_and_types <- seasons_dates_and_types["season_dates_and_types"][[1]]
@@ -173,24 +175,6 @@ standings_preseason <- compute_standings_changes_indicator(
 # Overview
 
 ## Row
-
-<!-- ## Row
-```{r, "announcement"}
-if (Sys.Date() >= as.Date("2026-04-23")) {
-  value_box(
-    title = "Stay tuned!",
-    showcase = bs_icon(
-      "trophy",
-      size = "6vh"
-    ),
-    value = tags$p(
-      "The site is frozen!! Finale results presented at awards ceremony at Alex and Noah's during playoffs.",
-      style = "font-size: 4vh;"
-    ),
-    theme = "danger"
-  )
-}
-``` -->
 
 ```{r "todays games"}
 if (
