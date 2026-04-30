@@ -1,0 +1,5 @@
+format:
+  revealjs:
+    incremental: true
+brand: _brand.yml
+background-image: static/slide_bg.png
