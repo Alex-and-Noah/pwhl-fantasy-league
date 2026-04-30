@@ -19,6 +19,7 @@ library(bsicons)
 library(ggimage)
 library(rsvg)
 library(janitor)
+library(DescTools)
 
 invisible(
   lapply(
