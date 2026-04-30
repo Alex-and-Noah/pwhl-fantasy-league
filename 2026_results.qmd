@@ -637,7 +637,7 @@ ggplot() +
       y = 0,
       image = team_images[[data$Team]]
     ),
-    size = 0.7
+    size = 0.6
   ) +
   theme_void() +
   theme(
