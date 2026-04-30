@@ -18,6 +18,10 @@ compute_fantasy_roster_points <- function(
     names(roster_points_per_game),
     function(team_name) {
       roster_points_per_game[[team_name]] |>
+        filter(
+          ((is.na(acquired)) | (acquired < game_id)) &
+            ((is.na(let_go)) | (game_id <= let_go))
+        ) |>
         group_by(
           player_id
         ) |>

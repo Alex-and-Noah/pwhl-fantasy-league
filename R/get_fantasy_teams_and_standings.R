@@ -109,6 +109,12 @@ get_fantasy_teams_and_standings <- function(
     schedule
   )
 
+  expanded_roster_stats <- get_expanded_roster_stats_per_game(
+    team_rosters,
+    player_boxes_per_game,
+    schedule
+  )
+
   fantasy_roster_points <- compute_fantasy_roster_points(
     roster_points_per_game
   )
@@ -126,7 +132,8 @@ get_fantasy_teams_and_standings <- function(
       team_rosters = team_rosters,
       roster_points_per_game = roster_points_per_game,
       fantasy_roster_points = fantasy_roster_points,
-      standings = standings
+      standings = standings,
+      expanded_roster_stats = expanded_roster_stats
     )
   )
 }

@@ -25,8 +25,6 @@ current_date = today(
   tzone = "EST"
 )
 
-current_date = as.Date("2026-04-24")
-
 seasons_dates_and_types <- get_seasons_dates_and_types()
 
 season_dates_and_types <- seasons_dates_and_types["season_dates_and_types"][[1]]
@@ -104,6 +102,9 @@ roster_points_per_game <- fantasy_teams_and_standings[
 fantasy_roster_points <- fantasy_teams_and_standings[
   "fantasy_roster_points"
 ][[1]]
+expanded_roster_points_per_game <- fantasy_teams_and_standings[
+  "expanded_roster_stats"
+][[1]]
 
 standings <- compute_standings_changes_indicator(
   all_teams,
@@ -173,7 +174,7 @@ standings_preseason <- compute_standings_changes_indicator(
 
 ## Row
 
-## Row
+<!-- ## Row
 ```{r, "announcement"}
 if (Sys.Date() >= as.Date("2026-04-23")) {
   value_box(
@@ -189,7 +190,7 @@ if (Sys.Date() >= as.Date("2026-04-23")) {
     theme = "danger"
   )
 }
-```
+``` -->
 
 ```{r "todays games"}
 if (
