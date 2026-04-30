@@ -1,6 +1,12 @@
 ---
 title: "PWHL Fantasy League - 2025/2026 Results"
 author: "Alex & Noah"
+format: 
+  revealjs:
+    incremental: true
+brand: _brand.yml
+background-image: static/slide_bg.png
+
 ---
 
 ```{r imports}
@@ -419,7 +425,7 @@ rosters_concat_teams <- bind_rows(
   )
 ```
 
-## 🛼 MVP ⛸️ {transition="zoom" transition-speed="slow"}
+## 🛼 MVP ⛸️ {transition="zoom" transition-speed="slow" background-image="static/slide_bg.png"}
 
 ::: {.columns}
 
