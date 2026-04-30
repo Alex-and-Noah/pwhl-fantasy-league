@@ -38,9 +38,6 @@ current_date <- today(
   tzone = "EST"
 )
 
-
-current_date = as.Date("2026-04-25")
-
 seasons_dates_and_types <- get_seasons_dates_and_types()
 
 season_dates_and_types <- seasons_dates_and_types["season_dates_and_types"][[1]]
