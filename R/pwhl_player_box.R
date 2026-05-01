@@ -14,7 +14,9 @@ library(magrittr)
 #'   try(pwhl_player_box(game_id = 27))
 #' }
 
-pwhl_player_box <- function(game_id) {
+pwhl_player_box <- function(
+  game_id
+) {
   tryCatch(
     expr = {
       URL <- glue::glue(
@@ -66,8 +68,6 @@ pwhl_player_box <- function(game_id) {
       away_goalie$team_id <- r$visitingTeam$info$id
       home_skaters$team_id <- r$homeTeam$info$id
       away_skaters$team_id <- r$visitingTeam$info$id
-
-      # home_skatersi
 
       goalies <- dplyr::bind_rows(home_goalie, away_goalie)
       skaters <- dplyr::bind_rows(home_skaters, away_skaters)

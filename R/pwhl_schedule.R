@@ -3,7 +3,9 @@ library(magrittr)
 #' @title  **PWHL Schedule**
 #' @description PWHL Schedule lookup
 #'
-#' @param season Season (YYYY) to pull the schedule from, the concluding year in XXXX-YY format
+#' @param season_id Unique season identifier
+#' @param season Season (YYYY), the concluding year in XXXX-YY format
+#' @param game_type Game type of the season
 #' @return A data frame with schedule data
 #' @import jsonlite
 #' @import dplyr
@@ -12,13 +14,13 @@ library(magrittr)
 #' @export
 #' @examples
 #' \donttest{
-#'   try(pwhl_schedule(season = 2023))
+#'   try(pwhl_schedule(season_id=8))
 #' }
 
 pwhl_schedule <- function(
-  season = 2023,
-  game_type = "regular",
-  season_id = NULL
+  season_id = NULL,
+  season = 2025,
+  game_type = "regular"
 ) {
   if (
     is.null(

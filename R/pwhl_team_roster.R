@@ -28,10 +28,10 @@ library(lubridate)
 #' }
 
 pwhl_team_roster <- function(
-  season_id,
-  season_year,
-  teams,
-  team_id
+  season_id = 8,
+  season_year = 2025,
+  teams = NULL,
+  team_id = 1
 ) {
 
   # base_url <- "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=roster&team_id=1&season_id=2&key=694cfeed58c932ee&client_code=pwhl&site_id=8&league_id=1&lang=en&callback=angular.callbacks._h"

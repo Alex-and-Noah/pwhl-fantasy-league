@@ -3,6 +3,9 @@ library(magrittr)
 #' @title  **PWHL Teams**
 #' @description PWHL Teams lookup
 #'
+#' @param season_id Unique season identifier
+#' @param season Season (YYYY), the concluding year in XXXX-YY format
+#' @param game_type Game type of the season
 #' @return A data frame with team data
 #' @import jsonlite
 #' @import dplyr
@@ -11,13 +14,13 @@ library(magrittr)
 #' @export
 #' @examples
 #' \donttest{
-#'   try(pwhl_teams())
+#'   try(pwhl_teams(season_id=8))
 #' }
 
 pwhl_teams <- function(
-  season = 2023,
-  game_type = "preseason",
-  season_id = NULL
+  season_id = NULL,
+  season = 2025,
+  game_type = "regular"
 ) {
   if (
     is.null(
