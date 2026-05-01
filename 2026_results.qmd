@@ -425,7 +425,7 @@ rosters_concat_teams <- bind_rows(
   )
 ```
 
-## 🛼 MVP ⛸️ {transition="zoom" transition-speed="slow" background-image="static/slide_bg.png"}
+## 🛼 MVP ⛸️ {transition="zoom" transition-speed="slow"}
 
 ::: {.columns}
 
