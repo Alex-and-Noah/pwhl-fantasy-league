@@ -10,9 +10,9 @@ library(lubridate)
 #' @description PWHL Rosters lookup
 #'
 #' @param teams data.frame of PWHL teams
+#' @param team_label Label of the team to lookup
 #' @param season_id Season ID to pull the roster from
-#' @param team Team to pull the roster data for
-#' @param regular Bool for whether to pull regular or pre-season rosters
+#' @param season_year Season year of the season ID
 #' @return A data frame with roster data
 #' @import jsonlite
 #' @import tidyr
@@ -24,13 +24,14 @@ library(lubridate)
 #' @export
 #' @examples
 #' \donttest{
-#'   try(pwhl_team_roster(season_yr = 2023, team = "Toronto"))
+#'   try(pwhl_team_roster(teams = teams, team_label = "Boston", season_id = 8, season_year = 2025))
 #' }
 
 pwhl_team_roster <- function(
   teams,
   team_label,
-  season_id
+  season_id,
+  season_year
 ) {
   team_label_arg <- team_label
 
@@ -189,7 +190,7 @@ pwhl_team_roster <- function(
             time_length(
               as.Date(
                 paste0(
-                  season_yr,
+                  season_year,
                   "-01-01"
                 )
               ) -
@@ -209,13 +210,13 @@ pwhl_team_roster <- function(
             TRUE,
             FALSE
           ),
-          season_yr = season_yr,
+          season_year = season_year,
           player_id = as.numeric(player_id),
           team_id = as.numeric(team_id),
           team = team_label_arg
         ) %>%
         relocate("team_id", .after = player_id) %>%
-        relocate("season_yr", .after = team_id)
+        relocate("season_year", .after = team_id)
     },
     error = function(e) {
       message(
