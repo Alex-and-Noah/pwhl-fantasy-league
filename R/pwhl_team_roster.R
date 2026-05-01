@@ -9,10 +9,10 @@ library(lubridate)
 #' @title  **PWHL Rosters**
 #' @description PWHL Rosters lookup
 #'
-#' @param teams data.frame of PWHL teams
-#' @param team_label Label of the team to lookup
 #' @param season_id Season ID to pull the roster from
 #' @param season_year Season year of the season ID
+#' @param teams data.frame of PWHL teams
+#' @param team_id ID of the team to lookup
 #' @return A data frame with roster data
 #' @import jsonlite
 #' @import tidyr
@@ -24,23 +24,15 @@ library(lubridate)
 #' @export
 #' @examples
 #' \donttest{
-#'   try(pwhl_team_roster(teams = teams, team_label = "Boston", season_id = 8, season_year = 2025))
+#'   try(pwhl_team_roster(teams = teams, team_id = 1, season_id = 8, season_year = 2025))
 #' }
 
 pwhl_team_roster <- function(
-  teams,
-  team_label,
   season_id,
-  season_year
+  season_year,
+  teams,
+  team_id
 ) {
-  team_label_arg <- team_label
-
-  team_id <- teams |>
-    filter(
-      team_label == team_label_arg
-    ) |>
-    select(team_id) |>
-    pull()
 
   # base_url <- "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=roster&team_id=1&season_id=2&key=694cfeed58c932ee&client_code=pwhl&site_id=8&league_id=1&lang=en&callback=angular.callbacks._h"
   full_url <- paste0(
@@ -67,7 +59,7 @@ pwhl_team_roster <- function(
     "",
     res
   )
-  # res <- gsub("}}]}]}]})", "}}]}]}]}", res)
+
   res <- gsub(
     "]}]}]})",
     "]}]}]}",
@@ -92,92 +84,41 @@ pwhl_team_roster <- function(
   tryCatch(
     expr = {
       for (i in seq_along(players)) {
-        # i = 1
 
         if (players[[i]]$title %in% player_types) {
-          # print('yes')
+
+          roster_data_for_player_type <- data.frame()
 
           for (p in seq_along(players[[i]]$data)) {
-            if (is.null(players[[i]]$data[[p]]$row$shoots)) {
-              hand <- players[[i]]$data[[p]]$row$catches
-            } else {
-              hand <- players[[i]]$data[[p]]$row$shoots
-            }
-
-            "player_id" %in% names(players[[i]]$data[[p]]$row)
-
-            suppressWarnings(
-              player_info <- data.frame(
-                "player_id" = c(
-                  if ("player_id" %in% names(players[[i]]$data[[p]]$row)) {
-                    players[[i]]$data[[p]]$row$player_id
-                  } else {
-                    NA
-                  }
-                ),
-                "player_name" = c(
-                  if ("name" %in% names(players[[i]]$data[[p]]$row)) {
-                    players[[i]]$data[[p]]$row$name
-                  } else {
-                    NA
-                  }
-                ),
-                "jersey_number" = c(
-                  if (
-                    "tp_jersey_number" %in% names(players[[i]]$data[[p]]$row)
-                  ) {
-                    players[[i]]$data[[p]]$row$tp_jersey_number
-                  } else {
-                    NA
-                  }
-                ),
-                "primary_hand" = c(hand),
-                "dob" = c(
-                  if ("birthdate" %in% names(players[[i]]$data[[p]]$row)) {
-                    players[[i]]$data[[p]]$row$birthdate
-                  } else {
-                    NA
-                  }
-                ),
-                "height" = c(
-                  if (
-                    "height_hyphenated" %in% names(players[[i]]$data[[p]]$row)
-                  ) {
-                    players[[i]]$data[[p]]$row$height_hyphenated
-                  } else {
-                    NA
-                  }
-                ),
-                "position" = c(
-                  if ("position" %in% names(players[[i]]$data[[p]]$row)) {
-                    players[[i]]$data[[p]]$row$position
-                  } else {
-                    NA
-                  }
-                ),
-                "home_town" = c(
-                  if ("hometown" %in% names(players[[i]]$data[[p]]$row)) {
-                    players[[i]]$data[[p]]$row$hometown
-                  } else {
-                    NA
-                  }
-                )
-              ) %>%
-                separate(
-                  player_name,
-                  into = c("first_name", "last_name"),
-                  remove = FALSE,
-                  sep = " "
-                )
-            )
-
-            # players[[i]]$data[[p]]$prop
-
-            roster_data <- rbind(
-              roster_data,
-              player_info
+            roster_data_for_player_type <- dplyr::bind_rows(
+              roster_data_for_player_type,
+              data.frame(
+                players[[i]]$data[[p]]$row
+              )
             )
           }
+
+          if (is.null(players[[i]]$data[[p]]$row$shoots)) {
+            roster_data_for_player_type <- roster_data_for_player_type |> mutate(
+              hand = catches
+            ) |>
+            select(
+              -catches
+            )
+          } else {
+            roster_data_for_player_type <- roster_data_for_player_type |> mutate(
+              hand = shoots
+            ) |>
+            select(
+              -shoots
+            )
+          }
+
+          roster_data <- dplyr::bind_rows(
+            roster_data,
+            roster_data_for_player_type
+          )
+
         } else {
           next
         }
@@ -195,7 +136,7 @@ pwhl_team_roster <- function(
                 )
               ) -
                 as.Date(
-                  .data$dob
+                  .data$birthdate
                 ),
               "years"
             )
@@ -212,11 +153,8 @@ pwhl_team_roster <- function(
           ),
           season_year = season_year,
           player_id = as.numeric(player_id),
-          team_id = as.numeric(team_id),
-          team = team_label_arg
-        ) %>%
-        relocate("team_id", .after = player_id) %>%
-        relocate("season_year", .after = team_id)
+          team_id = as.numeric(team_id)
+        )
     },
     error = function(e) {
       message(

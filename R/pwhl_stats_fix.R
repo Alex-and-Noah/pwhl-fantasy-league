@@ -3,10 +3,10 @@ library(magrittr)
 #' @title  **PWHL Stats**
 #' @description PWHL Stats lookup
 #'
+#' @param season_id Season ID to pull the roster from
+#' @param teams data.frame of PWHL teams
+#' @param team_id ID of the team to lookup
 #' @param position either goalie or skater. If skater, need to select a team.
-#' @param season_yr Season year (YYYY) to pull the roster from, the concluding year in XXXX-YY format
-#' @param team Team to pull the roster data for
-#' @param regular Bool for whether to pull regular or pre-season rosters
 #' @return A data frame with roster data
 #' @import jsonlite
 #' @import dplyr
@@ -16,19 +16,11 @@ library(magrittr)
 #' @export
 
 pwhl_stats_fix <- function(
-  position = "goalie",
-  team_label = "Boston",
+  season_id = 2,
   teams = NULL,
-  season_id = 2
+  team_id = 1,
+  position = "goalie"
 ) {
-  team_label_arg <- team_label
-
-  team_id <- teams |>
-    filter(
-      team_label == team_label_arg
-    ) |>
-    select(team_id) |>
-    pull()
 
   tryCatch(
     expr = {
