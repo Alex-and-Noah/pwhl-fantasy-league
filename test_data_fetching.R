@@ -28,3 +28,15 @@ season_id <- get_season_id_of_current_date(
   current_date,
   season_schedules_by_id
 )
+
+next_game_day <- season_schedules_by_id[[
+  season_id
+]]$schedule |>
+  filter(
+    current_date <= game_date
+  ) |>
+  first() |>
+  select(
+    game_date
+  ) |>
+  pull()
