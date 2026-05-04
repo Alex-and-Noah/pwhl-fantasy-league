@@ -23,3 +23,8 @@ current_date = today(
 current_date = as.Date("2026-04-25")
 
 season_schedules_by_id <- get_season_schedules_by_id()
+
+season_id <- get_season_id_of_current_date(
+  current_date,
+  season_schedules_by_id
+)
