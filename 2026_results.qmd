@@ -60,7 +60,7 @@ season_id <- days_for_current_date$season_id |>
   as.numeric()
 season_id_for_schedule <- days_for_current_date$season_id_for_schedule |>
   as.numeric()
-season_yr <- days_for_current_date$season_yr |>
+season_year <- days_for_current_date$season_year |>
   as.numeric()
 game_type <- days_for_current_date$game_type |>
   as.character()
@@ -69,7 +69,7 @@ game_type <- days_for_current_date$game_type |>
 ```{r "Get team data"}
 team_data_frames <- get_all_teams(
   season_id,
-  season_yr,
+  season_year,
   game_type
 )
 

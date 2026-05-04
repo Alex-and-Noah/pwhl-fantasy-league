@@ -80,12 +80,12 @@ get_days_for_current_date <- function(
       season_id
     )
   ) {
-    season_yr = season_dates_and_types |>
+    season_year = season_dates_and_types |>
       filter(
         season_id == .env$season_id
       ) |>
       select(
-        season_yr
+        season_year
       ) |>
       as.numeric()
 
@@ -104,7 +104,7 @@ get_days_for_current_date <- function(
       next_game_day_date = next_game_day_date,
       season_id = season_id,
       season_id_for_schedule = season_id_for_schedule,
-      season_yr = season_yr,
+      season_year = season_year,
       game_type = game_type
     )
   )

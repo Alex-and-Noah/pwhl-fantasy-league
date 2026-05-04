@@ -28,7 +28,7 @@ pwhl_teams <- function(
     )
   ) {
     seasons <- pwhl_season_id() %>%
-      dplyr::filter(season_yr == season, game_type_label == game_type)
+      dplyr::filter(season_year == season, game_type_label == game_type)
 
     season_id <- seasons$season_id
   }

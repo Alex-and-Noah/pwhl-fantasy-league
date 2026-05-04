@@ -19,7 +19,7 @@ pwhl_season_id <- function(
   game_type = "regular"
 ) {
   season_id <- data.frame(
-    "season_yr" = c(
+    "season_year" = c(
       2024,
       2024,
       2024,
