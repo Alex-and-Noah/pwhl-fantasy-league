@@ -40,3 +40,12 @@ next_game_day <- season_schedules_by_id[[
     game_date
   ) |>
   pull()
+
+team_info <- get_team_info(
+  season_id
+)
+
+team_stats <- get_team_stats(
+  season_id,
+  team_info
+)
