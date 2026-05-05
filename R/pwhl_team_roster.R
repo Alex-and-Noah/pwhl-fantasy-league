@@ -29,11 +29,10 @@ library(lubridate)
 
 pwhl_team_roster <- function(
   season_id = 8,
-  season_year = 2025,
-  teams = NULL,
+  # season_year = 2025,
+  team_info = NULL,
   team_id = 1
 ) {
-
   # base_url <- "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=roster&team_id=1&season_id=2&key=694cfeed58c932ee&client_code=pwhl&site_id=8&league_id=1&lang=en&callback=angular.callbacks._h"
   full_url <- paste0(
     "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=roster&team_id=",
@@ -84,9 +83,7 @@ pwhl_team_roster <- function(
   tryCatch(
     expr = {
       for (i in seq_along(players)) {
-
         if (players[[i]]$title %in% player_types) {
-
           roster_data_for_player_type <- data.frame()
 
           for (p in seq_along(players[[i]]$data)) {
@@ -99,26 +96,27 @@ pwhl_team_roster <- function(
           }
 
           if (is.null(players[[i]]$data[[p]]$row$shoots)) {
-            roster_data_for_player_type <- roster_data_for_player_type |> mutate(
-              hand = catches
-            ) |>
-            select(
-              -catches
-            )
+            roster_data_for_player_type <- roster_data_for_player_type |>
+              mutate(
+                hand = catches
+              ) |>
+              select(
+                -catches
+              )
           } else {
-            roster_data_for_player_type <- roster_data_for_player_type |> mutate(
-              hand = shoots
-            ) |>
-            select(
-              -shoots
-            )
+            roster_data_for_player_type <- roster_data_for_player_type |>
+              mutate(
+                hand = shoots
+              ) |>
+              select(
+                -shoots
+              )
           }
 
           roster_data <- dplyr::bind_rows(
             roster_data,
             roster_data_for_player_type
           )
-
         } else {
           next
         }
@@ -127,20 +125,20 @@ pwhl_team_roster <- function(
       roster_data <- roster_data %>%
         mutate(
           league = "pwhl",
-          age = round(
-            time_length(
-              as.Date(
-                paste0(
-                  season_year,
-                  "-01-01"
-                )
-              ) -
-                as.Date(
-                  .data$birthdate
-                ),
-              "years"
-            )
-          ),
+          # age = round(
+          #   time_length(
+          #     as.Date(
+          #       paste0(
+          #         season_year,
+          #         "-01-01"
+          #       )
+          #     ) -
+          #       as.Date(
+          #         .data$birthdate
+          #       ),
+          #     "years"
+          #   )
+          # ),
           player_headshot = paste0(
             "https://assets.leaguestat.com/pwhl/240x240/",
             .data$player_id,
@@ -151,7 +149,7 @@ pwhl_team_roster <- function(
             TRUE,
             FALSE
           ),
-          season_year = season_year,
+          # season_year = season_year,
           player_id = as.numeric(player_id),
           team_id = as.numeric(team_id)
         )

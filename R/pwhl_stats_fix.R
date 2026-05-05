@@ -4,7 +4,7 @@ library(magrittr)
 #' @description PWHL Stats lookup
 #'
 #' @param season_id Season ID to pull the roster from
-#' @param teams data.frame of PWHL teams
+#' @param teams_info data.frame of PWHL teams
 #' @param team_id ID of the team to lookup
 #' @param position either goalie or skater. If skater, need to select a team.
 #' @return A data frame with roster data
@@ -17,15 +17,13 @@ library(magrittr)
 
 pwhl_stats_fix <- function(
   season_id = 2,
-  teams = NULL,
+  team_info = NULL,
   team_id = 1,
   position = "goalie"
 ) {
-
   tryCatch(
     expr = {
       if (position == "goalie") {
-
         URL <- glue::glue(
           "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team=all&position=goalies&rookies=0&statsType=expanded&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=gaa&league_id=1&lang=en&division=-1&qualified=all&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._5"
         )
@@ -103,7 +101,10 @@ pwhl_stats_fix <- function(
           ) %>%
           tidyr::separate(
             "ice_time_per_game_avg",
-            into = c("avg_ice_time_minutes_per_game", "avg_ice_time_seconds_per_game"),
+            into = c(
+              "avg_ice_time_minutes_per_game",
+              "avg_ice_time_seconds_per_game"
+            ),
             sep = ":",
             remove = FALSE
           )

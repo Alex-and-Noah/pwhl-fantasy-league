@@ -16,11 +16,11 @@ invisible(
   )
 )
 
-current_date = today(
+current_date <- today(
   tzone = "EST"
 )
 
-current_date = as.Date("2026-04-25")
+current_date <- as.Date("2026-04-25")
 
 season_schedules_by_id <- get_season_schedules_by_id()
 

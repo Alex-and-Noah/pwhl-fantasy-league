@@ -18,21 +18,8 @@ library(magrittr)
 #' }
 
 pwhl_teams <- function(
-  season_id = NULL,
-  season = 2025,
-  game_type = "regular"
+  season_id = NULL
 ) {
-  if (
-    is.null(
-      season_id
-    )
-  ) {
-    seasons <- pwhl_season_id() %>%
-      dplyr::filter(season_year == season, game_type_label == game_type)
-
-    season_id <- seasons$season_id
-  }
-
   full_url = glue::glue(
     "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=teamsForSeason&season={season_id}&key=694cfeed58c932ee&client_code=pwhl&site_id=2&callback=angular.callbacks._4"
   )
@@ -56,7 +43,7 @@ pwhl_teams <- function(
 
   tryCatch(
     expr = {
-      for (i in 1:length(team_info)) {
+      for (i in seq_along(team_info)) {
         team_df <- data.frame(
           "team_id" = c(team_info[[i]]$id),
           "team_name" = c(team_info[[i]]$name),
@@ -67,7 +54,7 @@ pwhl_teams <- function(
         )
 
         if (season_id >= 7) {
-          team_code = c(
+          team_code <- c(
             "BOS",
             "MIN",
             "MTL",
@@ -78,7 +65,7 @@ pwhl_teams <- function(
             "VAN"
           )
 
-          team_label = c(
+          team_label <- c(
             "Boston",
             "Minnesota",
             "Montreal",
@@ -89,7 +76,7 @@ pwhl_teams <- function(
             "Vancouver"
           )
         } else {
-          team_code = c(
+          team_code <- c(
             "BOS",
             "MIN",
             "MTL",
@@ -98,7 +85,7 @@ pwhl_teams <- function(
             "TOR"
           )
 
-          team_label = c(
+          team_label <- c(
             "Boston",
             "Minnesota",
             "Montreal",
