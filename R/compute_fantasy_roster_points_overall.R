@@ -10,7 +10,7 @@ library(magrittr)
 #' @import magrittr
 #' @export
 
-compute_fantasy_roster_points <- function(
+compute_fantasy_roster_points_overall <- function(
   fantasy_team_roster
 ) {
 

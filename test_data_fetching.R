@@ -52,8 +52,14 @@ team_stats <- get_team_stats(
   team_info
 )
 
-fantasy_teams <- get_fantasy_teams(
+player_boxes_per_game <- get_player_boxes_per_game(
   current_schedule,
   team_stats
+)
+
+fantasy_teams <- get_fantasy_teams(
+  current_schedule,
+  team_stats,
+  player_boxes_per_game
 )
 

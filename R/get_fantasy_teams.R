@@ -4,10 +4,8 @@ library(tibble)
 #' @title  **Get PWHL Fantasy Teams and Points**
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
 #'
-#' @param all_teams All PWHL player info and stats
-#' @param schedule_to_date Current season schedule up to current_date
 #' @param schedule Entire schedule for current season
-#' @param team_colours Named vector of team colours
+#' @param team_stats All PWHL player info and stats
 #' @return data.frames of fantasy team/roster scores and standings
 #' @export
 
@@ -81,7 +79,7 @@ get_fantasy_teams <- function(
       ] |>
       as.list()
     ) |>
-    compute_fantasy_roster_points()
+    compute_fantasy_roster_points_overall()
 
     fantasy_teams[[
       df$team_name[[i]]
