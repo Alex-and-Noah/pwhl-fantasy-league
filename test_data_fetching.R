@@ -29,9 +29,11 @@ season_id <- get_season_id_of_current_date(
   season_schedules_by_id
 )
 
-next_game_day <- season_schedules_by_id[[
+current_schedule <- season_schedules_by_id[[
   season_id
-]]$schedule |>
+]]$schedule
+
+next_game_day <- current_schedule |>
   filter(
     current_date <= game_date
   ) |>
@@ -48,4 +50,9 @@ team_info <- get_team_info(
 team_stats <- get_team_stats(
   season_id,
   team_info
+)
+
+fantasy_teams <- get_fantasy_teams(
+  current_schedule,
+  team_stats
 )

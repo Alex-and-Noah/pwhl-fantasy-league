@@ -1,6 +1,7 @@
 library(readr)
 library(stringr)
 library(data.table)
+library(lubridate)
 
 #' @title  **Import a Google Sheet**
 #' @description Import a Google Sheet
@@ -17,7 +18,7 @@ library(data.table)
 get_google_sheet <- function(
   url = "https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI",
   format = "csv",
-  sheet_id = NULL
+  sheet_id = 0
 ) {
   # Taken from Max Conway: https://github.com/maxconway/gsheet/tree/master
   key <- stringr::str_extract(
@@ -67,6 +68,30 @@ get_google_sheet <- function(
   ) |>
     transpose(
       make.names = 1
+    )
+
+  is_valid_hex_color <- function(color) {
+    if (
+      grepl(
+        "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
+        color
+      )
+    ) {
+      return(color)
+    } else {
+      return(sample(colors(), 1))
+    }
+  }
+
+  v <- Vectorize(is_valid_hex_color)
+
+  df <- df |>
+    mutate(
+      team_colour = v(team_colour),
+      trade_date = trade_date |>
+        as.Date(
+          "%m/%d/%Y"
+        )
     )
 
   return(df)

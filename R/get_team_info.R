@@ -22,8 +22,12 @@ get_team_info <- function(
   )
 
   team_colours <- fromJSON(
-    "D:/git/pwhl-fantasy-league/static/json/team_colours.json"
+    "C:/git/pwhl-fantasy-league/static/json/team_colours.json"
   )
+  
+  # team_colours <- fromJSON(
+  #   "D:/git/pwhl-fantasy-league/static/json/team_colours.json"
+  # )
 
   team_info <- team_info |>
     mutate(
