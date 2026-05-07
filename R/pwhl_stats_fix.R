@@ -60,7 +60,32 @@ pwhl_stats_fix <- function(
             into = c("minutes_played", "seconds_played"),
             sep = ":",
             remove = FALSE
+          ) |>
+          mutate(
+            across(
+              c(
+                player_id,
+                rookie,
+                active,
+                games_played,
+                minutes_played,
+                seconds_played,
+                shots,
+                save_percentage,
+                goals_against,
+                shutouts,
+                wins,
+                losses,
+                shootout_goals_against,
+                shootout_attempts,
+                shootout_percentage,
+                goals_against_average,
+                rank
+              ),
+              as.numeric
+            )
           )
+          
       } else {
         URL <- glue::glue(
           "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team={team_id}&position=skaters&rookies=0&statsType=standard&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=points&league_id=1&lang=en&division=-1&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._6"
@@ -107,6 +132,41 @@ pwhl_stats_fix <- function(
             ),
             sep = ":",
             remove = FALSE
+          ) |>
+          mutate(
+            across(
+              c(
+                player_id,
+                active,
+                rookie,
+                games_played,
+                goals,
+                shots,
+                hits,
+                shots_blocked_by_player,
+                ice_time_minutes,
+                ice_time_seconds,
+                shooting_percentage,
+                assists,
+                points,
+                points_per_game,
+                plus_minus,
+                penalty_minutes,
+                penalty_minutes_per_game,
+                avg_ice_time_minutes_per_game,
+                avg_ice_time_seconds_per_game,
+                hits_per_game_avg,
+                power_play_goals,
+                power_play_assists,
+                short_handed_goals,
+                short_handed_assists,
+                faceoff_attempts,
+                faceoff_wins,
+                faceoff_pct,
+                rank
+              ),
+              as.numeric
+            )
           )
       }
     },

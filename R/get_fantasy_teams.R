@@ -59,22 +59,6 @@ get_fantasy_teams <- function(
     fantasy_teams[[
       df$team_name[[i]]
     ]][[
-      "info"
-    ]] <- df[
-      i,
-      c(
-        "team_colour",
-        "team_image",
-        "trade_date",
-        "old_player",
-        "new_player",
-        "last_game_row_name_of_trade_date"
-      )
-    ]
-
-    fantasy_teams[[
-      df$team_name[[i]]
-    ]][[
       "roster"
     ]] <- filter_for_roster_names(
       team_stats,
@@ -94,7 +78,40 @@ get_fantasy_teams <- function(
           "goalie_1",
           "goalie_2"
         )
-      ] |> as.list()
+      ] |>
+      as.list()
+    ) |>
+    compute_fantasy_roster_points()
+
+    fantasy_teams[[
+      df$team_name[[i]]
+    ]][[
+      "info"
+    ]] <- df[
+      i,
+      c(
+        "team_colour",
+        "team_image",
+        "trade_date",
+        "old_player",
+        "new_player",
+        "last_game_row_name_of_trade_date"
+      )
+    ] |>
+    mutate(
+      fantasy_points = sum(
+        fantasy_teams[[
+          df$team_name[[i]]
+        ]][[
+          "roster"
+        ]]$skaters$fantasy_points
+      ) + sum(
+        fantasy_teams[[
+          df$team_name[[i]]
+        ]][[
+          "roster"
+        ]]$goalies$fantasy_points
+      )
     )
   }
 

@@ -2,74 +2,27 @@ library(dplyr)
 library(magrittr)
 
 #' @title  **Compute PWHL Fantasy Roster Points**
-#' @description Compute PWHL fantasy roster points to date.
+#' @description Compute PWHL fantasy roster points based on the roster's stats.
 #'
-#' @param roster_points_per_game list of data.frames of points earned by each fantasy
-#' team, per game
-#' @return A list of data frames with aggregated fantasy roster points
+#' @param fantasy_team_roster Named of data.frames representing the fantasy team's roster
+#' @return fantasy team roster appended with fantasy point contributions
 #' @import dplyr
 #' @import magrittr
 #' @export
 
 compute_fantasy_roster_points <- function(
-  roster_points_per_game
+  fantasy_team_roster
 ) {
-  fantasy_roster_points <- lapply(
-    names(roster_points_per_game),
-    function(team_name) {
-      roster_points_per_game[[team_name]] |>
-        filter(
-          ((is.na(acquired)) | (acquired < game_id)) &
-            ((is.na(let_go)) | (game_id <= let_go))
-        ) |>
-        group_by(
-          player_id
-        ) |>
-        mutate(
-          across(
-            c(
-              goals,
-              assists,
-              wins,
-              ot_losses
-            ),
-            sum
-          )
-        ) |>
-        select(-game_id) |>
-        slice(1) |>
-        mutate(
-          fantasy_points = sum(
-            c(
-              goals,
-              assists,
-              wins,
-              wins,
-              ot_losses
-            )
-          )
-        ) %>%
-        rbind(
-          list(
-            player_id = -1,
-            first_name = "",
-            last_name = "",
-            position = "",
-            team_id = -1,
-            goals = sum(.$goals),
-            assists = sum(.$assists),
-            wins = sum(.$wins),
-            ot_losses = sum(.$ot_losses),
-            acquired = "",
-            let_go = "",
-            fantasy_points = sum(.$fantasy_points)
-          )
-        ) |>
-        ungroup()
-    }
-  )
 
-  names(fantasy_roster_points) <- names(roster_points_per_game)
+  fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+    mutate(
+      fantasy_points = 2*goals + assists
+    )
 
-  return(fantasy_roster_points)
+  fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+    mutate(
+      fantasy_points = 0.05*(shots - goals_against)
+    )
+
+  return(fantasy_team_roster)
 }

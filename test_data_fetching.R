@@ -56,3 +56,4 @@ fantasy_teams <- get_fantasy_teams(
   current_schedule,
   team_stats
 )
+
