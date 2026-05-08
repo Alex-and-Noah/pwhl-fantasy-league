@@ -4,14 +4,16 @@ library(tibble)
 #' @title  **Get PWHL Fantasy Teams and Points**
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
 #'
-#' @param schedule Entire schedule for current season
+#' @param current_schedule Entire schedule for current season
 #' @param team_stats All PWHL player info and stats
+#' @param player_boxes_per_game Player boxes for each game of the current season
 #' @return data.frames of fantasy team/roster scores and standings
 #' @export
 
 get_fantasy_teams <- function(
-  schedule,
-  team_stats
+  current_schedule,
+  team_stats,
+  player_boxes_per_game
 ) {
 
   df <- get_google_sheet()
@@ -19,7 +21,7 @@ get_fantasy_teams <- function(
   df <- left_join(
     df,
     rownames_to_column(
-      schedule,
+      current_schedule,
       var = "last_game_row_name_of_trade_date"
     ),
     by = join_by(
@@ -57,6 +59,22 @@ get_fantasy_teams <- function(
     fantasy_teams[[
       df$team_name[[i]]
     ]][[
+      "info"
+    ]] <- df[
+      i,
+      c(
+        "team_colour",
+        "team_image",
+        "trade_date",
+        "old_player",
+        "new_player",
+        "last_game_row_name_of_trade_date"
+      )
+    ]
+
+    fantasy_teams[[
+      df$team_name[[i]]
+    ]][[
       "roster"
     ]] <- filter_for_roster_names(
       team_stats,
@@ -79,38 +97,45 @@ get_fantasy_teams <- function(
       ] |>
       as.list()
     ) |>
-    compute_fantasy_roster_points_overall()
-
-    fantasy_teams[[
-      df$team_name[[i]]
-    ]][[
-      "info"
-    ]] <- df[
-      i,
-      c(
-        "team_colour",
-        "team_image",
-        "trade_date",
-        "old_player",
-        "new_player",
-        "last_game_row_name_of_trade_date"
-      )
-    ] |>
-    mutate(
-      fantasy_points = sum(
-        fantasy_teams[[
-          df$team_name[[i]]
-        ]][[
-          "roster"
-        ]]$skaters$fantasy_points
-      ) + sum(
-        fantasy_teams[[
-          df$team_name[[i]]
-        ]][[
-          "roster"
-        ]]$goalies$fantasy_points
-      )
+    compute_fantasy_roster_points_overall(
+      fantasy_teams[[
+        df$team_name[[i]]
+      ]][[
+        "info"
+      ]],
+      player_boxes_per_game
     )
+
+    # fantasy_teams[[
+    #   df$team_name[[i]]
+    # ]][[
+    #   "info"
+    # ]] <- df[
+    #   i,
+    #   c(
+    #     "team_colour",
+    #     "team_image",
+    #     "trade_date",
+    #     "old_player",
+    #     "new_player",
+    #     "last_game_row_name_of_trade_date"
+    #   )
+    # ] |>
+    # mutate(
+    #   fantasy_points = sum(
+    #     fantasy_teams[[
+    #       df$team_name[[i]]
+    #     ]][[
+    #       "roster"
+    #     ]]$skaters$fantasy_points
+    #   ) + sum(
+    #     fantasy_teams[[
+    #       df$team_name[[i]]
+    #     ]][[
+    #       "roster"
+    #     ]]$goalies$fantasy_points
+    #   )
+    # )
   }
 
   return(

@@ -21,6 +21,7 @@ current_date <- today(
 )
 
 current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2025-11-17")
 
 season_schedules_by_id <- get_season_schedules_by_id()
 
@@ -53,8 +54,7 @@ team_stats <- get_team_stats(
 )
 
 player_boxes_per_game <- get_player_boxes_per_game(
-  current_schedule,
-  team_stats
+  current_schedule
 )
 
 fantasy_teams <- get_fantasy_teams(
