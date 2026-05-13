@@ -16,34 +16,7 @@ compute_fantasy_roster_points_overall <- function(
   player_boxes_per_game
 ) {
 
-  fantasy_team_roster$skaters <- fantasy_team_roster$skaters %>%
-    mutate(
-      fantasy_points =  lapply(
-        player_boxes_per_game,
-        function(x) {
-          x$skaters |>
-            filter(
-              name == .$name
-            )
-        }
-      ) |> 
-      bind_rows() |>
-      summarise(
-        sum(
-          fantasy_points
-        )
-      )
-    )
-
-  fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
-    mutate(
-      fantasy_points = 0.05*(shots - goals_against)
-    )
-
-  return(fantasy_team_roster)
-
-  fantasy_team_roster$skaters %>%
-  lapply(
+  fantasy_points_per_skater <- lapply(
     player_boxes_per_game,
     function(x) {
       x$skaters |>
@@ -51,13 +24,45 @@ compute_fantasy_roster_points_overall <- function(
           name %in% fantasy_team_roster$skaters$name
         )
     }
+  ) |> 
+  bind_rows() |>
+  group_by(
+    name
+  ) |>
+  summarise(
+    fantasy_points = sum(
+      fantasy_points
+    )
   )
 
-  skaters = team_stats %>%
-        map_df(
-          ~filter(
-            .$skaters,
-            name %in% player_names
-          )
+  fantasy_points_per_goalie <- lapply(
+    player_boxes_per_game,
+    function(x) {
+      x$goalies |>
+        filter(
+          name %in% fantasy_team_roster$goalies$name
         )
+    }
+  ) |> 
+  bind_rows() |>
+  group_by(
+    name
+  ) |>
+  summarise(
+    fantasy_points = sum(
+      fantasy_points
+    )
+  )
+
+  fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+    merge(
+      fantasy_points_per_skater
+    )
+
+  fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+    merge(
+      fantasy_points_per_goalie
+    )
+
+  return(fantasy_team_roster)
 }
