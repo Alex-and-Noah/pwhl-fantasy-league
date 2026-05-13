@@ -105,37 +105,6 @@ get_fantasy_teams <- function(
       ]],
       player_boxes_per_game
     )
-
-    # fantasy_teams[[
-    #   df$team_name[[i]]
-    # ]][[
-    #   "info"
-    # ]] <- df[
-    #   i,
-    #   c(
-    #     "team_colour",
-    #     "team_image",
-    #     "trade_date",
-    #     "old_player",
-    #     "new_player",
-    #     "last_game_row_name_of_trade_date"
-    #   )
-    # ] |>
-    # mutate(
-    #   fantasy_points = sum(
-    #     fantasy_teams[[
-    #       df$team_name[[i]]
-    #     ]][[
-    #       "roster"
-    #     ]]$skaters$fantasy_points
-    #   ) + sum(
-    #     fantasy_teams[[
-    #       df$team_name[[i]]
-    #     ]][[
-    #       "roster"
-    #     ]]$goalies$fantasy_points
-    #   )
-    # )
   }
 
   return(
