@@ -17,158 +17,51 @@ invisible(
   )
 )
 
-pool <- 80
-```
-
-```{r "Get season dates and type"}
-current_date = today(
+current_date <- today(
   tzone = "EST"
 )
 
-current_date = as.Date("2026-04-25")
+current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2025-11-17")
 
-seasons_dates_and_types <- get_seasons_dates_and_types()
+season_schedules_by_id <- get_season_schedules_by_id()
 
-season_dates_and_types <- seasons_dates_and_types["season_dates_and_types"][[1]]
-season_schedules_by_id <- seasons_dates_and_types["season_schedules_by_id"][[1]]
-season_schedules_by_year <- seasons_dates_and_types[
-  "season_schedules_by_year"
-][[1]]
-
-days_for_current_date <- get_days_for_current_date(
+season_id <- get_season_id_of_current_date(
   current_date,
-  season_dates_and_types
+  season_schedules_by_id
 )
 
-next_game_day_date <- days_for_current_date$next_game_day_date |>
-  as.character()
-season_id <- days_for_current_date$season_id |>
-  as.numeric()
-season_id_for_schedule <- days_for_current_date$season_id_for_schedule |>
-  as.numeric()
-season_year <- days_for_current_date$season_year |>
-  as.numeric()
-game_type <- days_for_current_date$game_type |>
-  as.character()
-```
+current_schedule <- season_schedules_by_id[[
+  season_id
+]]$schedule
 
-```{r "Get team data"}
-team_data_frames <- get_all_teams(
+next_game_day <- current_schedule |>
+  filter(
+    current_date <= game_date
+  ) |>
+  first() |>
+  select(
+    game_date
+  ) |>
+  pull()
+
+team_info <- get_team_info(
+  season_id
+)
+
+team_stats <- get_team_stats(
   season_id,
-  season_year,
-  game_type
+  team_info
 )
 
-team_logo_urls <- team_data_frames["team_logo_urls"][[1]]
-teams <- team_data_frames["teams"][[1]]
-team_codes <- team_data_frames["team_codes"][[1]]
-all_teams <- team_data_frames["all_teams"][[1]]
-```
-
-```{r "Get schedule data"}
-schedules <- get_schedule_info(
-  season_id_for_schedule,
-  season_schedules_by_id,
-  team_codes,
-  team_logo_urls,
-  season_dates_and_types,
-  next_game_day_date,
-  current_date
+player_boxes_per_game <- get_player_boxes_per_game(
+  current_schedule
 )
 
-schedule <- schedules["schedule"][[1]] |>
-  mutate(
-    game_date = game_date |> as.Date()
-  )
-
-schedule_to_date <- schedules["schedule_to_date"][[1]]
-next_game_day_date <- schedules["next_game_day_date"][[1]]
-todays_games <- schedules["todays_games"][[1]]
-next_game_day <- schedules["next_game_day"][[1]]
-```
-
-```{r "Get Fantasy teams and standings"}
-fantasy_teams_and_standings <- get_fantasy_teams_and_standings(
-  all_teams,
-  schedule_to_date,
-  schedule,
-  team_colours
-)
-
-team_images <- fantasy_teams_and_standings["team_images"][[1]]
-team_colours <- fantasy_teams_and_standings["team_colours"][[1]]
-team_rosters <- fantasy_teams_and_standings["team_rosters"][[1]]
-roster_points_per_game <- fantasy_teams_and_standings[
-  "roster_points_per_game"
-][[1]]
-fantasy_roster_points <- fantasy_teams_and_standings[
-  "fantasy_roster_points"
-][[1]]
-expanded_roster_points_per_game <- fantasy_teams_and_standings[
-  "expanded_roster_stats"
-][[1]]
-
-standings <- compute_standings_changes_indicator(
-  all_teams,
-  schedule_to_date,
-  current_date,
-  schedule,
-  fantasy_teams_and_standings["standings"][[1]]
-)
-```
-
-```{r "Get preseason Fantasy teams and standings"}
-season_id_for_preseason <- case_when(
-  game_type == "preseason" ~ season_id,
-  game_type == "regular" ~ season_id - 1,
-  game_type == "playoffs" ~ season_id - 2,
-  TRUE ~ season_id
-)
-
-schedules_preseason <- get_schedule_info(
-  season_id_for_preseason,
-  season_schedules_by_id,
-  team_codes,
-  team_logo_urls,
-  season_dates_and_types,
-  next_game_day_date,
-  season_dates_and_types |>
-    filter(
-      season_id == season_id_for_preseason
-    ) |>
-    pull(end_date)
-)
-
-schedule_preseason <- schedules_preseason["schedule"][[1]] |>
-  mutate(
-    game_date = game_date |> as.Date()
-  )
-
-schedule_to_date_preseason <- schedules_preseason["schedule_to_date"][[1]]
-next_game_day_date_preseason <- schedules_preseason["next_game_day_date"][[1]]
-todays_games_preseason <- schedules_preseason["todays_games"][[1]]
-next_game_day_preseason <- schedules_preseason["next_game_day"][[1]]
-
-fantasy_teams_and_standings <- get_fantasy_teams_and_standings(
-  all_teams,
-  schedule_to_date_preseason,
-  schedule_preseason
-)
-
-team_rosters_preseason <- fantasy_teams_and_standings["team_rosters"][[1]]
-roster_points_per_game_preseason <- fantasy_teams_and_standings[
-  "roster_points_per_game"
-][[1]]
-fantasy_roster_points_preseason <- fantasy_teams_and_standings[
-  "fantasy_roster_points"
-][[1]]
-
-standings_preseason <- compute_standings_changes_indicator(
-  all_teams,
-  schedule_to_date_preseason,
-  current_date,
-  schedule_preseason,
-  fantasy_teams_and_standings["standings"][[1]]
+fantasy_teams <- get_fantasy_teams(
+  current_schedule,
+  team_stats,
+  player_boxes_per_game
 )
 ```
 
@@ -177,6 +70,32 @@ standings_preseason <- compute_standings_changes_indicator(
 ## Row
 
 ```{r "todays games"}
+
+todays_games <- current_schedule |>
+  filter(
+    game_date == current_date
+  ) |> merge(
+    team_info %>%
+      rename_with(
+        ~paste0(
+          "home_",
+          .
+        )
+      ),
+    by.x = "home_team",
+    by.y = "home_team_label"
+  ) |> merge(
+    team_info %>%
+      rename_with(
+        ~paste0(
+          "away_",
+          .
+        )
+      ),
+    by.x = "away_team",
+    by.y = "away_team_label"
+  )
+
 if (
   nrow(
     todays_games
