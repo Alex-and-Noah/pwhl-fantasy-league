@@ -32,22 +32,37 @@ compute_fantasy_roster_points_overall <- function(
     ) |> 
     keep(
       ~nrow(.x) > 0
-    ) |>
-    bind_rows() |>
-    group_by(
-      name
-    ) |>
-    summarise(
-      fantasy_points = sum(
-        fantasy_points
-      )
-    )
-
-    fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
-      merge(
+    ) |> 
+    bind_rows()
+    
+    if (
+      nrow(
         fantasy_points_per_skater
-      )
+      ) > 0
+    ) {
+      fantasy_points_per_skater <- fantasy_points_per_skater |>
+        group_by(
+          name
+        ) |>
+        summarise(
+          fantasy_points = sum(
+            fantasy_points
+          )
+        )
+
+      fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+        merge(
+          fantasy_points_per_skater
+        )
+    } else {
+      fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+        mutate(
+          fantasy_points = NA
+        )
+    }
+
   } else {
+
     fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
       mutate(
         fantasy_points = NA
@@ -71,20 +86,34 @@ compute_fantasy_roster_points_overall <- function(
     keep(
       ~nrow(.x) > 0
     ) |> 
-    bind_rows() |>
-    group_by(
-      name
-    ) |>
-    summarise(
-      fantasy_points = sum(
-        fantasy_points
-      )
-    )
-
-    fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
-      merge(
+    bind_rows()
+    
+    if (
+      nrow(
         fantasy_points_per_goalie
-      )
+      ) > 0
+    ) {
+      fantasy_points_per_goalie <- fantasy_points_per_goalie |>
+        group_by(
+          name
+        ) |>
+        summarise(
+          fantasy_points = sum(
+            fantasy_points
+          )
+        )
+
+      fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+        merge(
+          fantasy_points_per_goalie
+        )
+    } else {
+      fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+        mutate(
+          fantasy_points = NA
+        )
+    }
+
   } else {
 
     fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>

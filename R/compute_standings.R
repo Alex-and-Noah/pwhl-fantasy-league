@@ -20,6 +20,11 @@ compute_standings <- function(
     mutate(
       fantasy_team_name = names(fantasy_teams)
     ) |>
+    replace_na(
+      list(
+        fantasy_points = 0
+      )
+    ) |>
     arrange(
       -fantasy_points,
       fantasy_team_name

@@ -103,7 +103,16 @@ get_fantasy_teams <- function(
       ]][[
         "info"
       ]],
-      player_boxes_per_game
+      player_boxes_per_game[
+        current_schedule |>
+          filter(
+            game_date <= current_date
+          ) |>
+          select(
+            game_id
+          ) |>
+          pull()
+      ]
     )
 
     fantasy_teams[[
