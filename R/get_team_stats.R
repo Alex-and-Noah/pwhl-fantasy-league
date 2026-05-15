@@ -21,12 +21,12 @@ get_team_stats <- function(
     team_id <- team_info[
       i,
       "team_id"
-    ]
+    ][[1]]
 
     team_code <- team_info[
       i,
       "team_code"
-    ]
+    ][[1]]
 
     team_stats[[
       team_code

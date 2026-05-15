@@ -21,7 +21,7 @@ current_date <- today(
   tzone = "EST"
 )
 
-current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2025-11-17")
 
 season_schedules_by_id <- get_season_schedules_by_id()
@@ -62,6 +62,10 @@ fantasy_teams <- get_fantasy_teams(
   current_schedule,
   team_stats,
   player_boxes_per_game
+)
+
+standings <- compute_standings(
+  fantasy_teams
 )
 ```
 
@@ -212,17 +216,6 @@ if (
 ```{r "standings overview"}
 #| title: "Standings (with today's changes)"
 
-standings <- fantasy_teams %>%
-  map(`[[`, 1) %>%
-  bind_rows() |>
-  mutate(
-    fantasy_team_name = names(fantasy_teams)
-  ) |>
-  arrange(
-    -fantasy_points
-  )
-
-
 if (
   # nrow(
   #   todays_games
@@ -308,13 +301,7 @@ standings |>
     )
   ) |>
   cols_hide(
-    c(
-      team_colour,
-      trade_date,
-      old_player,
-      new_player,
-      last_game_row_name_of_trade_date
-    )
+    team_colour
   ) |>
   cols_move(
     columns = c(

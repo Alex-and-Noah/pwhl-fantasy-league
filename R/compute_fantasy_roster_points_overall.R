@@ -16,53 +16,82 @@ compute_fantasy_roster_points_overall <- function(
   player_boxes_per_game
 ) {
 
-  fantasy_points_per_skater <- lapply(
-    player_boxes_per_game,
-    function(x) {
-      x$skaters |>
-        filter(
-          name %in% fantasy_team_roster$skaters$name
-        )
-    }
-  ) |> 
-  bind_rows() |>
-  group_by(
-    name
-  ) |>
-  summarise(
-    fantasy_points = sum(
-      fantasy_points
-    )
-  )
-
-  fantasy_points_per_goalie <- lapply(
-    player_boxes_per_game,
-    function(x) {
-      x$goalies |>
-        filter(
-          name %in% fantasy_team_roster$goalies$name
-        )
-    }
-  ) |> 
-  bind_rows() |>
-  group_by(
-    name
-  ) |>
-  summarise(
-    fantasy_points = sum(
-      fantasy_points
-    )
-  )
-
-  fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
-    merge(
-      fantasy_points_per_skater
+  if (
+    nrow(
+      fantasy_team_roster$skaters
+    ) > 0
+  ) {
+    fantasy_points_per_skater <- lapply(
+      player_boxes_per_game,
+      function(x) {
+        x$skaters |>
+          filter(
+            name %in% fantasy_team_roster$skaters$name
+          )
+      }
+    ) |> 
+    keep(
+      ~nrow(.x) > 0
+    ) |>
+    bind_rows() |>
+    group_by(
+      name
+    ) |>
+    summarise(
+      fantasy_points = sum(
+        fantasy_points
+      )
     )
 
-  fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
-    merge(
-      fantasy_points_per_goalie
+    fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+      merge(
+        fantasy_points_per_skater
+      )
+  } else {
+    fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+      mutate(
+        fantasy_points = NA
+      )
+  }
+
+  if (
+    nrow(
+      fantasy_team_roster$goalies
+    ) > 0
+  ) {
+    fantasy_points_per_goalie <- lapply(
+      player_boxes_per_game,
+      function(x) {
+        x$goalies |>
+          filter(
+            name %in% fantasy_team_roster$goalies$name
+          )
+      }
+    ) |> 
+    keep(
+      ~nrow(.x) > 0
+    ) |> 
+    bind_rows() |>
+    group_by(
+      name
+    ) |>
+    summarise(
+      fantasy_points = sum(
+        fantasy_points
+      )
     )
+
+    fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+      merge(
+        fantasy_points_per_goalie
+      )
+  } else {
+
+    fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+      mutate(
+        fantasy_points = NA
+      )
+  }
 
   return(fantasy_team_roster)
 }

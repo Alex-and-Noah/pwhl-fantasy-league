@@ -30,27 +30,20 @@ get_team_info <- function(
   # )
 
   team_info <- team_info |>
+    rowwise() |>
     mutate(
-      colour_1 = map(
-        team_colours,
-        `[[`,
-        1
-      ),
-      colour_2 = map(
-        team_colours,
-        `[[`,
-        2
-      ),
-      colour_3 = map(
-        team_colours,
-        `[[`,
-        3
-      ),
-      colour_4 = map(
-        team_colours,
-        `[[`,
-        4
-      ),
+      colours_1 = team_colours[[
+        team_code
+      ]][[1]],
+      colours_2 = team_colours[[
+        team_code
+      ]][[2]],
+      colours_3 = team_colours[[
+        team_code
+      ]][[3]],
+      colours_4 = team_colours[[
+        team_code
+      ]][[4]],
       team_label = team_label |>
         recode(
           "Montreal" = "Montréal"
