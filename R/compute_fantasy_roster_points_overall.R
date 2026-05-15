@@ -13,7 +13,8 @@ library(magrittr)
 compute_fantasy_roster_points_overall <- function(
   fantasy_team_roster,
   fantasy_team_info,
-  player_boxes_per_game
+  player_boxes_per_game,
+  player_boxes_per_game_yesterday
 ) {
 
   if (
@@ -57,7 +58,47 @@ compute_fantasy_roster_points_overall <- function(
     } else {
       fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
         mutate(
-          fantasy_points = NA
+          fantasy_points = 0
+        )
+    }
+
+    fantasy_points_per_skater_yesterday <- lapply(
+      player_boxes_per_game_yesterday,
+      function(x) {
+        x$skaters |>
+          filter(
+            name %in% fantasy_team_roster$skaters$name
+          )
+      }
+    ) |> 
+    keep(
+      ~nrow(.x) > 0
+    ) |> 
+    bind_rows()
+    
+    if (
+      nrow(
+        fantasy_points_per_skater_yesterday
+      ) > 0
+    ) {
+      fantasy_points_per_skater_yesterday <- fantasy_points_per_skater_yesterday |>
+        group_by(
+          name
+        ) |>
+        summarise(
+          fantasy_points_yesterday = sum(
+            fantasy_points
+          )
+        )
+
+      fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+        merge(
+          fantasy_points_per_skater_yesterday
+        )
+    } else {
+      fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
+        mutate(
+          fantasy_points_yesterday = 0
         )
     }
 
@@ -65,7 +106,8 @@ compute_fantasy_roster_points_overall <- function(
 
     fantasy_team_roster$skaters <- fantasy_team_roster$skaters |>
       mutate(
-        fantasy_points = NA
+        fantasy_points = NA,
+        fantasy_points_yesterday = NA
       )
   }
 
@@ -110,7 +152,47 @@ compute_fantasy_roster_points_overall <- function(
     } else {
       fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
         mutate(
-          fantasy_points = NA
+          fantasy_points = 0
+        )
+    }
+
+    fantasy_points_per_goalie_yesterday <- lapply(
+      player_boxes_per_game_yesterday,
+      function(x) {
+        x$goalies |>
+          filter(
+            name %in% fantasy_team_roster$goalies$name
+          )
+      }
+    ) |> 
+    keep(
+      ~nrow(.x) > 0
+    ) |> 
+    bind_rows()
+    
+    if (
+      nrow(
+        fantasy_points_per_goalie_yesterday
+      ) > 0
+    ) {
+      fantasy_points_per_goalie_yesterday <- fantasy_points_per_goalie_yesterday |>
+        group_by(
+          name
+        ) |>
+        summarise(
+          fantasy_points_yesterday = sum(
+            fantasy_points
+          )
+        )
+
+      fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+        merge(
+          fantasy_points_per_goalie_yesterday
+        )
+    } else {
+      fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
+        mutate(
+          fantasy_points_yesterday = 0
         )
     }
 
@@ -118,7 +200,8 @@ compute_fantasy_roster_points_overall <- function(
 
     fantasy_team_roster$goalies <- fantasy_team_roster$goalies |>
       mutate(
-        fantasy_points = NA
+        fantasy_points = NA,
+        fantasy_points_yesterday = NA
       )
   }
 

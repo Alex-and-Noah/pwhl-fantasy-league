@@ -35,72 +35,50 @@ compute_standings <- function(
       fantasy_team_name,
       fantasy_points
     )
+
+  standings_yesterday <- fantasy_teams %>%
+    map(`[[`, 1) %>%
+    bind_rows() |>
+    mutate(
+      fantasy_team_name = names(fantasy_teams)
+    ) |>
+    replace_na(
+      list(
+        fantasy_points_yesterday = 0
+      )
+    ) |>
+    arrange(
+      -fantasy_points_yesterday,
+      fantasy_team_name
+    ) |>
+    select(
+      team_colour,
+      team_image,
+      fantasy_team_name,
+      fantasy_points_yesterday
+    )
+
+    standings <- standings |>
+      merge(
+        standings_yesterday
+      ) |>
+      mutate(
+        position_change_since_yesterday = (
+          match(
+            standings$fantasy_team_name,
+            standings_yesterday$fantasy_team_name
+          ) - seq_len(
+            nrow(
+              standings
+            )
+          )
+        ) |>
+          sign(),
+        fantasy_points_change_since_yesterday = fantasy_points - fantasy_points_yesterday
+      ) |>
+      select(
+        -fantasy_points_yesterday
+      )
   
   return(standings)
-
-  # fantasy_team_scores <- lapply(
-  #   names(fantasy_roster_points),
-  #   function(team_name) {
-  #     fantasy_roster_points[[team_name]] |>
-  #       tail(1) |>
-  #       select(
-  #         fantasy_points
-  #       ) |>
-  #       pull()
-  #   }
-  # )
-
-  # names(fantasy_team_scores) <- names(fantasy_roster_points)
-
-  # standings <- fantasy_team_scores |>
-  #   stack() |>
-  #   set_names(
-  #     c(
-  #       "points",
-  #       "team_name"
-  #     )
-  #   ) |>
-  #   mutate(
-  #     team_name = factor(
-  #       team_name,
-  #       levels = str_sort(
-  #         unique(team_name),
-  #         locale = "C"
-  #       )
-  #     )
-  #   ) |>
-  #   merge(
-  #     data.frame(
-  #       team_name = names(team_colours),
-  #       Colours = team_colours
-  #     )
-  #   ) |>
-  #   mutate(
-  #     Team = recode(
-  #       team_name,
-  #       !!!team_images
-  #     ),
-  #     Team = case_when(
-  #       is.na(Team) ~ "logo.svg",
-  #       .default = Team
-  #     )
-  #   ) |>
-  #   rename(
-  #     Name = team_name,
-  #     Points = points
-  #   ) |>
-  #   select(
-  #     c(
-  #       "Name",
-  #       "Team",
-  #       "Points",
-  #       "Colours"
-  #     )
-  #   ) |>
-  #   arrange(
-  #     desc(Points),
-  #     Name
-  #   )
-
-  # return(standings)
 }

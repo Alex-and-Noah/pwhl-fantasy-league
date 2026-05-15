@@ -5,6 +5,7 @@ library(tibble)
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
 #'
 #' @param current_schedule Entire schedule for current season
+#' @param current_date Current date
 #' @param team_stats All PWHL player info and stats
 #' @param player_boxes_per_game Player boxes for each game of the current season
 #' @return data.frames of fantasy team/roster scores and standings
@@ -12,6 +13,7 @@ library(tibble)
 
 get_fantasy_teams <- function(
   current_schedule,
+  current_date,
   team_stats,
   player_boxes_per_game
 ) {
@@ -107,7 +109,17 @@ get_fantasy_teams <- function(
         current_schedule |>
           filter(
             game_date <= current_date
+          )|>
+          select(
+            game_id
           ) |>
+          pull()
+      ],
+      player_boxes_per_game[
+        current_schedule |>
+          filter(
+            game_date <= current_date - days(1)
+          )|>
           select(
             game_id
           ) |>
@@ -141,8 +153,29 @@ get_fantasy_teams <- function(
           "roster"
         ]]$goalies |>
         summarise(
-          sum(
+          fantasy_points = sum(
             fantasy_points
+          )
+        ) |>
+        pull(),
+        fantasy_points_yesterday = fantasy_teams[[
+          df$team_name[[i]]
+        ]][[
+          "roster"
+        ]]$skaters |>
+        summarise(
+          fantasy_points_yesterday = sum(
+            fantasy_points_yesterday
+          )
+        ) |>
+        pull() + fantasy_teams[[
+          df$team_name[[i]]
+        ]][[
+          "roster"
+        ]]$goalies |>
+        summarise(
+          fantasy_points_yesterday = sum(
+            fantasy_points_yesterday
           )
         ) |>
         pull()
