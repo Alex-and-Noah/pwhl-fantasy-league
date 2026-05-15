@@ -21,8 +21,9 @@ current_date <- today(
   tzone = "EST"
 )
 
-# current_date <- as.Date("2026-04-25")
-current_date <- as.Date("2025-11-15")
+current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2025-11-15")
+# current_date <- as.Date("2026-01-26")
 
 season_schedules_by_id <- get_season_schedules_by_id()
 
@@ -216,33 +217,6 @@ if (
 
 ```{r "standings overview"}
 #| title: "Standings (with today's changes)"
-
-# if (
-#   # nrow(
-#   #   todays_games
-#   # ) !=
-#   #   0
-#   FALSE
-# ) {
-#   delta_points <- get_fantasy_teams_and_standings(
-#     all_teams = all_teams,
-#     schedule_to_date = todays_games,
-#     schedule = schedule
-#   )["standings"][[1]]
-
-#   delta_points <- delta_points[
-#     match(
-#       standings$Name,
-#       delta_points$Name
-#     ),
-#   ]
-# } else {
-#   delta_points <- data.frame(
-#     fantasy_team_name = standings$fantasy_team_name,
-#     fantasy_points = rep(0, nrow(standings))
-#   )
-# }
-
 
 standings |>
   mutate(

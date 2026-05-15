@@ -25,10 +25,35 @@ compute_fantasy_roster_points_overall <- function(
     fantasy_points_per_skater <- lapply(
       player_boxes_per_game,
       function(x) {
-        x$skaters |>
+
+        skaters <- x$skaters |>
           filter(
             name %in% fantasy_team_roster$skaters$name
           )
+
+          if (
+            !is.na(
+              fantasy_team_info$old_player
+            )
+          ) {
+            skaters <- skaters |>
+              filter(
+                name != fantasy_team_info$old_player | game_date <= fantasy_team_info$trade_date
+              )
+          }
+
+          if (
+            !is.na(
+              fantasy_team_info$new_player
+            )
+          ) {
+            skaters <- skaters |>
+              filter(
+                name != fantasy_team_info$new_player | game_date > fantasy_team_info$trade_date
+              )
+          }
+
+        return(skaters)
       }
     ) |> 
     keep(
@@ -65,10 +90,35 @@ compute_fantasy_roster_points_overall <- function(
     fantasy_points_per_skater_yesterday <- lapply(
       player_boxes_per_game_yesterday,
       function(x) {
-        x$skaters |>
+
+        skaters <- x$skaters |>
           filter(
             name %in% fantasy_team_roster$skaters$name
           )
+
+          if (
+            !is.na(
+              fantasy_team_info$old_player
+            )
+          ) {
+            skaters <- skaters |>
+              filter(
+                name != fantasy_team_info$old_player | game_date <= fantasy_team_info$trade_date
+              )
+          }
+
+          if (
+            !is.na(
+              fantasy_team_info$new_player
+            )
+          ) {
+            skaters <- skaters |>
+              filter(
+                name != fantasy_team_info$new_player | game_date > fantasy_team_info$trade_date
+              )
+          }
+
+        return(skaters)
       }
     ) |> 
     keep(
@@ -119,10 +169,34 @@ compute_fantasy_roster_points_overall <- function(
     fantasy_points_per_goalie <- lapply(
       player_boxes_per_game,
       function(x) {
-        x$goalies |>
+        goalies <- x$goalies |>
           filter(
             name %in% fantasy_team_roster$goalies$name
           )
+
+          if (
+            !is.na(
+              fantasy_team_info$old_player
+            )
+          ) {
+            goalies <- goalies |>
+              filter(
+                name != fantasy_team_info$old_player | game_date <= fantasy_team_info$trade_date
+              )
+          }
+
+          if (
+            !is.na(
+              fantasy_team_info$new_player
+            )
+          ) {
+            goalies <- goalies |>
+              filter(
+                name != fantasy_team_info$new_player | game_date > fantasy_team_info$trade_date
+              )
+          }
+
+        return(goalies)
       }
     ) |> 
     keep(
@@ -159,10 +233,34 @@ compute_fantasy_roster_points_overall <- function(
     fantasy_points_per_goalie_yesterday <- lapply(
       player_boxes_per_game_yesterday,
       function(x) {
-        x$goalies |>
+        goalies <- x$goalies |>
           filter(
             name %in% fantasy_team_roster$goalies$name
           )
+
+          if (
+            !is.na(
+              fantasy_team_info$old_player
+            )
+          ) {
+            goalies <- goalies |>
+              filter(
+                name != fantasy_team_info$old_player | game_date <= fantasy_team_info$trade_date
+              )
+          }
+
+          if (
+            !is.na(
+              fantasy_team_info$new_player
+            )
+          ) {
+            goalies <- goalies |>
+              filter(
+                name != fantasy_team_info$new_player | game_date > fantasy_team_info$trade_date
+              )
+          }
+
+        return(goalies)
       }
     ) |> 
     keep(

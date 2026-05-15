@@ -94,7 +94,8 @@ get_fantasy_teams <- function(
           "defender_3",
           "defender_4",
           "goalie_1",
-          "goalie_2"
+          "goalie_2",
+          "new_player"
         )
       ] |>
       as.list()
