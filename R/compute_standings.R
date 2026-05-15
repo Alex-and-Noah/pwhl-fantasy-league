@@ -59,9 +59,6 @@ compute_standings <- function(
     )
 
     standings <- standings |>
-      merge(
-        standings_yesterday
-      ) |>
       mutate(
         position_change_since_yesterday = (
           match(
@@ -73,11 +70,20 @@ compute_standings <- function(
             )
           )
         ) |>
-          sign(),
+          sign()
+      ) |>
+      merge(
+        standings_yesterday,
+        sort = FALSE
+      ) |>
+      mutate(
         fantasy_points_change_since_yesterday = fantasy_points - fantasy_points_yesterday
       ) |>
       select(
         -fantasy_points_yesterday
+      ) |>
+      arrange(
+        -fantasy_points
       )
   
   return(standings)

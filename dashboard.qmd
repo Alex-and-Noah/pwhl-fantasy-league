@@ -217,64 +217,56 @@ if (
 ```{r "standings overview"}
 #| title: "Standings (with today's changes)"
 
-if (
-  # nrow(
-  #   todays_games
-  # ) !=
-  #   0
-  FALSE
-) {
-  delta_points <- get_fantasy_teams_and_standings(
-    all_teams = all_teams,
-    schedule_to_date = todays_games,
-    schedule = schedule
-  )["standings"][[1]]
+# if (
+#   # nrow(
+#   #   todays_games
+#   # ) !=
+#   #   0
+#   FALSE
+# ) {
+#   delta_points <- get_fantasy_teams_and_standings(
+#     all_teams = all_teams,
+#     schedule_to_date = todays_games,
+#     schedule = schedule
+#   )["standings"][[1]]
 
-  delta_points <- delta_points[
-    match(
-      standings$Name,
-      delta_points$Name
-    ),
-  ]
-} else {
-  delta_points <- data.frame(
-    fantasy_team_name = standings$fantasy_team_name,
-    fantasy_points = rep(0, nrow(standings))
-  )
-}
+#   delta_points <- delta_points[
+#     match(
+#       standings$Name,
+#       delta_points$Name
+#     ),
+#   ]
+# } else {
+#   delta_points <- data.frame(
+#     fantasy_team_name = standings$fantasy_team_name,
+#     fantasy_points = rep(0, nrow(standings))
+#   )
+# }
 
 
 standings |>
   mutate(
-    delta = delta_points$fantasy_points
-  ) |>
-  mutate(
     fantasy_points = paste0(
       fantasy_points,
       " (+",
-      delta,
+      fantasy_points_change_since_yesterday,
       ")"
+    ),
+    position_change_since_yesterday = case_when(
+      position_change_since_yesterday == "-1" ~ "arrow-down",
+      position_change_since_yesterday == "0" ~ NA,
+      position_change_since_yesterday == "1" ~ "arrow-up"
     )
   ) |>
-  select(
-    -delta
-  ) |>
-  # mutate(
-  #   Change = case_when(
-  #     Change == "-1" ~ "arrow-down",
-  #     Change == "0" ~ NA,
-  #     Change == "1" ~ "arrow-up"
-  #   )
-  # ) |>
   gt() |>
-  # fmt_icon(
-  #   columns = Change,
-  #   fill_color = c(
-  #     "arrow-up" = "#128800ff",
-  #     "arrow-down" = "#c50101ff",
-  #     height = "1.5em"
-  #   )
-  # ) |>
+  fmt_icon(
+    columns = position_change_since_yesterday,
+    fill_color = c(
+      "arrow-up" = "#128800ff",
+      "arrow-down" = "#c50101ff",
+      height = "1.5em"
+    )
+  ) |>
   text_transform(
     locations = cells_body(
       columns = team_image
@@ -302,11 +294,15 @@ standings |>
     )
   ) |>
   cols_hide(
-    team_colour
+    c(
+      team_colour,
+      fantasy_points_change_since_yesterday
+    )
   ) |>
   cols_move(
     columns = c(
       fantasy_team_name,
+      position_change_since_yesterday,
       fantasy_points
     ),
     after = team_image
@@ -314,6 +310,7 @@ standings |>
   cols_label(
     team_image = "",
     fantasy_team_name = "Team Name",
+    position_change_since_yesterday = "",
     fantasy_points = "Points"
   ) |>
   cols_align(
