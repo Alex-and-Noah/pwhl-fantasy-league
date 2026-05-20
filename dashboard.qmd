@@ -82,7 +82,7 @@ standings <- compute_standings(
 todays_games <- current_schedule |>
   filter(
     game_date == current_date
-  ) |> merge(
+  ) |> left_join(
     team_info %>%
       rename_with(
         ~paste0(
@@ -90,9 +90,10 @@ todays_games <- current_schedule |>
           .
         )
       ),
-    by.x = "home_team",
-    by.y = "home_team_label"
-  ) |> merge(
+    by = join_by(
+      home_team == home_team_label
+    )
+  ) |> left_join(
     team_info %>%
       rename_with(
         ~paste0(
@@ -100,8 +101,9 @@ todays_games <- current_schedule |>
           .
         )
       ),
-    by.x = "away_team",
-    by.y = "away_team_label"
+    by = join_by(
+      away_team == away_team_label
+    )
   )
 
 if (
@@ -569,26 +571,32 @@ if (
 p_args <- current_schedule |>
   filter(
     game_date == next_game_day
-  ) |> merge(
+  ) |> left_join(
     team_info |>
-      rename(
-        home_team_id = team_id,
-        home_team_code = team_code
+      rename_with(
+        ~paste0(
+          "home_",
+          .
+        )
       ) |>
       select(
         home_team_id,
         home_team_code
-      )
-  ) |> merge(
+      ),
+    by = "home_team_id"
+  ) |> left_join(
     team_info |>
-      rename(
-        away_team_id = team_id,
-        away_team_code = team_code
+      rename_with(
+        ~paste0(
+          "away_",
+          .
+        )
       ) |>
       select(
         away_team_id,
         away_team_code
-      )
+      ),
+    by = "away_team_id"
   ) |>
   mutate(
     temp = paste0(
@@ -1328,47 +1336,47 @@ cat(res, sep = '\n')
 
 ```{r "team rosters preseason"}
 #| output: asis
-res <- purrr::map_chr(
-  unique(names(team_rosters)),
-  function(name) {
-    knitr::knit_child(
-      text = c(
-        "## `r name`",
-        "",
-        "```{r}",
-        "#| echo: false",
-        "html(",
-        "    web_image(",
-        "        url = standings |>",
-        "          filter(",
-        "            Name == name",
-        "          ) |>",
-        "          select(",
-        "            Team",
-        "          ) |>",
-        "          pull(),",
-        "        height = '50px'",
-        "    )",
-        ")",
-        "",
-        "generate_pwhl_roster_gt_table(",
-        "    name,",
-        "    team_rosters_preseason,",
-        "    fantasy_roster_points_preseason,",
-        "    schedule",
-        ")",
-        "",
-        "```",
-        "",
-        ""
-      ),
-      envir = environment(),
-      quiet = TRUE
-    )
-  }
-)
+# res <- purrr::map_chr(
+#   unique(names(team_rosters)),
+#   function(name) {
+#     knitr::knit_child(
+#       text = c(
+#         "## `r name`",
+#         "",
+#         "```{r}",
+#         "#| echo: false",
+#         "html(",
+#         "    web_image(",
+#         "        url = standings |>",
+#         "          filter(",
+#         "            Name == name",
+#         "          ) |>",
+#         "          select(",
+#         "            Team",
+#         "          ) |>",
+#         "          pull(),",
+#         "        height = '50px'",
+#         "    )",
+#         ")",
+#         "",
+#         "generate_pwhl_roster_gt_table(",
+#         "    name,",
+#         "    team_rosters_preseason,",
+#         "    fantasy_roster_points_preseason,",
+#         "    schedule",
+#         ")",
+#         "",
+#         "```",
+#         "",
+#         ""
+#       ),
+#       envir = environment(),
+#       quiet = TRUE
+#     )
+#   }
+# )
 
-cat(res, sep = '\n')
+# cat(res, sep = '\n')
 ```
 :::
 
@@ -1378,7 +1386,34 @@ cat(res, sep = '\n')
 
 ```{r "schedule"}
 #| title: "Regular season"
-schedule |>
+current_schedule |>
+  left_join(
+    team_info |>
+      rename_with(
+        ~paste0(
+          "home_",
+          .
+        )
+      ) |>
+      select(
+        home_team_id,
+        home_team_logo
+      ),
+    by = "home_team_id"
+  ) |> left_join(
+    team_info |>
+      rename_with(
+        ~paste0(
+          "away_",
+          .
+        )
+      ) |>
+      select(
+        away_team_id,
+        away_team_logo
+      ),
+    by = "away_team_id"
+  ) |>
   select(
     c(
       game_date,
