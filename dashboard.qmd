@@ -564,7 +564,30 @@ if (
 ## Row
 
 ```{r "next game day"}
-p_args <- next_game_day |>
+p_args <- current_schedule |>
+  filter(
+    game_date == next_game_day
+  ) |> merge(
+    team_info |>
+      rename(
+        home_team_id = team_id,
+        home_team_code = team_code
+      ) |>
+      select(
+        home_team_id,
+        home_team_code
+      )
+  ) |> merge(
+    team_info |>
+      rename(
+        away_team_id = team_id,
+        away_team_code = team_code
+      ) |>
+      select(
+        away_team_id,
+        away_team_code
+      )
+  ) |>
   mutate(
     temp = paste0(
       home_team_code,
@@ -592,7 +615,7 @@ value_box(
   value = tags$p(
     format(
       as.Date(
-        next_game_day_date,
+        next_game_day,
         format = "%Y-%m-%d"
       ),
       "%b %e, %Y"
