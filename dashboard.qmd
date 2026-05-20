@@ -16,6 +16,8 @@ invisible(
     source
   )
 )
+
+pool <- 80
  
 current_date <- today(
   tzone = "EST"
@@ -635,13 +637,13 @@ temps[, temp1 := shift(temp, 1)]
 
 ggplot(temps, aes(x = 1)) +
   geom_segment(
-    aes(y = 0, yend = 10 * length(team_rosters)),
+    aes(y = 0, yend = 10 * length(team_info)),
     linewidth = 10,
     lineend = c("round"),
     color = "black"
   ) +
   geom_segment(
-    aes(y = 0, yend = 10 * length(team_rosters)),
+    aes(y = 0, yend = 10 * length(team_info)),
     linewidth = 9,
     lineend = c("round"),
     color = "white"
