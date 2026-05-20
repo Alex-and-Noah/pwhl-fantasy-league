@@ -221,9 +221,15 @@ if (
 standings |>
   mutate(
     fantasy_points = paste0(
-      fantasy_points,
+      round(
+        fantasy_points,
+        2
+      ),
       " (+",
-      fantasy_points_change_since_yesterday,
+      round(
+        fantasy_points_change_since_yesterday,
+        2
+      ),
       ")"
     ),
     position_change_since_yesterday = case_when(
@@ -335,14 +341,47 @@ standings |>
 ## Row
 
 ```{r "trades"}
-trades_df <- lapply(
-  names(team_rosters),
-  generate_roster_trade_gt_table_row,
-  team_rosters = team_rosters,
-  fantasy_roster_points = fantasy_roster_points,
-  schedule = schedule
-) |>
-  bind_rows()
+
+trades_df <- fantasy_teams |>
+  map(
+    `[[`,
+    1
+  ) |>
+  bind_rows() |> mutate(
+    team_name = names(
+      fantasy_teams
+    )
+  ) |>
+  filter(
+    !is.na(trade_date)
+  )
+  
+
+player_headshots <- bind_rows(
+  team_stats |>
+    map(
+      `[[`,
+      1
+    ) |>
+    bind_rows() |>
+    select(
+      name,
+      player_headshot,
+      team_id
+    ),
+  team_stats |>
+    map(
+      `[[`,
+      2
+    ) |>
+    bind_rows() |>
+    select(
+      name,
+      player_headshot,
+      team_id
+    )
+)
+
 
 
 if (
@@ -366,57 +405,84 @@ if (
 } else {
   trades_df |>
     merge(
-      standings,
-      by.x = "name",
-      by.y = "Name"
+      player_headshots |>
+        rename(
+          new_player_headshot = player_headshot,
+          new_player_team_id = team_id
+        ),
+      by.x = "new_player",
+      by.y = "name"
     ) |>
     merge(
-      all_teams,
-      by.x = "acquired",
-      by.y = "player_name"
+      team_info |>
+        select(
+          team_id,
+          colours_1
+        ) |>
+        rename(
+          new_player_colours_1 = colours_1
+        ),
+      by.x = "new_player_team_id",
+      by.y = "team_id"
     ) |>
     merge(
-      all_teams,
-      by.x = "let_go",
-      by.y = "player_name"
+      player_headshots |>
+        rename(
+          old_player_headshot = player_headshot,
+          old_player_team_id = team_id
+        ),
+      by.x = "old_player",
+      by.y = "name"
+    ) |>
+    merge(
+      team_info |>
+        select(
+          team_id,
+          colours_1
+        ) |>
+        rename(
+          old_player_colours_1 = colours_1
+        ),
+      by.x = "old_player_team_id",
+      by.y = "team_id"
     ) |>
     mutate(
-      player_headshot.x = paste0(
+      new_player_headshot = paste0(
         "<img src='",
-        player_headshot.x,
+        new_player_headshot,
         "' style='width:50px;height:50px;border:1px solid",
-        team_colour_1.x,
+        new_player_colours_1,
         ";border-radius:50%;'/>"
       ),
-      player_headshot.y = paste0(
+      old_player_headshot = paste0(
         "<img src='",
-        player_headshot.y,
+        old_player_headshot,
         "' style='width:50px;height:50px;border:1px solid",
-        team_colour_1.y,
+        old_player_colours_1,
         ";border-radius:50%;'/>"
       )
     ) |>
     select(
       c(
-        Team,
-        date,
-        player_headshot.x,
-        acquired,
-        player_headshot.y,
-        let_go,
-        Colours
+        team_image,
+        trade_date,
+        new_player_headshot,
+        new_player,
+        old_player_headshot,
+        old_player,
+        team_colour
       )
     ) |>
     gt() |>
     fmt_markdown(
       columns = c(
-        player_headshot.x,
-        player_headshot.y
+        new_player_headshot,
+        old_player_headshot
       )
     ) |>
     text_transform(
       locations = cells_body(
-        columns = Team
+        columns = team_image
       ),
       fn = function(x) {
         web_image(
@@ -427,26 +493,33 @@ if (
     ) |>
     tab_style(
       style = list(
-        cell_fill(color = from_column(column = "Colours")),
-        cell_text(weight = "bold")
+        cell_fill(
+          color = from_column(
+            column = "team_colour"
+          )
+        ),
+        cell_text(
+          weight = "bold"
+        )
       ),
       locations = cells_body(
-        columns = Team
+        columns = team_image
       )
     ) |>
     cols_hide(
-      Colours
+      team_colour
     ) |>
     cols_align(
       columns = everything(),
       align = "center"
     ) |>
     cols_label(
-      date = "Date",
-      player_headshot.x = "",
-      acquired = "Acquired",
-      player_headshot.y = "",
-      let_go = "Let go"
+      team_image = "",
+      trade_date = "Date",
+      new_player_headshot = "",
+      new_player = "Acquired",
+      old_player_headshot = "",
+      old_player = "Let go"
     ) |>
     tab_header(
       "Trades"
