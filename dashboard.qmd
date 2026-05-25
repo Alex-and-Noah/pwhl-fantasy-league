@@ -1287,11 +1287,11 @@ standings |>
 ```{r "team rosters"}
 #| output: asis
 res <- purrr::map_chr(
-  unique(names(team_rosters)),
-  function(name) {
+  names(fantasy_teams),
+  function(fantasy_team_name) {
     knitr::knit_child(
       text = c(
-        "## `r name`",
+        "## `r fantasy_team_name`",
         "",
         "```{r}",
         "#| echo: false",
@@ -1299,10 +1299,10 @@ res <- purrr::map_chr(
         "    web_image(",
         "        url = standings |>",
         "          filter(",
-        "            Name == name",
+        "            fantasy_team_name == .env$fantasy_team_name",
         "          ) |>",
         "          select(",
-        "            Team",
+        "            team_image",
         "          ) |>",
         "          pull(),",
         "        height = '50px'",
@@ -1310,10 +1310,8 @@ res <- purrr::map_chr(
         ")",
         "",
         "generate_pwhl_roster_gt_table(",
-        "    name,",
-        "    team_rosters,",
-        "    fantasy_roster_points,",
-        "    schedule",
+        "    fantasy_team_name,",
+        "    fantasy_teams",
         ")",
         "",
         "```",
