@@ -36,7 +36,19 @@ get_player_boxes_per_game <- function(
           select(
             game_date
           ) |>
-          pull()
+          pull(),
+        win = if_else(
+          team_id == current_schedule |>
+          filter(
+            game_id == game_id_iterator
+          ) |>
+          select(
+            winner_id
+          ) |>
+          pull(),
+          1,
+          0
+        )
       ) |>
       select(
         -first_name,
@@ -57,7 +69,19 @@ get_player_boxes_per_game <- function(
           select(
             game_date
           ) |>
-          pull()
+          pull(),
+        win = if_else(
+          team_id == current_schedule |>
+          filter(
+            game_id == game_id_iterator
+          ) |>
+          select(
+            winner_id
+          ) |>
+          pull(),
+          1,
+          0
+        )
       ) |>
       select(
         -first_name,

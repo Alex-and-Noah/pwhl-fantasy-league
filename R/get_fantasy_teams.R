@@ -115,72 +115,125 @@ get_fantasy_teams <- function(
             game_id
           ) |>
           pull()
-      ],
-      player_boxes_per_game[
-        current_schedule |>
-          filter(
-            game_date <= current_date - days(1)
-          )|>
-          select(
-            game_id
-          ) |>
-          pull()
       ]
     )
 
-    fantasy_teams[[
-      df$team_name[[i]]
-    ]][[
-      "info"
-    ]] <- fantasy_teams[[
-      df$team_name[[i]]
-    ]][[
-      "info"
-    ]] |>
-      mutate(
-        fantasy_points = fantasy_teams[[
+    days_seq <- seq(
+      current_schedule$game_date |>
+        first(),
+      min(
+        current_schedule$game_date |>
+          last(),
+        current_date
+      ),
+      by = "day"
+    )
+
+    for (d in days_seq) {
+
+      d_date <- as.Date(d)
+
+      fantasy_teams[[
+        df$team_name[[i]]
+      ]][[
+        "info"
+      ]][[
+        paste0(
+          "fantasy_points_",
+          d_date
+        )
+      ]] <- compute_fantasy_roster_points_overall(
+        fantasy_teams[[
           df$team_name[[i]]
         ]][[
           "roster"
-        ]]$skaters |>
-        summarise(
-          fantasy_points = sum(
-            fantasy_points
-          )
-        ) |>
-        pull() + fantasy_teams[[
+        ]],
+        fantasy_teams[[
           df$team_name[[i]]
         ]][[
-          "roster"
-        ]]$goalies |>
-        summarise(
-          fantasy_points = sum(
-            fantasy_points
+          "info"
+        ]],
+        player_boxes_per_game[
+          current_schedule |>
+            filter(
+              game_date <= d
+            )|>
+            select(
+              game_id
+            ) |>
+            pull()
+        ]
+      ) %>% map(
+        ~ .x %>% summarise(
+          across(
+            "fantasy_points",
+            \(x) sum(x, na.rm = TRUE)
           )
-        ) |>
-        pull(),
-        fantasy_points_yesterday = fantasy_teams[[
-          df$team_name[[i]]
-        ]][[
-          "roster"
-        ]]$skaters |>
-        summarise(
-          fantasy_points_yesterday = sum(
-            fantasy_points_yesterday
-          )
-        ) |>
-        pull() + fantasy_teams[[
-          df$team_name[[i]]
-        ]][[
-          "roster"
-        ]]$goalies |>
-        summarise(
-          fantasy_points_yesterday = sum(
-            fantasy_points_yesterday
-          )
-        ) |>
-        pull()
-      )
+        )
+      ) |>
+      unlist() |>
+      sum()
+    }
+
+    # fantasy_teams[[
+    #   df$team_name[[i]]
+    # ]][[
+    #   "info"
+    # ]]
+
+    # fantasy_teams[[
+    #   df$team_name[[i]]
+    # ]][[
+    #   "info"
+    # ]] <- fantasy_teams[[
+    #   df$team_name[[i]]
+    # ]][[
+    #   "info"
+    # ]] |>
+    #   mutate(
+    #     fantasy_points = fantasy_teams[[
+    #       df$team_name[[i]]
+    #     ]][[
+    #       "roster"
+    #     ]]$skaters |>
+    #     summarise(
+    #       fantasy_points = sum(
+    #         fantasy_points
+    #       )
+    #     ) |>
+    #     pull() + fantasy_teams[[
+    #       df$team_name[[i]]
+    #     ]][[
+    #       "roster"
+    #     ]]$goalies |>
+    #     summarise(
+    #       fantasy_points = sum(
+    #         fantasy_points
+    #       )
+    #     ) |>
+    #     pull(),
+    #     fantasy_points_yesterday = fantasy_teams[[
+    #       df$team_name[[i]]
+    #     ]][[
+    #       "roster"
+    #     ]]$skaters |>
+    #     summarise(
+    #       fantasy_points_yesterday = sum(
+    #         fantasy_points_yesterday
+    #       )
+    #     ) |>
+    #     pull() + fantasy_teams[[
+    #       df$team_name[[i]]
+    #     ]][[
+    #       "roster"
+    #     ]]$goalies |>
+    #     summarise(
+    #       fantasy_points_yesterday = sum(
+    #         fantasy_points_yesterday
+    #       )
+    #     ) |>
+    #     pull()
+    #   )
   }
 
   return(
