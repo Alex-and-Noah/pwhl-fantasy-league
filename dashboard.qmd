@@ -23,9 +23,9 @@ current_date <- today(
   tzone = "EST"
 )
 
-current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2025-11-15")
-current_date <- as.Date("2026-01-26")
+# current_date <- as.Date("2026-05-20")
 
 season_schedules_by_id <- get_season_schedules_by_id()
 
@@ -37,6 +37,13 @@ season_id <- get_season_id_of_current_date(
 current_schedule <- season_schedules_by_id[[
   season_id
 ]]$schedule
+
+current_date <- current_schedule |>
+  select(
+    game_date
+  ) |>
+  last() |>
+  pull()
 
 next_game_day <- current_schedule |>
   filter(
@@ -74,7 +81,7 @@ standings <- compute_standings(
 )
 ```
 
-# Overview
+# Overview (UNDER DEVELOPMENT)
 
 ## Row
 
@@ -706,7 +713,9 @@ Need help making your team? Generate a random regulation team [here](#team-gener
 list(
   icon = "clock-history",
   value = format(
-    now(tzone = "America/New_York"),
+    now(
+      tzone = "America/New_York"
+    ),
     "%b. %d, '%y, %H:%M"
   )
 )
@@ -718,184 +727,111 @@ list(
 
 ```{r "standings over time", fig.width=12,fig.height=5}
 #| title: "Regular Season"
-# if (
-#   schedule_to_date |>
-#     filter(
-#       game_status %in%
-#         c(
-#           "Final",
-#           "Final OT"
-#         )
-#     ) |>
-#     nrow() ==
-#     0
-# ) {
-#   value_box(
-#     title = "No data available",
-#     showcase = bs_icon(
-#       "hourglass-split",
-#       size = "6vh"
-#     ),
-#     value = tags$p(
-#       "No games played yet this season",
-#       style = "font-size: 4vh;"
-#     ),
-#     theme = "danger"
-#   )
-# } else {
-#   data <- roster_points_per_game |>
-#     lapply(
-#       function(x) {
-#         x |>
-#           mutate(
-#             earliest_game_id = schedule_to_date$game_id[1]
-#           ) |>
-#           expand(
-#             game_id = as.numeric(schedule_to_date$game_id),
-#             earliest_game_id
-#           ) |>
-#           select(
-#             -earliest_game_id
-#           ) %>%
-#           left_join(
-#             x,
-#             by = c(
-#               "game_id"
-#             )
-#           ) |>
-#           mutate(
-#             goals = ifelse(
-#               is.na(goals),
-#               0,
-#               goals
-#             ),
-#             assists = ifelse(
-#               is.na(assists),
-#               0,
-#               assists
-#             ),
-#             wins = ifelse(
-#               is.na(wins),
-#               0,
-#               wins
-#             ),
-#             ot_losses = ifelse(
-#               is.na(ot_losses),
-#               0,
-#               ot_losses
-#             ),
-#             wins = 2 * wins,
-#           ) %>%
-#           mutate(
-#             fantasy_points = rowSums(
-#               select(
-#                 .,
-#                 c(
-#                   goals,
-#                   assists,
-#                   wins,
-#                   ot_losses
-#                 )
-#               )
-#             )
-#           ) |>
-#           arrange(
-#             game_id
-#           ) |>
-#           select(
-#             c(
-#               game_id,
-#               fantasy_points
-#             )
-#           ) |>
-#           group_by(
-#             game_id
-#           ) |>
-#           summarise(
-#             daily_scores = sum(fantasy_points)
-#           ) |>
-#           mutate(
-#             daily_scores = cumsum(daily_scores),
-#             game_id = row_number()
-#           )
-#       }
-#     ) |>
-#     bind_rows(
-#       .id = "Team"
-#     ) |>
-#     rename(
-#       "Game" = game_id,
-#       "Points" = daily_scores
-#     ) |>
-#     mutate(
-#       team_image = recode(
-#         Team,
-#         !!!team_images
-#       )
-#     ) |>
-#     merge(
-#       data.frame(
-#         Team = names(team_colours),
-#         Colours = team_colours
-#       )
-#     )
+if (
+  current_schedule |>
+    filter(
+      game_status %in%
+        c(
+          "Final",
+          "Final OT"
+        )
+    ) |>
+    nrow() ==
+    0
+) {
+  value_box(
+    title = "No data available",
+    showcase = bs_icon(
+      "hourglass-split",
+      size = "6vh"
+    ),
+    value = tags$p(
+      "No games played yet this season",
+      style = "font-size: 4vh;"
+    ),
+    theme = "danger"
+  )
+} else {
+  data <- standings |>
+    select(
+      -c(
+        fantasy_points,
+        position_change_since_yesterday,
+        fantasy_points_change_since_yesterday
+      )
+    ) |>
+    pivot_longer(
+      !c(
+        team_colour,
+        team_image,
+        fantasy_team_name
+      ),
+      names_to = NULL,
+      values_to = "standings"
+    ) |>
+    arrange(
+      desc(
+        row_number()
+      )
+    )|>
+    group_by(
+      by = fantasy_team_name
+    ) |>
+    mutate(
+      day_number = row_number()
+    ) |>
+    ungroup()
 
-#   data <- data |>
-#     group_by(
-#       Game
-#     ) |>
-#     arrange(
-#       desc(Points),
-#       Team,
-#       .by_group = TRUE
-#     ) |>
-#     mutate(
-#       Standings = row_number()
-#     ) |>
-#     ungroup()
-
-#   data |>
-#     ggplot() +
-#     geom_line(
-#       aes(
-#         x = Game,
-#         y = Standings,
-#         colour = Colours
-#       ),
-#       linewidth = 2
-#     ) +
-#     geom_point(
-#       data = data |>
-#         filter(
-#           Game == max(Game)
-#         ),
-#       aes(
-#         x = Game,
-#         y = Standings,
-#         colour = Colours
-#       ),
-#       size = 15
-#     ) +
-#     geom_image(
-#       data = data |>
-#         filter(
-#           Game == max(Game)
-#         ),
-#       aes(
-#         x = Game,
-#         y = Standings,
-#         image = team_image
-#       )
-#     ) +
-#     scale_color_identity() +
-#     scale_y_reverse() +
-#     guides(colour = guide_legend(override.aes = list(size = 10))) +
-#     theme_minimal() +
-#     theme(
-#       axis.text.y = element_blank(),
-#       plot.background = element_rect(fill = "#e0e0e0")
-#     )
-# }
+  data |>
+    ggplot() +
+    geom_line(
+      aes(
+        x = day_number,
+        y = standings,
+        colour = team_colour
+      ),
+      linewidth = 2
+    ) +
+    geom_point(
+      data = data |>
+        filter(
+          day_number == max(day_number)
+        ),
+      aes(
+        x = day_number,
+        y = standings,
+        colour = team_colour
+      ),
+      size = 15
+    ) +
+    geom_image(
+      data = data |>
+        filter(
+          day_number == max(day_number)
+        ),
+      aes(
+        x = day_number,
+        y = standings,
+        image = team_image
+      )
+    ) +
+    scale_color_identity() +
+    scale_y_reverse() +
+    guides(
+      colour = guide_legend(
+        override.aes = list(
+          size = 10
+        )
+      )
+    ) + 
+    theme_minimal() +
+    theme(
+      axis.text.y = element_blank(),
+      plot.background = element_rect(
+        fill = "#e0e0e0"
+      )
+    )
+}
 ```
 
 ## Row {.tabset}
@@ -912,6 +848,19 @@ standings |>
       position_change_since_yesterday == "-1" ~ "arrow-down",
       position_change_since_yesterday == "0" ~ NA,
       position_change_since_yesterday == "1" ~ "arrow-up"
+    )
+  ) |>
+  select(
+    team_colour,
+    team_image,
+    fantasy_team_name,
+    fantasy_points,
+    position_change_since_yesterday,
+    fantasy_points_change_since_yesterday
+  ) |>
+  arrange(
+    desc(
+      fantasy_points
     )
   ) |>
   gt() |>

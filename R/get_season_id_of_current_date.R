@@ -33,7 +33,20 @@ get_season_id_of_current_date <- function(
   ) {
 
     if (
-      get_next_season
+      (
+        !identical(
+          names(
+            season_schedules_by_id %>%
+              keep(
+                ~ .$info$start_date > current_date
+              )
+          ) |>
+            first(),
+          character(0)
+        )
+      ) && (
+        get_next_season
+      )
     ) {
 
       season_id <- names(
@@ -42,15 +55,15 @@ get_season_id_of_current_date <- function(
             ~ .$info$start_date > current_date
           )
         ) |>
-        first()
+          first()
     } else {
         season_id <- names(
-            season_schedules_by_id %>%
+          season_schedules_by_id %>%
             keep(
-                ~ .$info$end_date < current_date
+              ~ .$info$end_date < current_date
             )
-            ) |>
-            last()
+        ) |>
+          last()
     }
   }
 
