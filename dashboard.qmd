@@ -17,7 +17,7 @@ invisible(
   )
 )
 
-pool <- 80
+pool <- 0
  
 current_date <- today(
   tzone = "EST"
@@ -79,6 +79,26 @@ standings <- compute_standings(
   current_date,
   fantasy_teams
 )
+
+# This file uses only the following functions: 
+
+# compute_fantasy_roster_points_overall
+# compute_fantasy_roster_points_per_game
+# compute_standings
+# generate_pwhl_roster_gt_table
+# get_fantasy_teams
+# get_google_sheet
+# get_player_boxes_per_game
+# get_season_id_of_current_date
+# get_season_schedules_by_id
+# get_team_info
+# get_team_stats
+# pwhl_player_box
+# pwhl_schedule
+# pwhl_season_id
+# pwhl_stats_fix
+# pwhl_team_roster
+# pwhl_teams
 ```
 
 # Overview (UNDER DEVELOPMENT)

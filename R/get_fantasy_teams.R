@@ -174,66 +174,6 @@ get_fantasy_teams <- function(
       unlist() |>
       sum()
     }
-
-    # fantasy_teams[[
-    #   df$team_name[[i]]
-    # ]][[
-    #   "info"
-    # ]]
-
-    # fantasy_teams[[
-    #   df$team_name[[i]]
-    # ]][[
-    #   "info"
-    # ]] <- fantasy_teams[[
-    #   df$team_name[[i]]
-    # ]][[
-    #   "info"
-    # ]] |>
-    #   mutate(
-    #     fantasy_points = fantasy_teams[[
-    #       df$team_name[[i]]
-    #     ]][[
-    #       "roster"
-    #     ]]$skaters |>
-    #     summarise(
-    #       fantasy_points = sum(
-    #         fantasy_points
-    #       )
-    #     ) |>
-    #     pull() + fantasy_teams[[
-    #       df$team_name[[i]]
-    #     ]][[
-    #       "roster"
-    #     ]]$goalies |>
-    #     summarise(
-    #       fantasy_points = sum(
-    #         fantasy_points
-    #       )
-    #     ) |>
-    #     pull(),
-    #     fantasy_points_yesterday = fantasy_teams[[
-    #       df$team_name[[i]]
-    #     ]][[
-    #       "roster"
-    #     ]]$skaters |>
-    #     summarise(
-    #       fantasy_points_yesterday = sum(
-    #         fantasy_points_yesterday
-    #       )
-    #     ) |>
-    #     pull() + fantasy_teams[[
-    #       df$team_name[[i]]
-    #     ]][[
-    #       "roster"
-    #     ]]$goalies |>
-    #     summarise(
-    #       fantasy_points_yesterday = sum(
-    #         fantasy_points_yesterday
-    #       )
-    #     ) |>
-    #     pull()
-    #   )
   }
 
   return(
