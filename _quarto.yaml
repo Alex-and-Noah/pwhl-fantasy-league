@@ -46,3 +46,6 @@ format:
       - brand
       # - styles.scss
     toc: true
+
+execute:
+  freeze: auto
