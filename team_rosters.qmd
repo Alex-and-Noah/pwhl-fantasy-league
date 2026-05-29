@@ -12,30 +12,29 @@ library(knitr)
 library(gt)
 library(dplyr)
 
-source(
-    here(
-        "R",
-        "generate_pwhl_roster_gt_table.R"
-    )
+invisible(
+  lapply(
+    list.files(
+      "./R",
+      full.names = TRUE
+    ),
+    source
+  )
 )
-
 fantasy_teams <- readRDS(
   here(
-    "data",
     "fantasy_teams.rds"
   )
 )
 
 team_info <- readRDS(
   here(
-    "data",
     "team_info.rds"
   )
 )
 
 standings <- readRDS(
   here(
-    "data",
     "standings.rds"
   )
 )

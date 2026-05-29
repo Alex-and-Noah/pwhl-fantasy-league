@@ -16,14 +16,12 @@ library(gt)
 
 current_schedule <- readRDS(
   here(
-    "data",
     "current_schedule.rds"
   )
 )
 
 standings <- readRDS(
   here(
-    "data",
     "standings.rds"
   )
 )

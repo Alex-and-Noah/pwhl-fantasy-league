@@ -12,7 +12,6 @@ library(DT)
 
 team_stats <- readRDS(
   here(
-    "data",
     "team_stats.rds"
   )
 )

@@ -56,4 +56,4 @@ rsconnect/
 /dashboard_files/
 dashboard.html
 
-/data/
+*.rds
