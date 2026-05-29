@@ -1,0 +1,151 @@
+---
+title: "Team Generator"
+---
+```{r imports}
+library(here)
+library(purrr)
+library(dplyr)
+library(DT)
+
+team_stats <- readRDS(
+  here(
+    "data",
+    "team_stats.rds"
+  )
+)
+```
+
+Select one of the rows in this table to use (or take some inspo from)
+
+```{r "random team generator"}
+seed <- 1
+
+random_teams <- data.frame(
+  matrix(
+    ncol = 12,
+    nrow = 0
+  )
+) |>
+  set_names(
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "G1",
+    "G2"
+  )
+
+for (i in 1:50) {
+  random_team <- bind_rows(
+    team_stats |>
+    map(
+      `[[`,
+      1
+    ) |>
+    bind_rows() |>
+    select(
+      name,
+      position
+    ),
+    team_stats |>
+    map(
+      `[[`,
+      2
+    ) |>
+    bind_rows() |>
+    select(
+      name,
+      position
+    )
+  ) |>
+    mutate(
+      position = case_when(
+        position == "C" ~ "F",
+        position == "LW" ~ "F",
+        position == "RW" ~ "F",
+        position == "LD" ~ "D",
+        position == "RD" ~ "D",
+        .default = position
+      )
+    ) |>
+    group_by(
+      position
+    ) |>
+    slice_sample(
+      n = 6
+    ) |>
+    ungroup()
+
+  random_teams <- rbind(
+    random_teams,
+    rbind(
+      random_team |>
+        filter(
+          position == "F"
+        ) |>
+        select(
+          name
+        ),
+      random_team |>
+        filter(
+          position == "D"
+        ) |>
+        slice(1:4) |>
+        select(
+          name
+        ),
+      random_team |>
+        filter(
+          position == "G"
+        ) |>
+        slice(1:2) |>
+        select(
+          name
+        )
+    ) |>
+    data.table::transpose() |>
+    set_names(
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "G1",
+      "G2"
+    )
+  )
+}
+
+random_teams <- cbind(
+  Team_name = slice_sample(
+    read.csv(
+      here(
+        "static",
+        "common_words.csv"
+      )
+    ),
+    n = 50
+  ),
+  Team_colour = sample(
+    rgb(
+      t(col2rgb(colors())),
+      maxColorValue = 255
+    ),
+    50
+  ),
+  random_teams
+)
+
+random_teams |> datatable()
+```
