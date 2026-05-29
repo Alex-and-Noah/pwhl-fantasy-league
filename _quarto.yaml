@@ -1,11 +1,48 @@
+project:
+  type: website
+
+lang: en
+
+website:
+  title: PWHL Fantasy League
+  back-to-top-navigation: true
+  page-navigation: true
+
+  site-url: https://alex-and-noah.github.io/pwhl-fantasy-league/
+  repo-url: https://github.com/Alex-and-Noah/pwhl-fantasy-league
+  repo-actions: [issue, source]
+
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "Overview"
+        href: index.qmd
+      - text: "Standings"
+        href: team_standings.qmd
+      - text: "Rosters"
+        href: team_rosters.qmd
+      - text: "Schedule"
+        href: schedule.qmd
+      - text: "Team Generator"
+        href: team_generator.qmd
+      - text: "Info"
+        href: draft_info.qmd
+    right:
+    - icon: git
+      menu:
+        - text: Source code
+          url: https://github.com/Alex-and-Noah/pwhl-fantasy-league
+        - text: Report an issue
+          url:  https://github.com/Alex-and-Noah/pwhl-fantasy-league/-/issues/new
+
 format: 
-  dashboard:
+  html:
     logo: logo.svg
     nav-buttons: 
       - icon: github
         href: https://github.com/Alex-and-Noah/pwhl-fantasy-league
     theme:
       - brand
-      # - styles.scss
-    scrolling: true 
-    expandable: false
+      - styles.scss
+    toc: true

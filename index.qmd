@@ -1,3 +1,11 @@
+---
+title: "UNDER DEVELOPMENT"
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
 ```{r imports}
 library(tidyverse)
 library(gt)
@@ -22,11 +30,11 @@ data_path <- file.path("data")
 
 if (
   !dir.exists(
-    new_path
+    data_path
   )
 ) {
   dir.create(
-    new_path,
+    data_path,
     recursive = TRUE
   )
 }
@@ -176,10 +184,6 @@ saveRDS(
 # pwhl_team_roster
 # pwhl_teams
 ```
-
-# Overview (UNDER DEVELOPMENT)
-
-## Row
 
 ```{r "todays games"}
 
@@ -335,10 +339,9 @@ if (
 }
 ```
 
-## Row
+# Standings
 
 ```{r "standings overview"}
-#| title: "Standings (with today's changes)"
 
 standings <- readRDS(
   here(
@@ -480,8 +483,6 @@ standings |>
   )
 ```
 
-## Row
-
 ```{r "trades"}
 
 fantasy_teams <- readRDS(
@@ -537,8 +538,6 @@ player_headshots <- bind_rows(
       team_id
     )
 )
-
-
 
 if (
   nrow(
@@ -717,8 +716,6 @@ if (
 }
 ```
 
-## Row
-
 ```{r "next game day"}
 
 current_schedule <- readRDS(
@@ -804,8 +801,6 @@ value_box(
 )
 ```
 
-## Row
-
 ```{r "prize pool thermometer"}
 
 pool <- 0
@@ -850,22 +845,18 @@ ggplot(temps, aes(x = 1)) +
   coord_flip()
 ```
 
-## Row
-
-Need help making your team? Generate a random regulation team [here](#team-generator) to paste into the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing)
-
-## Row
+Need help making your team? Generate a random regulation team [here](#team-generator.qmd) to paste into the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing)
 
 ```{r "Text: last update (data)"}
-#| content: valuebox
-#| title: "Last updated"
-list(
-  icon = "clock-history",
+value_box(
+  title = "Last update",
   value = format(
     now(
       tzone = "America/New_York"
     ),
     "%b. %d, '%y, %H:%M"
-  )
+  ),
+  showcase = bs_icon("clock-history"),
+  theme = "success"
 )
 ```

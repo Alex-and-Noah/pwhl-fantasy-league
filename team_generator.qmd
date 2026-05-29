@@ -1,5 +1,8 @@
 ---
-title: "Team Generator"
+execute:
+  echo: false
+  warning: false
+  error: false
 ---
 ```{r imports}
 library(here)
