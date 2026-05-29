@@ -1,9 +1,20 @@
-# Team Standings
+---
+title: "Team Standings"
+---
 
-## Row {.tabset}
+```{r "imports"}
+library(here)
+
+team_stats <- readRDS(
+  here(
+    "data",
+    "team_stats.rds"
+  )
+)
+```
 
 ```{r "standings over time", fig.width=12,fig.height=5}
-#| title: "Regular Season"
+#| title: "Standings over time"
 if (
   current_schedule |>
     filter(
@@ -111,10 +122,8 @@ if (
 }
 ```
 
-## Row {.tabset}
-
 ```{r "standings full"}
-#| title: "Regular season"
+#| title: "Standings Today"
 standings |>
   mutate(
     fantasy_points = round(
