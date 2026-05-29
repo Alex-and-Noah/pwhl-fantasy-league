@@ -4,11 +4,24 @@ title: "Team Standings"
 
 ```{r "imports"}
 library(here)
+library(bslib)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(ggimage)
+library(gt)
 
-team_stats <- readRDS(
+current_schedule <- readRDS(
   here(
     "data",
-    "team_stats.rds"
+    "current_schedule.rds"
+  )
+)
+
+standings <- readRDS(
+  here(
+    "data",
+    "standings.rds"
   )
 )
 ```
