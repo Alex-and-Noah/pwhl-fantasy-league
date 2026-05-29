@@ -30,6 +30,14 @@ jobs:
         with:
           r-version: '4.5.0'
 
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/R/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
@@ -41,3 +49,18 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit hot_yesterday
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add -f data/current_date.rds
+          git add -f data/current_schedule.rds
+          git add -f data/fantasy_teams.rds
+          git add -f data/next_game_day.rds
+          git add -f data/player_boxes_per_game.rds
+          git add -f data/standings.rds
+          git add -f data/team_info.rds
+          git add -f data/team_stats.rds
+          git commit -m "Update rds files" || echo "No changes to commit"
+          git push

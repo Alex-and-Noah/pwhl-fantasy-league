@@ -15,11 +15,11 @@ library(ggimage)
 library(gt)
 
 current_schedule <- readRDS(
-  "current_schedule.rds"
+  "data/current_schedule.rds"
 )
 
 standings <- readRDS(
-  "standings.rds"
+  "data/standings.rds"
 )
 ```
 
