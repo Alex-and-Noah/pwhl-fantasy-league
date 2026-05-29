@@ -100,6 +100,19 @@ standings <- compute_standings(
 # pwhl_stats_fix
 # pwhl_team_roster
 # pwhl_teams
+
+data_path <- file.path("data")
+
+if (
+  !dir.exists(
+    new_path
+  )
+) {
+  dir.create(
+    new_path,
+    recursive = TRUE
+  )
+}
 ```
 
 # Overview (UNDER DEVELOPMENT)
