@@ -4,11 +4,36 @@ title: "Team Rosters"
 
 ```{r "imports"}
 library(here)
+library(purrr)
+library(knitr)
+library(gt)
+library(dplyr)
 
-team_stats <- readRDS(
+source(
+    here(
+        "R",
+        "generate_pwhl_roster_gt_table.R"
+    )
+)
+
+fantasy_teams <- readRDS(
   here(
     "data",
-    "team_stats.rds"
+    "fantasy_teams.rds"
+  )
+)
+
+team_info <- readRDS(
+  here(
+    "data",
+    "team_info.rds"
+  )
+)
+
+standings <- readRDS(
+  here(
+    "data",
+    "standings.rds"
   )
 )
 ```
@@ -42,7 +67,8 @@ res <- purrr::map_chr(
         "",
         "generate_pwhl_roster_gt_table(",
         "    fantasy_team_name,",
-        "    fantasy_teams",
+        "    fantasy_teams,",
+        "    team_info",
         ")",
         "",
         "```",

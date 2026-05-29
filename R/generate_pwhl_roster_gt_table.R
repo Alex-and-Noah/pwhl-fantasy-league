@@ -8,6 +8,7 @@ library(gt)
 #'
 #' @param fantasy_team_name Fantasy team name
 #' @param fantasy_teams Fantasy team info and rosters
+#' @param team_info PWHL team info
 #' @return gt() table of fantasy roster
 #' @import tidyr
 #' @import dplyr
@@ -17,7 +18,8 @@ library(gt)
 
 generate_pwhl_roster_gt_table <- function(
     fantasy_team_name,
-    fantasy_teams
+    fantasy_teams,
+    team_info
 ) {
   fantasy_team_info <- fantasy_teams[[
     fantasy_team_name
