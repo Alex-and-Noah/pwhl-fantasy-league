@@ -11,15 +11,11 @@ library(gt)
 library(dplyr)
 
 current_schedule <- readRDS(
-  here(
-    "current_schedule.rds"
-  )
+  "current_schedule.rds"
 )
 
 team_info <- readRDS(
-  here(
-    "team_info.rds"
-  )
+  "team_info.rds"
 )
 ```
 

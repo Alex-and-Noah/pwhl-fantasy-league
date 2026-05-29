@@ -47,9 +47,7 @@ current_schedule <- season_schedules_by_id[[
 
 saveRDS(
   current_schedule,
-  file = here(
-    "current_schedule.rds"
-  )
+  file = "current_schedule.rds"
 )
 
 current_date <- current_schedule |>
@@ -61,9 +59,7 @@ current_date <- current_schedule |>
 
 saveRDS(
   current_date,
-  file = here(
-    "current_date.rds"
-  )
+  file = "current_date.rds"
 )
 
 next_game_day <- current_schedule |>
@@ -78,9 +74,7 @@ next_game_day <- current_schedule |>
 
 saveRDS(
   next_game_day,
-  file = here(
-    "next_game_day.rds"
-  )
+  file = "next_game_day.rds"
 )
 
 team_info <- get_team_info(
@@ -89,9 +83,7 @@ team_info <- get_team_info(
 
 saveRDS(
   team_info,
-  file = here(
-    "team_info.rds"
-  )
+  file = "team_info.rds"
 )
 
 team_stats <- get_team_stats(
@@ -101,9 +93,7 @@ team_stats <- get_team_stats(
 
 saveRDS(
   team_stats,
-  file = here(
-    "team_stats.rds"
-  )
+  file = "team_stats.rds"
 )
 
 player_boxes_per_game <- get_player_boxes_per_game(
@@ -112,9 +102,7 @@ player_boxes_per_game <- get_player_boxes_per_game(
 
 saveRDS(
   player_boxes_per_game,
-  file = here(
-    "player_boxes_per_game.rds"
-  )
+  file = "player_boxes_per_game.rds"
 )
 
 fantasy_teams <- get_fantasy_teams(
@@ -126,9 +114,7 @@ fantasy_teams <- get_fantasy_teams(
 
 saveRDS(
   fantasy_teams,
-  file = here(
-    "fantasy_teams.rds"
-  )
+  file = "fantasy_teams.rds"
 )
 
 standings <- compute_standings(
@@ -138,9 +124,7 @@ standings <- compute_standings(
 
 saveRDS(
   standings,
-  file = here(
-    "standings.rds"
-  )
+  file = "standings.rds"
 )
 
 # This file uses only the following functions: 
@@ -167,15 +151,11 @@ saveRDS(
 ```{r "todays games"}
 
 current_schedule <- readRDS(
-  here(
-    "current_schedule.rds"
-  )
+  "current_schedule.rds"
 )
 
 current_date <- readRDS(
-  here(
-    "current_date.rds"
-  )
+  "current_date.rds"
 )
 
 todays_games <- current_schedule |>
@@ -321,9 +301,7 @@ if (
 ```{r "standings overview"}
 
 standings <- readRDS(
-  here(
-    "standings.rds"
-  )
+  "standings.rds"
 )
 
 standings |>
@@ -462,15 +440,11 @@ standings |>
 ```{r "trades"}
 
 fantasy_teams <- readRDS(
-  here(
-    "fantasy_teams.rds"
-  )
+  "fantasy_teams.rds"
 )
 
 team_stats <- readRDS(
-  here(
-    "team_stats.rds"
-  )
+  "team_stats.rds"
 )
 
 trades_df <- fantasy_teams |>
@@ -693,15 +667,11 @@ if (
 ```{r "next game day"}
 
 current_schedule <- readRDS(
-  here(
-    "current_schedule.rds"
-  )
+  "current_schedule.rds"
 )
 
 next_game_day <- readRDS(
-  here(
-    "next_game_day.rds"
-  )
+  "next_game_day.rds"
 )
 
 p_args <- current_schedule |>

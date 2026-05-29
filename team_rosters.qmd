@@ -22,21 +22,15 @@ invisible(
   )
 )
 fantasy_teams <- readRDS(
-  here(
-    "fantasy_teams.rds"
-  )
+  "fantasy_teams.rds"
 )
 
 team_info <- readRDS(
-  here(
-    "team_info.rds"
-  )
+  "team_info.rds"
 )
 
 standings <- readRDS(
-  here(
-    "standings.rds"
-  )
+  "standings.rds"
 )
 ```
 
