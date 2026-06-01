@@ -43,13 +43,15 @@ jobs:
         with:
           cache-version: 2
 
-      - name: Restore/Save RDS Cache
-        id: rds-cache
-        uses: actions/cache@v4
-        with:
-          path: current_schedule.rds
-          key: rds-data-${{ runner.os }}-${{ hashFiles('current_schedule.rds') }}
+      - name: Run R data script
+        run: R pull_data.R
 
+      - name: Save Generated Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: R-generated-data
+          path: data/*.rds
+          
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
