@@ -43,6 +43,13 @@ jobs:
         with:
           cache-version: 2
 
+      - name: Restore/Save RDS Cache
+        id: rds-cache
+        uses: actions/cache@v4
+        with:
+          path: current_schedule.rds
+          key: rds-data-${{ runner.os }}-${{ hashFiles('current_schedule.rds') }}
+
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
@@ -50,17 +57,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commit rds files
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add -f data/current_date.rds
-          git add -f data/current_schedule.rds
-          git add -f data/fantasy_teams.rds
-          git add -f data/next_game_day.rds
-          git add -f data/player_boxes_per_game.rds
-          git add -f data/standings.rds
-          git add -f data/team_info.rds
-          git add -f data/team_stats.rds
-          git commit -m "Update rds files" || echo "No changes to commit"
-          git push
+      # - name: Commit rds files
+      #   run: |
+      #     git config --global user.name 'github-actions'
+      #     git config --global user.email 'github-actions@github.com'
+      #     git add -f data/current_date.rds
+      #     git add -f data/current_schedule.rds
+      #     git add -f data/fantasy_teams.rds
+      #     git add -f data/next_game_day.rds
+      #     git add -f data/player_boxes_per_game.rds
+      #     git add -f data/standings.rds
+      #     git add -f data/team_info.rds
+      #     git add -f data/team_stats.rds
+      #     git commit -m "Update rds files" || echo "No changes to commit"
+      #     git push
