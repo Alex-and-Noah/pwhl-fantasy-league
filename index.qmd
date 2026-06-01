@@ -11,11 +11,11 @@ execute:
 source("pull_data.R")
 
 current_schedule <- readRDS(
-  here("data","current_schedule.rds")
+  "current_schedule.rds"
 )
 
 current_date <- readRDS(
-  here("data","current_date.rds")
+  "current_date.rds"
 )
 
 todays_games <- current_schedule |>
@@ -161,7 +161,7 @@ if (
 ```{r "standings overview"}
 
 standings <- readRDS(
-  here("data","standings.rds")
+  "standings.rds"
 )
 
 standings |>
@@ -300,11 +300,11 @@ standings |>
 ```{r "trades"}
 
 fantasy_teams <- readRDS(
-  here("data","fantasy_teams.rds")
+  "fantasy_teams.rds"
 )
 
 team_stats <- readRDS(
-  here("data","team_stats.rds")
+  "team_stats.rds"
 )
 
 trades_df <- fantasy_teams |>
@@ -527,11 +527,11 @@ if (
 ```{r "next game day"}
 
 current_schedule <- readRDS(
-  here("data","current_schedule.rds")
+  "current_schedule.rds"
 )
 
 next_game_day <- readRDS(
-  here("data","next_game_day.rds")
+  "next_game_day.rds"
 )
 
 p_args <- current_schedule |>
