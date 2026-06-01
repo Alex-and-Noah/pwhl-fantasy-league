@@ -11,7 +11,7 @@ library(dplyr)
 library(DT)
 
 team_stats <- readRDS(
-  "data/team_stats.rds"
+  "team_stats.rds"
 )
 ```
 
