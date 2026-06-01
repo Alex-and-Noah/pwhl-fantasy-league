@@ -44,7 +44,7 @@ jobs:
           cache-version: 2
 
       - name: Run R data script
-        run: R pull_data.R
+        run: Rscript pull_data.R --no-save
 
       - name: Save Generated Files
         uses: actions/upload-artifact@v4
