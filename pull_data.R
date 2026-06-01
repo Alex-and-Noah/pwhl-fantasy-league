@@ -38,7 +38,7 @@ current_schedule <- season_schedules_by_id[[
 
 saveRDS(
   current_schedule,
-  file = here("data","current_schedule.rds")
+  file = "data/current_schedule.rds"
 )
 
 current_date <- current_schedule |>
@@ -50,7 +50,7 @@ current_date <- current_schedule |>
 
 saveRDS(
   current_date,
-  file = here("data","current_date.rds")
+  file = "data/current_date.rds"
 )
 
 next_game_day <- current_schedule |>
@@ -65,7 +65,7 @@ next_game_day <- current_schedule |>
 
 saveRDS(
   next_game_day,
-  file = here("data","next_game_day.rds")
+  file = "data/next_game_day.rds"
 )
 
 team_info <- get_team_info(
@@ -74,7 +74,7 @@ team_info <- get_team_info(
 
 saveRDS(
   team_info,
-  file = here("data","team_info.rds")
+  file = "data/team_info.rds"
 )
 
 team_stats <- get_team_stats(
@@ -84,7 +84,7 @@ team_stats <- get_team_stats(
 
 saveRDS(
   team_stats,
-  file = here("data","team_stats.rds")
+  file = "data/team_stats.rds"
 )
 
 player_boxes_per_game <- get_player_boxes_per_game(
@@ -93,7 +93,7 @@ player_boxes_per_game <- get_player_boxes_per_game(
 
 saveRDS(
   player_boxes_per_game,
-  file = here("data","player_boxes_per_game.rds")
+  file = "data/player_boxes_per_game.rds"
 )
 
 fantasy_teams <- get_fantasy_teams(
@@ -105,7 +105,7 @@ fantasy_teams <- get_fantasy_teams(
 
 saveRDS(
   fantasy_teams,
-  file = here("data","fantasy_teams.rds")
+  file = "data/fantasy_teams.rds"
 )
 
 standings <- compute_standings(
@@ -115,7 +115,7 @@ standings <- compute_standings(
 
 saveRDS(
   standings,
-  file = here("data","standings.rds")
+  file = "data/standings.rds"
 )
 
 # This file uses only the following functions: 
