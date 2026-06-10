@@ -6,10 +6,11 @@ execute:
   error: false
 ---
 
-```{r "todays games"}
-
+```{r "Pull data"}
 source("pull_data.R")
+```
 
+```{r "todays games"}
 current_schedule <- readRDS(
   "current_schedule.rds"
 )
