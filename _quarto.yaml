@@ -44,7 +44,7 @@ format:
         href: https://github.com/Alex-and-Noah/pwhl-fantasy-league
     theme:
       - brand
-      # - styles.scss
+      - styles.scss
     toc: true
 
 execute:

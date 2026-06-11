@@ -1,4 +1,5 @@
 ---
+title: "Team Rosters"
 execute:
   echo: false
   warning: false
@@ -38,7 +39,7 @@ standings <- readRDS(
 )
 ```
 
-::: {.panel-tabset}
+::: {.panel-tabset .nav-pills}
 
 ```{r "team rosters"}
 #| output: asis
