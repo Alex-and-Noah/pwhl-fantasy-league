@@ -1,5 +1,6 @@
 library(tidyverse)
 library(gt)
+library(gtExtras)
 library(bslib)
 library(shiny)
 library(bsicons)
@@ -16,6 +17,9 @@ invisible(
     source
   )
 )
+
+environment(custom_gt_split) <- asNamespace('gt')
+assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
 current_date <- today(
   tzone = "EST"
