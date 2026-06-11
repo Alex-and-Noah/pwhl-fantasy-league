@@ -296,7 +296,10 @@ generate_pwhl_roster_gt_table <- function(
         )
     ) |>
     cols_hide(
-      Role
+      c(
+        Pos,
+        Role
+      )
     ) |>
     cols_align(
       align = "center",
