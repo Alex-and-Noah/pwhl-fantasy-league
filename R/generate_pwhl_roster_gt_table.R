@@ -339,27 +339,27 @@ generate_pwhl_roster_gt_table <- function(
     # ) |>
     cols_label(
       Headshot = "",
-      Logo = "Team",
-      G = with_tooltip(
-        label = "G",
-        tooltip = "Goals"
-      ),
-      A = with_tooltip(
-        label = "A",
-        tooltip = "Assists"
-      ),
-      SH = with_tooltip(
-        label = "SH",
-        tooltip = "Shots"
-      ),
-      SVS = with_tooltip(
-        label = "SVS",
-        tooltip = "Saves"
-      ),
-      Pts = with_tooltip(
-        label = "PTS",
-        tooltip = "Skater: G + A + 0.05*SH\nGoalie: 0.05*SVS"
-      )
+      Logo = "Team"
+      # G = with_tooltip(
+      #   label = "G",
+      #   tooltip = "Goals"
+      # ),
+      # A = with_tooltip(
+      #   label = "A",
+      #   tooltip = "Assists"
+      # ),
+      # SH = with_tooltip(
+      #   label = "SH",
+      #   tooltip = "Shots"
+      # ),
+      # SVS = with_tooltip(
+      #   label = "SVS",
+      #   tooltip = "Saves"
+      # ),
+      # Pts = with_tooltip(
+      #   label = "PTS",
+      #   tooltip = "Skater: G + A + 0.05*SH\nGoalie: 0.05*SVS"
+      # )
     ) |>
     opt_css(
       css = '

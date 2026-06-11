@@ -7,7 +7,7 @@ execute:
 ---
 
 ```{r "Pull data"}
-source("pull_data.R")
+# source("pull_data.R")
 ```
 
 ```{r "todays games"}
