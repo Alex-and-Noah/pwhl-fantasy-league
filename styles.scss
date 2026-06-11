@@ -13,23 +13,23 @@ $theme-text-color: white;
 }
 
 .card-header {
-  // background-color: #2B2D42; 
+  background-color: #2B2D42; 
   background-color: $brand-navy; 
   color: white;              
 }
 
-.nav-pills .panel-tabset {
-    display: flex;
-}
+// .nav-pills .panel-tabset {
+//     display: flex;
+// }
 
-.nav.nav-tabs {
-    display: flex !important;
-    flex-direction: column;
-    flex: 0 0 auto;
-}
+// .nav.nav-tabs {
+//     display: flex !important;
+//     flex-direction: column;
+//     flex: 0 0 auto;
+// }
 
-.nav-pills .panel-tabset .nav-tabs .nav-item {
-    width: max-content;
-    height: 50px;
-    display: contents;
-}
+// .nav-pills .panel-tabset .nav-tabs .nav-item {
+//     width: max-content;
+//     height: 50px;
+//     display: contents;
+// }
