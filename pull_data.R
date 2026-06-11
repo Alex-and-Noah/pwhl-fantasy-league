@@ -7,6 +7,7 @@ library(bsicons)
 library(ggimage)
 library(rsvg)
 library(here)
+library(htmltools)
 
 invisible(
   lapply(
@@ -25,7 +26,7 @@ current_date <- today(
   tzone = "EST"
 )
 
-# current_date <- as.Date("2026-04-25")
+current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2025-11-15")
 # current_date <- as.Date("2026-05-20")
 

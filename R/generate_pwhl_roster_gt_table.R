@@ -3,6 +3,7 @@ library(dplyr)
 library(magrittr)
 library(gt)
 library(gtExtras)
+library(htmltools)
 
 #' @title  **Generate Fantasy Roster table**
 #' @description Get a gt() table of a fantasy roster
@@ -296,10 +297,7 @@ generate_pwhl_roster_gt_table <- function(
         )
     ) |>
     cols_hide(
-      c(
-        Pos,
-        Role
-      )
+      Role
     ) |>
     cols_align(
       align = "center",
@@ -376,68 +374,99 @@ generate_pwhl_roster_gt_table <- function(
       '
     ) |>
     cols_width(
+      Headshot ~ px(60),
       Name ~ px(160),
       Logo ~ px(70),
-      everything() ~ px(60)
+      everything() ~ px(40)
     ) |>
-    gt::gt_split(
-      row_slice_i = c(
-        nrow(
-          skaters |>
-            filter(
-              position == "F"
-            )
-        ) + 1,
-        nrow(
-          skaters
-        ) + 2
-      )
-    ) |>
-    grp_options(
-      table.width = pct(100)
-    ) %>%
-      grp_replace(
-        grp_pull(
-          .,
-          which = 1
-        ) |> sub_missing(
-            everything(),
-            missing_text = "-"
-          ) |>
-          tab_header(
-            title = "Skaters"
-          ) |>
-           opt_align_table_header(align = "left"),
-        .which = 1
-      ) %>%
-      grp_replace(
-        grp_pull(
-          .,
-          which = 2
-        ) |> sub_missing(
-            everything(),
-            missing_text = "-"
-          ) |>
-          tab_header(
-            title = "Defenders"
-          ) |>
-           opt_align_table_header(align = "left"),
-        .which = 2
-      ) %>%
-      grp_replace(
-        grp_pull(
-          .,
-          which = 3
-        ) |> sub_missing(
-            everything(),
-            missing_text = "-"
-          ) |>
-          tab_header(
-            title = "Goalies"
-          ) |>
-           opt_align_table_header(align = "left"),
-        .which = 3
-      )
+    sub_missing(
+      everything(),
+      missing_text = "-"
+    )
+    # gt::gt_split(
+    #   row_slice_i = c(
+    #     nrow(
+    #       skaters |>
+    #         filter(
+    #           position == "F"
+    #         )
+    #     ) + 1,
+    #     nrow(
+    #       skaters
+    #     ) + 2
+    #   )
+    # ) |>
+    # grp_options(
+    #   table.width = pct(100)
+    # ) %>%
+    #   grp_replace(
+    #     grp_pull(
+    #       .,
+    #       which = 1
+    #     ) |> sub_missing(
+    #         everything(),
+    #         missing_text = "-"
+    #       ) |>
+    #       tab_header(
+    #         title = "Forwards"
+    #       ) |>
+    #        opt_align_table_header(align = "left"),
+    #     .which = 1
+    #   ) %>%
+    #   grp_replace(
+    #     grp_pull(
+    #       .,
+    #       which = 2
+    #     ) |> sub_missing(
+    #         everything(),
+    #         missing_text = "-"
+    #       ) |>
+    #       tab_header(
+    #         title = "Defenders"
+    #       ) |>
+    #        opt_align_table_header(align = "left"),
+    #     .which = 2
+    #   ) %>%
+    #   grp_replace(
+    #     grp_pull(
+    #       .,
+    #       which = 3
+    #     ) |> sub_missing(
+    #         everything(),
+    #         missing_text = "-"
+    #       ) |>
+    #       tab_header(
+    #         title = "Goalies"
+    #       ) |>
+    #        opt_align_table_header(align = "left"),
+    #     .which = 3
+    #   ) %>% browsable(
+    #     div(
+    #       list(
+    #         div(
+    #           grp_pull(
+    #             .,
+    #             which = 1
+    #           ),
+    #           style = "display: block; width: 100%;"
+    #         ),
+    #         div(
+    #           grp_pull(
+    #             .,
+    #             which = 2
+    #           ),
+    #           style = "display: block; width: 100%;"
+    #         ),
+    #         div(
+    #           grp_pull(
+    #             .,
+    #             which = 3
+    #           ),
+    #           style = "display: block; width: 100%;"
+    #         )
+    #       )
+    #     )
+    #   )
 
 
 
