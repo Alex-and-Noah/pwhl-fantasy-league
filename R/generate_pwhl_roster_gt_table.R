@@ -268,11 +268,11 @@ generate_pwhl_roster_gt_table <- function(
         "",
         "",
         "all",
-        "",
-        "",
-        "",
-        "",
         "Total",
+        "",
+        "",
+        "",
+        "",
         sum(
           .$Pts
         )
@@ -295,6 +295,28 @@ generate_pwhl_roster_gt_table <- function(
             Headshot,
             Logo
         )
+    ) |>
+    tab_header(
+      title = div(
+        HTML(
+          web_image(
+            fantasy_team_info$team_image
+          )
+        ),
+        div(
+          fantasy_team_name
+        ),
+        HTML(
+          web_image(
+            fantasy_team_info$team_image
+          )
+        ),
+        style = css(
+          `display` = "flex",
+          `justify-content` = "center",
+          `align-items` = "center"
+        )
+      )
     ) |>
     cols_hide(
       Role
@@ -328,12 +350,34 @@ generate_pwhl_roster_gt_table <- function(
       column_labels.border.bottom.color = 'transparent',
       column_labels.border.top.color = 'transparent'
     ) |>
-    # tab_style(
-    #   style = background.color = '#2B2D42',
-    #   locations = cells_body(
-    #     rows = 3
-    #   )
-    # ) |>
+    tab_style(
+      style = list(
+        cell_fill(
+          color = '#2B2D42'
+        ),
+        cell_text(
+          color = "white"
+        )
+      ),
+      locations = cells_body(
+        rows = c(
+          nrow(
+            skaters |>
+              filter(
+                position == "F"
+              )
+          ) + 1,
+          nrow(
+            skaters
+          ) + 2,
+          nrow(
+            skaters
+          ) + nrow(
+            goalies
+          ) + 3
+        )
+      )
+    ) |>
     tab_style_body(
       style = cell_borders(
         sides = c('top', 'right', 'left', 'bottom'),
