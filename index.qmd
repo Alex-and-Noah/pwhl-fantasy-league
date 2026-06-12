@@ -6,7 +6,31 @@ execute:
   error: false
 ---
 
-```{r "Pull data"}
+```{r "Imports and Pull data"}
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(bslib)
+library(shiny)
+library(bsicons)
+library(ggimage)
+library(rsvg)
+library(here)
+library(htmltools)
+
+invisible(
+  lapply(
+    list.files(
+      "./R",
+      full.names = TRUE
+    ),
+    source
+  )
+)
+
+environment(custom_gt_split) <- asNamespace('gt')
+assignInNamespace("gt_split", custom_gt_split, ns = "gt")
+
 # source("pull_data.R")
 ```
 
