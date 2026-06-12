@@ -19,14 +19,11 @@ invisible(
   )
 )
 
-environment(custom_gt_split) <- asNamespace('gt')
-assignInNamespace("gt_split", custom_gt_split, ns = "gt")
-
 current_date <- today(
   tzone = "EST"
 )
 
-current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2025-11-15")
 # current_date <- as.Date("2026-05-20")
 

@@ -23,9 +23,6 @@ invisible(
   )
 )
 
-environment(custom_gt_split) <- asNamespace('gt')
-assignInNamespace("gt_split", custom_gt_split, ns = "gt")
-
 fantasy_teams <- readRDS(
   "fantasy_teams.rds"
 )
