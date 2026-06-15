@@ -33,3 +33,14 @@ $theme-text-color: white;
 //     height: 50px;
 //     display: contents;
 // }
+
+.panel-tabset .tab-content {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  background-color: transparent;
+}

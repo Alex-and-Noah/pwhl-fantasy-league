@@ -37,7 +37,6 @@ standings <- readRDS(
 ```
 
 ::: {.panel-tabset .nav-pills}
-
 ```{r "team rosters"}
 #| output: asis
 res <- purrr::map_chr(
