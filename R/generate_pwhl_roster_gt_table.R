@@ -135,7 +135,7 @@ generate_pwhl_roster_gt_table <- function(
       Headshot = paste0(
         "<img src='",
         Headshot,
-        "' style='width:50px;height:50px;border:1px solid",
+        "' style='width:40px;height:40px;border:1px solid",
         Colour,
         ";border-radius:50%;'/>"
       ),
@@ -412,7 +412,7 @@ generate_pwhl_roster_gt_table <- function(
       '
     ) |>
     cols_width(
-      Headshot ~ px(60),
+      Headshot ~ px(50),
       Name ~ px(160),
       Logo ~ px(70),
       Pts ~ px(60),
