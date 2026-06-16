@@ -1,0 +1,85 @@
+---
+title: "Fantasy Rosters"
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{r "imports"}
+library(here)
+library(purrr)
+library(knitr)
+library(gt)
+library(dplyr)
+
+invisible(
+  lapply(
+    list.files(
+      "./R",
+      full.names = TRUE
+    ),
+    source
+  )
+)
+
+fantasy_teams <- readRDS(
+  "fantasy_teams.rds"
+)
+
+team_info <- readRDS(
+  "team_info.rds"
+)
+
+standings <- readRDS(
+  "standings.rds"
+)
+```
+
+::: {.panel-tabset .nav-pills}
+```{r "team rosters"}
+#| output: asis
+res <- purrr::map_chr(
+  names(fantasy_teams),
+  function(fantasy_team_name) {
+    knitr::knit_child(
+      text = c(
+        # "## `r fantasy_team_name`",
+        glue("## <img src='{standings|>filter(fantasy_team_name == .env$fantasy_team_name)|>select(team_image)|>pull()}' width='30' height='30'>"),
+        "",
+        "```{r}",
+        "#| echo: false",
+        "#| output: asis",
+        # "html(",
+        # "    web_image(",
+        # "        url = standings |>",
+        # "          filter(",
+        # "            fantasy_team_name == .env$fantasy_team_name",
+        # "          ) |>",
+        # "          select(",
+        # "            team_image",
+        # "          ) |>",
+        # "          pull(),",
+        # "        height = '50px'",
+        # "    )",
+        # ")",
+        # "",
+        "generate_fantasy_roster_gt_table(",
+        "    fantasy_team_name,",
+        "    fantasy_teams,",
+        "    team_info",
+        ")",
+        "",
+        "```",
+        "",
+        ""
+      ),
+      envir = environment(),
+      quiet = TRUE
+    )
+  }
+)
+
+cat(res, sep = '\n')
+```
+:::

@@ -1,5 +1,5 @@
 ---
-title: "Team Rosters"
+title: "PWHL Rosters"
 execute:
   echo: false
   warning: false
@@ -23,16 +23,12 @@ invisible(
   )
 )
 
-fantasy_teams <- readRDS(
-  "fantasy_teams.rds"
+team_stats <- readRDS(
+  "team_stats.rds"
 )
 
 team_info <- readRDS(
   "team_info.rds"
-)
-
-standings <- readRDS(
-  "standings.rds"
 )
 ```
 
@@ -40,12 +36,12 @@ standings <- readRDS(
 ```{r "team rosters"}
 #| output: asis
 res <- purrr::map_chr(
-  names(fantasy_teams),
-  function(fantasy_team_name) {
+  team_info$team_code,
+  function(team_code) {
     knitr::knit_child(
       text = c(
-        # "## `r fantasy_team_name`",
-        glue("## <img src='{standings|>filter(fantasy_team_name == .env$fantasy_team_name)|>select(team_image)|>pull()}' width='30' height='30'>"),
+        # "## `r team_code`",
+        glue("## <img src='{team_info|>filter(team_code == .env$team_code)|>select(team_logo)|>pull()}' width='30' height='30'>"),
         "",
         "```{r}",
         "#| echo: false",
@@ -65,8 +61,8 @@ res <- purrr::map_chr(
         # ")",
         # "",
         "generate_pwhl_roster_gt_table(",
-        "    fantasy_team_name,",
-        "    fantasy_teams,",
+        "    team_stats,",
+        "    team_code,",
         "    team_info",
         ")",
         "",

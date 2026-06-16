@@ -20,8 +20,10 @@ website:
         href: index.qmd
       - text: "Standings"
         href: team_standings.qmd
-      - text: "Rosters"
-        href: team_rosters.qmd
+      - text: "Fantasy Rosters"
+        href: fantasy_rosters.qmd
+      - text: "PWHL Rosters"
+        href: pwhl_rosters.qmd
       - text: "Schedule"
         href: schedule.qmd
       - text: "Team Generator"
