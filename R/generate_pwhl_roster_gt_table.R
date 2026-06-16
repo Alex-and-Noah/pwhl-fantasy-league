@@ -19,9 +19,9 @@ library(htmltools)
 #' @export
 
 generate_pwhl_roster_gt_table <- function(
-    fantasy_team_name,
-    fantasy_teams,
-    team_info
+  fantasy_team_name,
+  fantasy_teams,
+  team_info
 ) {
   fantasy_team_info <- fantasy_teams[[
     fantasy_team_name
@@ -30,73 +30,75 @@ generate_pwhl_roster_gt_table <- function(
   skaters <- fantasy_teams[[
     fantasy_team_name
   ]]$roster$skaters |>
-  select(
-    name,
-    tp_jersey_number,
-    position,
-    player_headshot,
-    team_id,
-    goals,
-    assists,
-    shots,
-    fantasy_points
-  ) |>
-  mutate(
-    position = replace_values(
+    select(
+      name,
+      tp_jersey_number,
       position,
-      c(
-        "C",
-        "LW",
-        "RW"
-      ) ~ "F",
-      c(
-        "LD",
-        "RD",
-        "D"
-      ) ~ "D",
-      "G" ~ "G"
+      player_headshot,
+      team_id,
+      goals,
+      assists,
+      shots,
+      fantasy_points
+    ) |>
+    mutate(
+      position = replace_values(
+        position,
+        c(
+          "C",
+          "LW",
+          "RW"
+        ) ~ "F",
+        c(
+          "LD",
+          "RD",
+          "D"
+        ) ~ "D",
+        "G" ~ "G"
+      )
     )
-  )
 
   goalies <- fantasy_teams[[
     fantasy_team_name
   ]]$roster$goalies |>
-  mutate(
-    saves = shots - goals_against
-  ) |>
-  select(
-    name,
-    tp_jersey_number,
-    position,
-    player_headshot,
-    team_id,
-    saves,
-    fantasy_points
-  ) |>
-  mutate(
-    position = replace_values(
+    mutate(
+      saves = shots - goals_against
+    ) |>
+    select(
+      name,
+      tp_jersey_number,
       position,
-      c(
-        "C",
-        "LW",
-        "RW"
-      ) ~ "F",
-      c(
-        "LD",
-        "RD",
-        "D"
-      ) ~ "D",
-      "G" ~ "G"
+      player_headshot,
+      team_id,
+      saves,
+      fantasy_points
+    ) |>
+    mutate(
+      position = replace_values(
+        position,
+        c(
+          "C",
+          "LW",
+          "RW"
+        ) ~ "F",
+        c(
+          "LD",
+          "RD",
+          "D"
+        ) ~ "D",
+        "G" ~ "G"
+      )
     )
-  )
 
-  gt_table <- bind_rows(
+  bind_rows(
+    # gt_table <- bind_rows(
     skaters,
     goalies
   ) |>
     merge(
       team_info
-    ) |> select(
+    ) |>
+    select(
       tp_jersey_number,
       player_headshot,
       name,
@@ -111,7 +113,7 @@ generate_pwhl_roster_gt_table <- function(
       fantasy_points
     ) |>
     mutate(
-       role = position
+      role = position
     ) |>
     rename(
       c(
@@ -129,19 +131,20 @@ generate_pwhl_roster_gt_table <- function(
         SVS = "saves",
         Pts = "fantasy_points"
       )
-    ) |> mutate(
-        Headshot = paste0(
-          "<img src='",
-          Headshot,
-          "' style='width:50px;height:50px;border:1px solid",
-          Colour,
-          ";border-radius:50%;'/>"
-        ),
-        Logo = paste0(
-          "<img src='",
-          Logo,
-          "' style='width:30px;height:30px;'/>"
-        )
+    ) |>
+    mutate(
+      Headshot = paste0(
+        "<img src='",
+        Headshot,
+        "' style='width:50px;height:50px;border:1px solid",
+        Colour,
+        ";border-radius:50%;'/>"
+      ),
+      Logo = paste0(
+        "<img src='",
+        Logo,
+        "' style='width:30px;height:30px;'/>"
+      )
     ) |>
     select(
       "#",
@@ -171,21 +174,21 @@ generate_pwhl_roster_gt_table <- function(
         "F",
         "Total (F)",
         sum(
-          .|>
+          . |>
             filter(
               Role == "F"
             ) |>
             select(G)
         ),
         sum(
-          .|>
+          . |>
             filter(
               Role == "F"
             ) |>
             select(A)
         ),
         sum(
-          .|>
+          . |>
             filter(
               Role == "F"
             ) |>
@@ -193,7 +196,7 @@ generate_pwhl_roster_gt_table <- function(
         ),
         "",
         sum(
-          .|>
+          . |>
             filter(
               Role == "F"
             ) |>
@@ -208,21 +211,21 @@ generate_pwhl_roster_gt_table <- function(
         "D",
         "Total (D)",
         sum(
-          .|>
+          . |>
             filter(
               Role == "D"
             ) |>
             select(G)
         ),
         sum(
-          .|>
+          . |>
             filter(
               Role == "D"
             ) |>
             select(A)
         ),
         sum(
-          .|>
+          . |>
             filter(
               Role == "D"
             ) |>
@@ -230,7 +233,7 @@ generate_pwhl_roster_gt_table <- function(
         ),
         "",
         sum(
-          .|>
+          . |>
             filter(
               Role == "D"
             ) |>
@@ -248,14 +251,14 @@ generate_pwhl_roster_gt_table <- function(
         "",
         "",
         sum(
-          .|>
+          . |>
             filter(
               Role == "G"
             ) |>
             select(SVS)
         ),
         sum(
-          .|>
+          . |>
             filter(
               Role == "G"
             ) |>
@@ -291,10 +294,10 @@ generate_pwhl_roster_gt_table <- function(
     ) |>
     gt() |>
     fmt_markdown(
-        columns = c(
-            Headshot,
-            Logo
-        )
+      columns = c(
+        Headshot,
+        Logo
+      )
     ) |>
     tab_header(
       title = div(
@@ -319,7 +322,10 @@ generate_pwhl_roster_gt_table <- function(
       )
     ) |>
     cols_hide(
-      Role
+      c(
+        Pos,
+        Role
+      )
     ) |>
     cols_align(
       align = "center",
@@ -327,7 +333,6 @@ generate_pwhl_roster_gt_table <- function(
         "#",
         Logo,
         Headshot,
-        Pos,
         G,
         A,
         SH,
@@ -366,15 +371,19 @@ generate_pwhl_roster_gt_table <- function(
               filter(
                 position == "F"
               )
-          ) + 1,
+          ) +
+            1,
           nrow(
             skaters
-          ) + 2,
+          ) +
+            2,
           nrow(
             skaters
-          ) + nrow(
-            goalies
-          ) + 3
+          ) +
+            nrow(
+              goalies
+            ) +
+            3
         )
       )
     ) |>
@@ -407,6 +416,7 @@ generate_pwhl_roster_gt_table <- function(
       Headshot ~ px(60),
       Name ~ px(160),
       Logo ~ px(70),
+      Pts ~ px(60),
       everything() ~ px(40)
     ) |>
     sub_missing(
