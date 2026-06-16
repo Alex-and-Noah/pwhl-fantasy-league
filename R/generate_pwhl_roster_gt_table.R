@@ -322,6 +322,7 @@ generate_pwhl_roster_gt_table <- function(
     ) |>
     cols_hide(
       c(
+        "#",
         Pos,
         Role
       )
@@ -329,7 +330,7 @@ generate_pwhl_roster_gt_table <- function(
     cols_align(
       align = "center",
       columns = c(
-        "#",
+        # "#",
         Logo,
         Headshot,
         G,
