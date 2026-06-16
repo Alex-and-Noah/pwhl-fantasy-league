@@ -90,8 +90,7 @@ generate_pwhl_roster_gt_table <- function(
       )
     )
 
-  bind_rows(
-    # gt_table <- bind_rows(
+  gt_table <- bind_rows(
     skaters,
     goalies
   ) |>
