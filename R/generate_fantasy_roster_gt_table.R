@@ -171,7 +171,7 @@ generate_fantasy_roster_gt_table <- function(
         "",
         "",
         "F",
-        "Total (F)",
+        "Total",
         sum(
           . |>
             filter(
@@ -208,7 +208,7 @@ generate_fantasy_roster_gt_table <- function(
         "",
         "",
         "D",
-        "Total (D)",
+        "Total",
         sum(
           . |>
             filter(
@@ -245,7 +245,7 @@ generate_fantasy_roster_gt_table <- function(
         "",
         "",
         "G",
-        "Total (G)",
+        "Total",
         NA,
         NA,
         NA,
@@ -303,7 +303,9 @@ generate_fantasy_roster_gt_table <- function(
           "G"
         )
       ),
-      "#"
+      as.numeric(
+        `#`
+      )
     ) |>
     gt() |>
     fmt_markdown(
@@ -528,7 +530,6 @@ generate_fantasy_roster_gt_table <- function(
            opt_align_table_header(align = "left"),
         .which = 4
       )
-    # ) |>
     # sub_missing(
     #   everything(),
     #   missing_text = "-"
