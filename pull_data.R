@@ -19,6 +19,9 @@ invisible(
   )
 )
 
+environment(custom_gt_split) <- asNamespace('gt')
+assignInNamespace("gt_split", custom_gt_split, ns = "gt")
+
 current_date <- today(
   tzone = "EST"
 )

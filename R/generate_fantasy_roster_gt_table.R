@@ -193,7 +193,7 @@ generate_fantasy_roster_gt_table <- function(
             ) |>
             select(SH)
         ),
-        "",
+        NA,
         sum(
           . |>
             filter(
@@ -230,7 +230,7 @@ generate_fantasy_roster_gt_table <- function(
             ) |>
             select(SH)
         ),
-        "",
+        NA,
         sum(
           . |>
             filter(
@@ -246,9 +246,9 @@ generate_fantasy_roster_gt_table <- function(
         "",
         "G",
         "Total (G)",
-        "",
-        "",
-        "",
+        NA,
+        NA,
+        NA,
         sum(
           . |>
             filter(
@@ -267,16 +267,29 @@ generate_fantasy_roster_gt_table <- function(
       c(
         "",
         "",
-        "",
+        "Overall team stats",
         "",
         "all",
-        "Total",
-        "",
-        "",
-        "",
         "",
         sum(
-          .$Pts
+          .$G,
+          na.rm = TRUE
+        ),
+        sum(
+          .$A,
+          na.rm = TRUE
+        ),
+        sum(
+          .$SH,
+          na.rm = TRUE
+        ),
+        sum(
+          .$SVS,
+          na.rm = TRUE
+        ),
+        sum(
+          .$Pts,
+          na.rm = TRUE
         )
       )
     ) |>
@@ -284,6 +297,7 @@ generate_fantasy_roster_gt_table <- function(
       factor(
         Role,
         levels = c(
+          "all",
           "F",
           "D",
           "G"
@@ -298,28 +312,28 @@ generate_fantasy_roster_gt_table <- function(
         Logo
       )
     ) |>
-    tab_header(
-      title = div(
-        HTML(
-          web_image(
-            fantasy_team_info$team_image
-          )
-        ),
-        div(
-          fantasy_team_name
-        ),
-        HTML(
-          web_image(
-            fantasy_team_info$team_image
-          )
-        ),
-        style = css(
-          `display` = "flex",
-          `justify-content` = "center",
-          `align-items` = "center"
-        )
-      )
-    ) |>
+    # tab_header(
+    #   title = div(
+    #     HTML(
+    #       web_image(
+    #         fantasy_team_info$team_image
+    #       )
+    #     ),
+    #     div(
+    #       fantasy_team_name
+    #     ),
+    #     HTML(
+    #       web_image(
+    #         fantasy_team_info$team_image
+    #       )
+    #     ),
+    #     style = css(
+    #       `display` = "flex",
+    #       `justify-content` = "center",
+    #       `align-items` = "center"
+    #     )
+    #   )
+    # ) |>
     cols_hide(
       c(
         "#",
@@ -355,47 +369,47 @@ generate_fantasy_roster_gt_table <- function(
       column_labels.border.bottom.color = 'transparent',
       column_labels.border.top.color = 'transparent'
     ) |>
-    tab_style(
-      style = list(
-        cell_fill(
-          color = '#2B2D42'
-        ),
-        cell_text(
-          color = "white"
-        )
-      ),
-      locations = cells_body(
-        rows = c(
-          nrow(
-            skaters |>
-              filter(
-                position == "F"
-              )
-          ) +
-            1,
-          nrow(
-            skaters
-          ) +
-            2,
-          nrow(
-            skaters
-          ) +
-            nrow(
-              goalies
-            ) +
-            3
-        )
-      )
-    ) |>
-    tab_style_body(
-      style = cell_borders(
-        sides = c('top', 'right', 'left', 'bottom'),
-        weight = px(0) # Remove row borders
-      ),
-      fn = function(x) {
-        is.numeric(x) | is.character(x)
-      }
-    ) |>
+    # tab_style(
+    #   style = list(
+    #     cell_fill(
+    #       color = '#2B2D42'
+    #     ),
+    #     cell_text(
+    #       color = "white"
+    #     )
+    #   ),
+    #   locations = cells_body(
+    #     rows = c(
+    #       nrow(
+    #         skaters |>
+    #           filter(
+    #             position == "F"
+    #           )
+    #       ) +
+    #         1,
+    #       nrow(
+    #         skaters
+    #       ) +
+    #         2,
+    #       nrow(
+    #         skaters
+    #       ) +
+    #         nrow(
+    #           goalies
+    #         ) +
+    #         3
+    #     )
+    #   )
+    # ) |>
+    # tab_style_body(
+    #   style = cell_borders(
+    #     sides = c('top', 'right', 'left', 'bottom'),
+    #     weight = px(0) # Remove row borders
+    #   ),
+    #   fn = function(x) {
+    #     is.numeric(x) | is.character(x)
+    #   }
+    # ) |>
     cols_label(
       Headshot = "",
       Logo = "Team"
@@ -419,10 +433,106 @@ generate_fantasy_roster_gt_table <- function(
       Pts ~ px(60),
       everything() ~ px(40)
     ) |>
-    sub_missing(
-      everything(),
-      missing_text = "-"
-    )
+    gt::gt_split(
+      row_slice_i = c(
+        1,
+        nrow(
+          skaters |>
+            filter(
+              position == "F"
+            )
+        ) + 2,
+        nrow(
+          skaters
+        ) + 3
+      )
+    ) |>
+    grp_options(
+      table.width = pct(100)
+    ) %>%
+      grp_replace(
+        grp_pull(
+          .,
+          which = 1
+        ) |> sub_missing(
+            everything(),
+            missing_text = "-"
+          ) |>
+          tab_header(
+            title = div(
+              HTML(
+                web_image(
+                  fantasy_team_info$team_image
+                )
+              ),
+              div(
+                fantasy_team_name
+              ),
+              HTML(
+                web_image(
+                  fantasy_team_info$team_image
+                )
+              ),
+              style = css(
+                `display` = "flex",
+                `justify-content` = "center",
+                `align-items` = "center"
+              )
+            )
+          ) |> 
+          cols_label(
+            Name = "",
+            Logo = ""
+          ),
+        .which = 1
+      ) %>%
+      grp_replace(
+        grp_pull(
+          .,
+          which = 2
+        ) |> sub_missing(
+            everything(),
+            missing_text = "-"
+          ) |>
+          tab_header(
+            title = "Forwards"
+          ) |>
+           opt_align_table_header(align = "left"),
+        .which = 2
+      ) %>%
+      grp_replace(
+        grp_pull(
+          .,
+          which = 3
+        ) |> sub_missing(
+            everything(),
+            missing_text = "-"
+          ) |>
+          tab_header(
+            title = "Defenders"
+          ) |>
+           opt_align_table_header(align = "left"),
+        .which = 3
+      ) %>%
+      grp_replace(
+        grp_pull(
+          .,
+          which = 4
+        ) |> sub_missing(
+            everything(),
+            missing_text = "-"
+          ) |>
+          tab_header(
+            title = "Goalies"
+          ) |>
+           opt_align_table_header(align = "left"),
+        .which = 4
+      )
+    # ) |>
+    # sub_missing(
+    #   everything(),
+    #   missing_text = "-"
+    # )
 
   return(
     gt_table
