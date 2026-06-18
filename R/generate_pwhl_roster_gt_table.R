@@ -11,6 +11,7 @@ library(htmltools)
 #' @param team_stats PWHL team stats
 #' @param team_code PWHL team code
 #' @param team_info PWHL team info
+#' @param fantasy_teams Fantasy team info
 #' @return gt() table of PWHL roster
 #' @import tidyr
 #' @import dplyr
@@ -21,7 +22,8 @@ library(htmltools)
 generate_pwhl_roster_gt_table <- function(
   team_stats,
   team_code,
-  team_info
+  team_info,
+  fantasy_teams
 ) {
   pwhl_team_stats <- team_stats[[
     team_code
@@ -64,6 +66,17 @@ generate_pwhl_roster_gt_table <- function(
       fantasy_points = as.numeric(goals) + as.numeric(assists) + 0.05*as.numeric(shots)
     )
 
+  for (fantasy_team_name in names(fantasy_teams)) {
+    skaters <- skaters |>
+      mutate(
+        {{fantasy_team_name}} := if_else(
+          name %in% fantasy_teams[[fantasy_team_name]]$roster$skaters$name,
+          fantasy_teams[[fantasy_team_name]]$info$team_image,
+          ""
+        )
+      )
+  }
+
   goalies <- team_stats[[
     team_code
   ]]$goalies |>
@@ -97,6 +110,17 @@ generate_pwhl_roster_gt_table <- function(
       fantasy_points = 0.05*as.numeric(saves)
     )
 
+  for (fantasy_team_name in names(fantasy_teams)) {
+    goalies <- goalies |>
+      mutate(
+        {{fantasy_team_name}} := if_else(
+          name %in% fantasy_teams[[fantasy_team_name]]$roster$goalies$name,
+          fantasy_teams[[fantasy_team_name]]$info$team_image,
+          ""
+        )
+      )
+  }
+
   gt_table <- bind_rows(
     skaters,
     goalies
@@ -116,7 +140,10 @@ generate_pwhl_roster_gt_table <- function(
       assists,
       shots,
       saves,
-      fantasy_points
+      fantasy_points,
+      names(
+        fantasy_teams
+      )
     ) |>
     mutate(
       role = position
@@ -146,6 +173,41 @@ generate_pwhl_roster_gt_table <- function(
         ";border-radius:50%;'/>"
       )
     ) |>
+    mutate(
+      across(
+        all_of(
+          names(
+            fantasy_teams
+          )
+        ),
+        ~ {
+          if_else(
+            . != "",
+            paste0(
+              "<img src='",
+              .,
+              "' style='width:40px;height:40px;'/>"
+            ),
+            .
+          )
+        }
+      ),
+      Teams_temp = do.call(
+        paste0,
+        c(
+          pick(
+            names(
+              fantasy_teams
+            )
+          )
+        )
+      ),
+      Teams = paste0(
+        "<div style='display:flex;justify-content: center;gap:5px;width:100%;'>",
+        Teams_temp,
+        "</div>"
+      )
+    ) |>
     select(
       "#",
       Headshot,
@@ -157,6 +219,7 @@ generate_pwhl_roster_gt_table <- function(
       SH,
       SVS,
       Pts,
+      Teams
     ) |>
     mutate(
       G = as.numeric(G),
@@ -199,7 +262,8 @@ generate_pwhl_roster_gt_table <- function(
               Role == "F"
             ) |>
             select(Pts)
-        )
+        ),
+        ""
       ),
       c(
         "",
@@ -235,7 +299,8 @@ generate_pwhl_roster_gt_table <- function(
               Role == "D"
             ) |>
             select(Pts)
-        )
+        ),
+        ""
       ),
       c(
         "",
@@ -259,7 +324,8 @@ generate_pwhl_roster_gt_table <- function(
               Role == "G"
             ) |>
             select(Pts)
-        )
+        ),
+        ""
       ),
       c(
         "",
@@ -286,7 +352,8 @@ generate_pwhl_roster_gt_table <- function(
         sum(
           .$Pts,
           na.rm = TRUE
-        )
+        ),
+        ""
       )
     ) %>%
     arrange(
@@ -321,7 +388,8 @@ generate_pwhl_roster_gt_table <- function(
     gt() |>
     fmt_markdown(
       columns = c(
-        Headshot
+        Headshot,
+        Teams
       )
     ) |>
     # tab_header(
@@ -355,13 +423,14 @@ generate_pwhl_roster_gt_table <- function(
     cols_align(
       align = "center",
       columns = c(
-        # "#",
+        `#`,
         Headshot,
         G,
         A,
         SH,
         SVS,
-        Pts
+        Pts,
+        Teams
       )
     ) |>
     cols_align(
@@ -437,10 +506,14 @@ generate_pwhl_roster_gt_table <- function(
       '
     ) |>
     cols_width(
+      `#` ~ px(40),
       Headshot ~ px(50),
       Name ~ px(160),
-      Pts ~ px(60),
-      everything() ~ px(40)
+      G ~ px(40),
+      A ~ px(40),
+      SH ~ px(40),
+      SVS ~ px(40),
+      Pts ~ px(60)
     ) |>
     gt::gt_split(
       row_slice_i = c(
@@ -491,6 +564,17 @@ generate_pwhl_roster_gt_table <- function(
           ) |> 
           cols_label(
             Name = ""
+          ) |>
+          cols_hide(
+            c(
+              `#`,
+              Headshot,
+              Teams
+            )
+          ) |>
+          cols_align(
+            align = "center",
+            columns = Name
           ),
         .which = 1
       ) %>%

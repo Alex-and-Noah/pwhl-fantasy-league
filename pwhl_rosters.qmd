@@ -33,6 +33,10 @@ team_stats <- readRDS(
 team_info <- readRDS(
   "team_info.rds"
 )
+
+fantasy_teams <- readRDS(
+  "fantasy_teams.rds"
+)
 ```
 
 ::: {.panel-tabset .nav-pills}
@@ -66,7 +70,8 @@ res <- purrr::map_chr(
         "generate_pwhl_roster_gt_table(",
         "    team_stats,",
         "    team_code,",
-        "    team_info",
+        "    team_info,",
+        "    fantasy_teams",
         ")",
         "",
         "```",
