@@ -82,16 +82,6 @@ saveRDS(
   file = "team_info.rds"
 )
 
-team_stats <- get_team_stats(
-  season_id,
-  team_info
-)
-
-saveRDS(
-  team_stats,
-  file = "team_stats.rds"
-)
-
 player_boxes_per_game <- get_player_boxes_per_game(
   current_schedule
 )
@@ -99,6 +89,17 @@ player_boxes_per_game <- get_player_boxes_per_game(
 saveRDS(
   player_boxes_per_game,
   file = "player_boxes_per_game.rds"
+)
+
+team_stats <- get_team_stats(
+  season_id,
+  team_info,
+  player_boxes_per_game
+)
+
+saveRDS(
+  team_stats,
+  file = "team_stats.rds"
 )
 
 fantasy_teams <- get_fantasy_teams(

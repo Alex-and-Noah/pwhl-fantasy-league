@@ -21,7 +21,12 @@ compute_fantasy_roster_points_per_game <- function(
     ]]$skaters <- player_boxes_per_game[[
       game_id
     ]]$skaters |> mutate(
-      fantasy_points = goals + assists + 0.05*shots
+      fantasy_points = 2*goals +
+      1*assists +
+      0.1*shots + 
+      0.1*blocked_shots +
+      2*win +
+      1*ot_loss
     )
 
     player_boxes_per_game[[
@@ -29,7 +34,17 @@ compute_fantasy_roster_points_per_game <- function(
     ]]$goalies <- player_boxes_per_game[[
       game_id
     ]]$goalies |> mutate(
-      fantasy_points = 0.05*(shots_against - goals_against)
+      shutout = case_when(
+        goals_against == 0 & toi != "0" ~ 1,
+        .default = 0
+      ),
+      fantasy_points = 1*shutout + #1*goals +
+      # 1*assists +
+      0.05*(
+        shots_against - goals_against
+      ) +
+      2*win +
+      1*ot_loss
     )
   }
 

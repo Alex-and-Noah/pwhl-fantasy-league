@@ -23,11 +23,9 @@ Your team should have exactly the following (the Google Sheet dropdowns force th
 # Scoring
 Your fantasy team's score is updated daily with data from the previous day's games. Each day, each member of your fantasy roster will contribute a number of points to your team's overall score, following the scheme below:
 
-🏒 1 point per goal<br>
-🤝 1 point per assist<br>
-✨ 2 points per win\*<br>
-😖 0 points per loss\*<br>
-🥇 1 point per OT loss\*
+| Skaters        | Goalies |
+| ------------- |-------------|
+| 🏒 2 point per goal<br>🤝 1 point per assist<br>🎯 0.1 points per shot<br>⛔ 0.1 points per blocked shot<br>✨ 2 points per win\*<br>😖 0 points per loss\*<br>🥇 1 point per OT loss\*      | 🧱 1 point per shutout<br>⛔ 0.05 points per save<br>✨ 2 points per win\*<br>😖 0 points per loss\*<br>🥇 1 point per OT loss\* |
 
 You can check how your and everyone else's teams are doing [here](./team_standings.qmd). Note that eventually, only **regular season games** will contribute to your fantasy teams score.
 

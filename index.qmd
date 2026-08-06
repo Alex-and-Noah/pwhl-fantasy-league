@@ -7,16 +7,30 @@ execute:
 ---
 
 ```{r "Pull data"}
-source("pull_data.R")
+# source("pull_data.R")
 ```
 
 ```{r "todays games"}
+library(dplyr)
+library(gt)
+library(purrr)
+library(bsicons)
+library(htmltools)
+library(bslib)
+library(data.table)
+library(ggplot2)
+library(lubridate)
+
 current_schedule <- readRDS(
   "current_schedule.rds"
 )
 
 current_date <- readRDS(
   "current_date.rds"
+)
+
+team_info <- readRDS(
+  "team_info.rds"
 )
 
 todays_games <- current_schedule |>

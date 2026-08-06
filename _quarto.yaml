@@ -50,5 +50,5 @@ format:
     toc: true
     html-table-processing: none
 
-execute:
-  freeze: auto
+# execute:
+#   freeze: auto
