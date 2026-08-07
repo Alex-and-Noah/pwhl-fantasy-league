@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -39,14 +42,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-53341bb65df7926f7ef654f5ea11b7fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-c5042a32464b7b5b278b84fb9bb76560.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-53341bb65df7926f7ef654f5ea11b7fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e3452b88f8fc75a5852b846851c9a179.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-969c9642c1db431d2233051fda2a13b2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e3452b88f8fc75a5852b846851c9a179.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -189,23 +192,23 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="cell" title="Standings Today">
 <div class="cell-output-display">
-<div id="uullhtyzeb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uullhtyzeb table {
+<div id="opamtkqrtb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#opamtkqrtb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#uullhtyzeb thead, #uullhtyzeb tbody, #uullhtyzeb tfoot, #uullhtyzeb tr, #uullhtyzeb td, #uullhtyzeb th {
+#opamtkqrtb thead, #opamtkqrtb tbody, #opamtkqrtb tfoot, #opamtkqrtb tr, #opamtkqrtb td, #opamtkqrtb th {
   border-style: none;
 }
 
-#uullhtyzeb p {
+#opamtkqrtb p {
   margin: 0;
   padding: 0;
 }
 
-#uullhtyzeb .gt_table {
+#opamtkqrtb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -231,12 +234,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_caption {
+#opamtkqrtb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uullhtyzeb .gt_title {
+#opamtkqrtb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -248,7 +251,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#uullhtyzeb .gt_subtitle {
+#opamtkqrtb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -260,7 +263,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#uullhtyzeb .gt_heading {
+#opamtkqrtb .gt_heading {
   background-color: #F5F5F5;
   text-align: center;
   border-bottom-color: #F5F5F5;
@@ -272,13 +275,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_bottom_border {
+#opamtkqrtb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_col_headings {
+#opamtkqrtb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: rgba(255, 255, 255, 0);
@@ -293,7 +296,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_col_heading {
+#opamtkqrtb .gt_col_heading {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -313,7 +316,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#uullhtyzeb .gt_column_spanner_outer {
+#opamtkqrtb .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -325,15 +328,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#uullhtyzeb .gt_column_spanner_outer:first-child {
+#opamtkqrtb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uullhtyzeb .gt_column_spanner_outer:last-child {
+#opamtkqrtb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uullhtyzeb .gt_column_spanner {
+#opamtkqrtb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: rgba(255, 255, 255, 0);
@@ -345,11 +348,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#uullhtyzeb .gt_spanner_row {
+#opamtkqrtb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#uullhtyzeb .gt_group_heading {
+#opamtkqrtb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -375,7 +378,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#uullhtyzeb .gt_empty_group_heading {
+#opamtkqrtb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #F5F5F5;
@@ -390,15 +393,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#uullhtyzeb .gt_from_md > :first-child {
+#opamtkqrtb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uullhtyzeb .gt_from_md > :last-child {
+#opamtkqrtb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uullhtyzeb .gt_row {
+#opamtkqrtb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -417,7 +420,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#uullhtyzeb .gt_stub {
+#opamtkqrtb .gt_stub {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -430,7 +433,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#uullhtyzeb .gt_stub_row_group {
+#opamtkqrtb .gt_stub_row_group {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -444,15 +447,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#uullhtyzeb .gt_row_group_first td {
+#opamtkqrtb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uullhtyzeb .gt_row_group_first th {
+#opamtkqrtb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#uullhtyzeb .gt_summary_row {
+#opamtkqrtb .gt_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -462,16 +465,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#uullhtyzeb .gt_first_summary_row {
+#opamtkqrtb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_first_summary_row.thick {
+#opamtkqrtb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uullhtyzeb .gt_last_summary_row {
+#opamtkqrtb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -481,7 +484,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_grand_summary_row {
+#opamtkqrtb .gt_grand_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -491,7 +494,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#uullhtyzeb .gt_first_grand_summary_row {
+#opamtkqrtb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -501,7 +504,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_last_grand_summary_row_top {
+#opamtkqrtb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -511,11 +514,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_striped {
+#opamtkqrtb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uullhtyzeb .gt_table_body {
+#opamtkqrtb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -524,7 +527,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: rgba(255, 255, 255, 0);
 }
 
-#uullhtyzeb .gt_footnotes {
+#opamtkqrtb .gt_footnotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -538,7 +541,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_footnote {
+#opamtkqrtb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -547,7 +550,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#uullhtyzeb .gt_sourcenotes {
+#opamtkqrtb .gt_sourcenotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -561,7 +564,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#uullhtyzeb .gt_sourcenote {
+#opamtkqrtb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -569,72 +572,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#uullhtyzeb .gt_left {
+#opamtkqrtb .gt_left {
   text-align: left;
 }
 
-#uullhtyzeb .gt_center {
+#opamtkqrtb .gt_center {
   text-align: center;
 }
 
-#uullhtyzeb .gt_right {
+#opamtkqrtb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uullhtyzeb .gt_font_normal {
+#opamtkqrtb .gt_font_normal {
   font-weight: normal;
 }
 
-#uullhtyzeb .gt_font_bold {
+#opamtkqrtb .gt_font_bold {
   font-weight: bold;
 }
 
-#uullhtyzeb .gt_font_italic {
+#opamtkqrtb .gt_font_italic {
   font-style: italic;
 }
 
-#uullhtyzeb .gt_super {
+#opamtkqrtb .gt_super {
   font-size: 65%;
 }
 
-#uullhtyzeb .gt_footnote_marks {
+#opamtkqrtb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#uullhtyzeb .gt_asterisk {
+#opamtkqrtb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uullhtyzeb .gt_indent_1 {
+#opamtkqrtb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uullhtyzeb .gt_indent_2 {
+#opamtkqrtb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uullhtyzeb .gt_indent_3 {
+#opamtkqrtb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uullhtyzeb .gt_indent_4 {
+#opamtkqrtb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uullhtyzeb .gt_indent_5 {
+#opamtkqrtb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#uullhtyzeb .katex-display {
+#opamtkqrtb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#uullhtyzeb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#opamtkqrtb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 
@@ -657,36 +660,36 @@ table tr:nth-child(odd) {
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #0088CE; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/average-joes-dodgeball.png" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Average Joe's (Joey)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">265.70</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #D97127; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/TD_Place_Stadium_logo.png" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Lansdowne 2.NO (Anne)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">255.85</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFFFFF; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/Windows_Logo_(1992-2001).svg" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Zillenial Zingers (Reiko)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">254.55</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #8C869D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/Fearicon.png" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Nog's Bologs (Noah)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">249.15</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">760.15</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #0088CE; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/average-joes-dodgeball.png" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Average Joe's (Joey)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">750.35</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #C21807; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/canada-goose-head.webp" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">It's Called CAN-ada, not CAN'T-ada! (Emily)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">236.15</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFA20D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/harpy.svg" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Valkyries (Mila)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">226.35</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #AEC84A; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/fuze-product-en-lemon.jpg" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Fuze (Maia)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">211.05</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFD6D5; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/sphynx-cat.svg" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Hintonburg Sphynxes (Karl)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">205.50</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">719.95</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #D97127; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/TD_Place_Stadium_logo.png" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Lansdowne 2.NO (Anne)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">700.00</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #8C869D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/Fearicon.png" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Nog's Bologs (Noah)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">697.70</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #A51B2F; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/Ottawa_Charge_Logo.svg" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Winners? Guilty as CHARGEd (Melissa and Marc)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">189.00</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">629.25</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFA20D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/harpy.svg" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Valkyries (Mila)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">614.80</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFD6D5; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/sphynx-cat.svg" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Hintonburg Sphynxes (Karl)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">593.55</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #AEC84A; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/fuze-product-en-lemon.jpg" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Fuze (Maia)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">584.65</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #E9A7BB; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/crybabie.png" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">The Cry Babies (Alex)</td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">156.65</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">542.40</td></tr>
   </tbody>
   
 </table>

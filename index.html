@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -39,14 +42,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-53341bb65df7926f7ef654f5ea11b7fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-c5042a32464b7b5b278b84fb9bb76560.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-53341bb65df7926f7ef654f5ea11b7fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e3452b88f8fc75a5852b846851c9a179.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-969c9642c1db431d2233051fda2a13b2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e3452b88f8fc75a5852b846851c9a179.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -191,23 +194,23 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="cell">
 <div class="cell-output-display">
-<div id="dzkqnbyluq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dzkqnbyluq table {
+<div id="rxivmsdrja" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rxivmsdrja table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dzkqnbyluq thead, #dzkqnbyluq tbody, #dzkqnbyluq tfoot, #dzkqnbyluq tr, #dzkqnbyluq td, #dzkqnbyluq th {
+#rxivmsdrja thead, #rxivmsdrja tbody, #rxivmsdrja tfoot, #rxivmsdrja tr, #rxivmsdrja td, #rxivmsdrja th {
   border-style: none;
 }
 
-#dzkqnbyluq p {
+#rxivmsdrja p {
   margin: 0;
   padding: 0;
 }
 
-#dzkqnbyluq .gt_table {
+#rxivmsdrja .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -233,12 +236,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_caption {
+#rxivmsdrja .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dzkqnbyluq .gt_title {
+#rxivmsdrja .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -250,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#dzkqnbyluq .gt_subtitle {
+#rxivmsdrja .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -262,7 +265,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#dzkqnbyluq .gt_heading {
+#rxivmsdrja .gt_heading {
   background-color: #F5F5F5;
   text-align: center;
   border-bottom-color: #F5F5F5;
@@ -274,13 +277,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_bottom_border {
+#rxivmsdrja .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_col_headings {
+#rxivmsdrja .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: rgba(255, 255, 255, 0);
@@ -295,7 +298,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_col_heading {
+#rxivmsdrja .gt_col_heading {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -315,7 +318,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#dzkqnbyluq .gt_column_spanner_outer {
+#rxivmsdrja .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -327,15 +330,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#dzkqnbyluq .gt_column_spanner_outer:first-child {
+#rxivmsdrja .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dzkqnbyluq .gt_column_spanner_outer:last-child {
+#rxivmsdrja .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dzkqnbyluq .gt_column_spanner {
+#rxivmsdrja .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: rgba(255, 255, 255, 0);
@@ -347,11 +350,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#dzkqnbyluq .gt_spanner_row {
+#rxivmsdrja .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dzkqnbyluq .gt_group_heading {
+#rxivmsdrja .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -377,7 +380,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#dzkqnbyluq .gt_empty_group_heading {
+#rxivmsdrja .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #F5F5F5;
@@ -392,15 +395,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#dzkqnbyluq .gt_from_md > :first-child {
+#rxivmsdrja .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dzkqnbyluq .gt_from_md > :last-child {
+#rxivmsdrja .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dzkqnbyluq .gt_row {
+#rxivmsdrja .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -419,7 +422,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#dzkqnbyluq .gt_stub {
+#rxivmsdrja .gt_stub {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -432,7 +435,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#dzkqnbyluq .gt_stub_row_group {
+#rxivmsdrja .gt_stub_row_group {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -446,15 +449,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#dzkqnbyluq .gt_row_group_first td {
+#rxivmsdrja .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dzkqnbyluq .gt_row_group_first th {
+#rxivmsdrja .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dzkqnbyluq .gt_summary_row {
+#rxivmsdrja .gt_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -464,16 +467,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#dzkqnbyluq .gt_first_summary_row {
+#rxivmsdrja .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_first_summary_row.thick {
+#rxivmsdrja .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dzkqnbyluq .gt_last_summary_row {
+#rxivmsdrja .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -483,7 +486,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_grand_summary_row {
+#rxivmsdrja .gt_grand_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -493,7 +496,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#dzkqnbyluq .gt_first_grand_summary_row {
+#rxivmsdrja .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -503,7 +506,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_last_grand_summary_row_top {
+#rxivmsdrja .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -513,11 +516,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_striped {
+#rxivmsdrja .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dzkqnbyluq .gt_table_body {
+#rxivmsdrja .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -526,7 +529,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: rgba(255, 255, 255, 0);
 }
 
-#dzkqnbyluq .gt_footnotes {
+#rxivmsdrja .gt_footnotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -540,7 +543,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_footnote {
+#rxivmsdrja .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -549,7 +552,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#dzkqnbyluq .gt_sourcenotes {
+#rxivmsdrja .gt_sourcenotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -563,7 +566,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#dzkqnbyluq .gt_sourcenote {
+#rxivmsdrja .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -571,72 +574,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#dzkqnbyluq .gt_left {
+#rxivmsdrja .gt_left {
   text-align: left;
 }
 
-#dzkqnbyluq .gt_center {
+#rxivmsdrja .gt_center {
   text-align: center;
 }
 
-#dzkqnbyluq .gt_right {
+#rxivmsdrja .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dzkqnbyluq .gt_font_normal {
+#rxivmsdrja .gt_font_normal {
   font-weight: normal;
 }
 
-#dzkqnbyluq .gt_font_bold {
+#rxivmsdrja .gt_font_bold {
   font-weight: bold;
 }
 
-#dzkqnbyluq .gt_font_italic {
+#rxivmsdrja .gt_font_italic {
   font-style: italic;
 }
 
-#dzkqnbyluq .gt_super {
+#rxivmsdrja .gt_super {
   font-size: 65%;
 }
 
-#dzkqnbyluq .gt_footnote_marks {
+#rxivmsdrja .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dzkqnbyluq .gt_asterisk {
+#rxivmsdrja .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dzkqnbyluq .gt_indent_1 {
+#rxivmsdrja .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dzkqnbyluq .gt_indent_2 {
+#rxivmsdrja .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dzkqnbyluq .gt_indent_3 {
+#rxivmsdrja .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dzkqnbyluq .gt_indent_4 {
+#rxivmsdrja .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dzkqnbyluq .gt_indent_5 {
+#rxivmsdrja .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dzkqnbyluq .katex-display {
+#rxivmsdrja .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dzkqnbyluq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#rxivmsdrja div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 
@@ -705,23 +708,23 @@ table tr:nth-child(odd) {
 <h1>Standings</h1>
 <div class="cell">
 <div class="cell-output-display">
-<div id="cjhfofpsen" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#cjhfofpsen table {
+<div id="jydhmjhslz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jydhmjhslz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#cjhfofpsen thead, #cjhfofpsen tbody, #cjhfofpsen tfoot, #cjhfofpsen tr, #cjhfofpsen td, #cjhfofpsen th {
+#jydhmjhslz thead, #jydhmjhslz tbody, #jydhmjhslz tfoot, #jydhmjhslz tr, #jydhmjhslz td, #jydhmjhslz th {
   border-style: none;
 }
 
-#cjhfofpsen p {
+#jydhmjhslz p {
   margin: 0;
   padding: 0;
 }
 
-#cjhfofpsen .gt_table {
+#jydhmjhslz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -747,12 +750,12 @@ table tr:nth-child(odd) {
   border-left-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_caption {
+#jydhmjhslz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#cjhfofpsen .gt_title {
+#jydhmjhslz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -764,7 +767,7 @@ table tr:nth-child(odd) {
   border-bottom-width: 0;
 }
 
-#cjhfofpsen .gt_subtitle {
+#jydhmjhslz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -776,7 +779,7 @@ table tr:nth-child(odd) {
   border-top-width: 0;
 }
 
-#cjhfofpsen .gt_heading {
+#jydhmjhslz .gt_heading {
   background-color: #F5F5F5;
   text-align: center;
   border-bottom-color: #F5F5F5;
@@ -788,13 +791,13 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_bottom_border {
+#jydhmjhslz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_col_headings {
+#jydhmjhslz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: rgba(255, 255, 255, 0);
@@ -809,7 +812,7 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_col_heading {
+#jydhmjhslz .gt_col_heading {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -829,7 +832,7 @@ table tr:nth-child(odd) {
   overflow-x: hidden;
 }
 
-#cjhfofpsen .gt_column_spanner_outer {
+#jydhmjhslz .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -841,15 +844,15 @@ table tr:nth-child(odd) {
   padding-right: 4px;
 }
 
-#cjhfofpsen .gt_column_spanner_outer:first-child {
+#jydhmjhslz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cjhfofpsen .gt_column_spanner_outer:last-child {
+#jydhmjhslz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cjhfofpsen .gt_column_spanner {
+#jydhmjhslz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: rgba(255, 255, 255, 0);
@@ -861,11 +864,11 @@ table tr:nth-child(odd) {
   width: 100%;
 }
 
-#cjhfofpsen .gt_spanner_row {
+#jydhmjhslz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#cjhfofpsen .gt_group_heading {
+#jydhmjhslz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -891,7 +894,7 @@ table tr:nth-child(odd) {
   text-align: left;
 }
 
-#cjhfofpsen .gt_empty_group_heading {
+#jydhmjhslz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #F5F5F5;
@@ -906,15 +909,15 @@ table tr:nth-child(odd) {
   vertical-align: middle;
 }
 
-#cjhfofpsen .gt_from_md > :first-child {
+#jydhmjhslz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cjhfofpsen .gt_from_md > :last-child {
+#jydhmjhslz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cjhfofpsen .gt_row {
+#jydhmjhslz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -933,7 +936,7 @@ table tr:nth-child(odd) {
   overflow-x: hidden;
 }
 
-#cjhfofpsen .gt_stub {
+#jydhmjhslz .gt_stub {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -946,7 +949,7 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#cjhfofpsen .gt_stub_row_group {
+#jydhmjhslz .gt_stub_row_group {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -960,15 +963,15 @@ table tr:nth-child(odd) {
   vertical-align: top;
 }
 
-#cjhfofpsen .gt_row_group_first td {
+#jydhmjhslz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cjhfofpsen .gt_row_group_first th {
+#jydhmjhslz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#cjhfofpsen .gt_summary_row {
+#jydhmjhslz .gt_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -978,16 +981,16 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#cjhfofpsen .gt_first_summary_row {
+#jydhmjhslz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_first_summary_row.thick {
+#jydhmjhslz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cjhfofpsen .gt_last_summary_row {
+#jydhmjhslz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -997,7 +1000,7 @@ table tr:nth-child(odd) {
   border-bottom-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_grand_summary_row {
+#jydhmjhslz .gt_grand_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -1007,7 +1010,7 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#cjhfofpsen .gt_first_grand_summary_row {
+#jydhmjhslz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1017,7 +1020,7 @@ table tr:nth-child(odd) {
   border-top-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_last_grand_summary_row_top {
+#jydhmjhslz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1027,11 +1030,11 @@ table tr:nth-child(odd) {
   border-bottom-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_striped {
+#jydhmjhslz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cjhfofpsen .gt_table_body {
+#jydhmjhslz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1040,7 +1043,7 @@ table tr:nth-child(odd) {
   border-bottom-color: rgba(255, 255, 255, 0);
 }
 
-#cjhfofpsen .gt_footnotes {
+#jydhmjhslz .gt_footnotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -1054,7 +1057,7 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_footnote {
+#jydhmjhslz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1063,7 +1066,7 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#cjhfofpsen .gt_sourcenotes {
+#jydhmjhslz .gt_sourcenotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -1077,7 +1080,7 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#cjhfofpsen .gt_sourcenote {
+#jydhmjhslz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1085,72 +1088,72 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#cjhfofpsen .gt_left {
+#jydhmjhslz .gt_left {
   text-align: left;
 }
 
-#cjhfofpsen .gt_center {
+#jydhmjhslz .gt_center {
   text-align: center;
 }
 
-#cjhfofpsen .gt_right {
+#jydhmjhslz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cjhfofpsen .gt_font_normal {
+#jydhmjhslz .gt_font_normal {
   font-weight: normal;
 }
 
-#cjhfofpsen .gt_font_bold {
+#jydhmjhslz .gt_font_bold {
   font-weight: bold;
 }
 
-#cjhfofpsen .gt_font_italic {
+#jydhmjhslz .gt_font_italic {
   font-style: italic;
 }
 
-#cjhfofpsen .gt_super {
+#jydhmjhslz .gt_super {
   font-size: 65%;
 }
 
-#cjhfofpsen .gt_footnote_marks {
+#jydhmjhslz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#cjhfofpsen .gt_asterisk {
+#jydhmjhslz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cjhfofpsen .gt_indent_1 {
+#jydhmjhslz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cjhfofpsen .gt_indent_2 {
+#jydhmjhslz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cjhfofpsen .gt_indent_3 {
+#jydhmjhslz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cjhfofpsen .gt_indent_4 {
+#jydhmjhslz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cjhfofpsen .gt_indent_5 {
+#jydhmjhslz .gt_indent_5 {
   text-indent: 25px;
 }
 
-#cjhfofpsen .katex-display {
+#jydhmjhslz .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#cjhfofpsen div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jydhmjhslz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 
@@ -1174,46 +1177,46 @@ table tr:nth-child(odd) {
     </tr>
   </thead>
   <tbody class="gt_table_body">
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFFFFF; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/Windows_Logo_(1992-2001).svg" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Zillenial Zingers (Reiko)</td>
+<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Up" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#128800ff;overflow:visible;position:relative;"><title>Arrow Up</title><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg></span></td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">760.15 (+710.3)</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #0088CE; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/average-joes-dodgeball.png" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Average Joe's (Joey)</td>
 <td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Up" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#128800ff;overflow:visible;position:relative;"><title>Arrow Up</title><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">265.7 (+261.8)</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #D97127; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/TD_Place_Stadium_logo.png" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Lansdowne 2.NO (Anne)</td>
-<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Up" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#128800ff;overflow:visible;position:relative;"><title>Arrow Up</title><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">255.85 (+255.85)</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFFFFF; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/Windows_Logo_(1992-2001).svg" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Zillenial Zingers (Reiko)</td>
-<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Down" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#c50101ff;overflow:visible;position:relative;"><title>Arrow Down</title><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">254.55 (+185.2)</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #8C869D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/Fearicon.png" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Nog's Bologs (Noah)</td>
-<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><br></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">249.15 (+202.9)</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">750.35 (+740.65)</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #C21807; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/canada-goose-head.webp" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">It's Called CAN-ada, not CAN'T-ada! (Emily)</td>
 <td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Up" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#128800ff;overflow:visible;position:relative;"><title>Arrow Up</title><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">236.15 (+208.5)</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">719.95 (+719.95)</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #D97127; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/TD_Place_Stadium_logo.png" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Lansdowne 2.NO (Anne)</td>
+<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Up" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#128800ff;overflow:visible;position:relative;"><title>Arrow Up</title><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg></span></td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">700 (+700)</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #8C869D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/Fearicon.png" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Nog's Bologs (Noah)</td>
+<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Down" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#c50101ff;overflow:visible;position:relative;"><title>Arrow Down</title><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg></span></td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">697.7 (+588)</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #A51B2F; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/Ottawa_Charge_Logo.svg" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Winners? Guilty as CHARGEd (Melissa and Marc)</td>
+<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><br></td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">629.25 (+589.5)</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFA20D; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/harpy.svg" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Valkyries (Mila)</td>
 <td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Up" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#128800ff;overflow:visible;position:relative;"><title>Arrow Up</title><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">226.35 (+208.5)</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #AEC84A; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/fuze-product-en-lemon.jpg" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Fuze (Maia)</td>
-<td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><br></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">211.05 (+183.45)</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">614.8 (+614.8)</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #FFD6D5; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/sphynx-cat.svg" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Hintonburg Sphynxes (Karl)</td>
 <td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Down" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#c50101ff;overflow:visible;position:relative;"><title>Arrow Down</title><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">205.5 (+171.75)</td></tr>
-    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #A51B2F; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/refs/heads/main/static/Ottawa_Charge_Logo.svg" style="height:5vh;"></td>
-<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Winners? Guilty as CHARGEd (Melissa and Marc)</td>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">593.55 (+514.65)</td></tr>
+    <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #AEC84A; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/fuze-product-en-lemon.jpg" style="height:5vh;"></td>
+<td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">Fuze (Maia)</td>
 <td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Down" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#c50101ff;overflow:visible;position:relative;"><title>Arrow Down</title><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">189 (+142.3)</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">584.65 (+509.15)</td></tr>
     <tr><td headers="team_image" class="gt_row gt_center" style="background-color: #E9A7BB; font-weight: bold; border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><img src="https://raw.githubusercontent.com/Alex-and-Noah/pwhl-fantasy-league/main/static/crybabie.png" style="height:5vh;"></td>
 <td headers="fantasy_team_name" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">The Cry Babies (Alex)</td>
 <td headers="position_change_since_yesterday" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;"><span style="white-space:nowrap;"><svg aria-label="Arrow Down" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#c50101ff;overflow:visible;position:relative;"><title>Arrow Down</title><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg></span></td>
-<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">156.65 (+91.4)</td></tr>
+<td headers="fantasy_points" class="gt_row gt_center" style="border-top-width: 0px; border-top-style: solid; border-top-color: #000000; border-right-width: 0px; border-right-style: solid; border-right-color: #000000; border-left-width: 0px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 0px; border-bottom-style: solid; border-bottom-color: #000000;">542.4 (+375.6)</td></tr>
   </tbody>
   
 </table>
@@ -1222,23 +1225,23 @@ table tr:nth-child(odd) {
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="zfwcrkdlrl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zfwcrkdlrl table {
+<div id="bzarzlvqha" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bzarzlvqha table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zfwcrkdlrl thead, #zfwcrkdlrl tbody, #zfwcrkdlrl tfoot, #zfwcrkdlrl tr, #zfwcrkdlrl td, #zfwcrkdlrl th {
+#bzarzlvqha thead, #bzarzlvqha tbody, #bzarzlvqha tfoot, #bzarzlvqha tr, #bzarzlvqha td, #bzarzlvqha th {
   border-style: none;
 }
 
-#zfwcrkdlrl p {
+#bzarzlvqha p {
   margin: 0;
   padding: 0;
 }
 
-#zfwcrkdlrl .gt_table {
+#bzarzlvqha .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1264,12 +1267,12 @@ table tr:nth-child(odd) {
   border-left-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_caption {
+#bzarzlvqha .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zfwcrkdlrl .gt_title {
+#bzarzlvqha .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1281,7 +1284,7 @@ table tr:nth-child(odd) {
   border-bottom-width: 0;
 }
 
-#zfwcrkdlrl .gt_subtitle {
+#bzarzlvqha .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1293,7 +1296,7 @@ table tr:nth-child(odd) {
   border-top-width: 0;
 }
 
-#zfwcrkdlrl .gt_heading {
+#bzarzlvqha .gt_heading {
   background-color: #F5F5F5;
   text-align: center;
   border-bottom-color: #F5F5F5;
@@ -1305,13 +1308,13 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_bottom_border {
+#bzarzlvqha .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_col_headings {
+#bzarzlvqha .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: rgba(255, 255, 255, 0);
@@ -1326,7 +1329,7 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_col_heading {
+#bzarzlvqha .gt_col_heading {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -1346,7 +1349,7 @@ table tr:nth-child(odd) {
   overflow-x: hidden;
 }
 
-#zfwcrkdlrl .gt_column_spanner_outer {
+#bzarzlvqha .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #2B2D42;
   font-size: 100%;
@@ -1358,15 +1361,15 @@ table tr:nth-child(odd) {
   padding-right: 4px;
 }
 
-#zfwcrkdlrl .gt_column_spanner_outer:first-child {
+#bzarzlvqha .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zfwcrkdlrl .gt_column_spanner_outer:last-child {
+#bzarzlvqha .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zfwcrkdlrl .gt_column_spanner {
+#bzarzlvqha .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: rgba(255, 255, 255, 0);
@@ -1378,11 +1381,11 @@ table tr:nth-child(odd) {
   width: 100%;
 }
 
-#zfwcrkdlrl .gt_spanner_row {
+#bzarzlvqha .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zfwcrkdlrl .gt_group_heading {
+#bzarzlvqha .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1408,7 +1411,7 @@ table tr:nth-child(odd) {
   text-align: left;
 }
 
-#zfwcrkdlrl .gt_empty_group_heading {
+#bzarzlvqha .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #F5F5F5;
@@ -1423,15 +1426,15 @@ table tr:nth-child(odd) {
   vertical-align: middle;
 }
 
-#zfwcrkdlrl .gt_from_md > :first-child {
+#bzarzlvqha .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zfwcrkdlrl .gt_from_md > :last-child {
+#bzarzlvqha .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zfwcrkdlrl .gt_row {
+#bzarzlvqha .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1450,7 +1453,7 @@ table tr:nth-child(odd) {
   overflow-x: hidden;
 }
 
-#zfwcrkdlrl .gt_stub {
+#bzarzlvqha .gt_stub {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -1463,7 +1466,7 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#zfwcrkdlrl .gt_stub_row_group {
+#bzarzlvqha .gt_stub_row_group {
   color: #333333;
   background-color: #F5F5F5;
   font-size: 100%;
@@ -1477,15 +1480,15 @@ table tr:nth-child(odd) {
   vertical-align: top;
 }
 
-#zfwcrkdlrl .gt_row_group_first td {
+#bzarzlvqha .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zfwcrkdlrl .gt_row_group_first th {
+#bzarzlvqha .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zfwcrkdlrl .gt_summary_row {
+#bzarzlvqha .gt_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -1495,16 +1498,16 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#zfwcrkdlrl .gt_first_summary_row {
+#bzarzlvqha .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_first_summary_row.thick {
+#bzarzlvqha .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zfwcrkdlrl .gt_last_summary_row {
+#bzarzlvqha .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1514,7 +1517,7 @@ table tr:nth-child(odd) {
   border-bottom-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_grand_summary_row {
+#bzarzlvqha .gt_grand_summary_row {
   color: #333333;
   background-color: #F5F5F5;
   text-transform: inherit;
@@ -1524,7 +1527,7 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#zfwcrkdlrl .gt_first_grand_summary_row {
+#bzarzlvqha .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1534,7 +1537,7 @@ table tr:nth-child(odd) {
   border-top-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_last_grand_summary_row_top {
+#bzarzlvqha .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1544,11 +1547,11 @@ table tr:nth-child(odd) {
   border-bottom-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_striped {
+#bzarzlvqha .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zfwcrkdlrl .gt_table_body {
+#bzarzlvqha .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1557,7 +1560,7 @@ table tr:nth-child(odd) {
   border-bottom-color: rgba(255, 255, 255, 0);
 }
 
-#zfwcrkdlrl .gt_footnotes {
+#bzarzlvqha .gt_footnotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -1571,7 +1574,7 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_footnote {
+#bzarzlvqha .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1580,7 +1583,7 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#zfwcrkdlrl .gt_sourcenotes {
+#bzarzlvqha .gt_sourcenotes {
   color: #333333;
   background-color: #F5F5F5;
   border-bottom-style: none;
@@ -1594,7 +1597,7 @@ table tr:nth-child(odd) {
   border-right-color: #D3D3D3;
 }
 
-#zfwcrkdlrl .gt_sourcenote {
+#bzarzlvqha .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1602,72 +1605,72 @@ table tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#zfwcrkdlrl .gt_left {
+#bzarzlvqha .gt_left {
   text-align: left;
 }
 
-#zfwcrkdlrl .gt_center {
+#bzarzlvqha .gt_center {
   text-align: center;
 }
 
-#zfwcrkdlrl .gt_right {
+#bzarzlvqha .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zfwcrkdlrl .gt_font_normal {
+#bzarzlvqha .gt_font_normal {
   font-weight: normal;
 }
 
-#zfwcrkdlrl .gt_font_bold {
+#bzarzlvqha .gt_font_bold {
   font-weight: bold;
 }
 
-#zfwcrkdlrl .gt_font_italic {
+#bzarzlvqha .gt_font_italic {
   font-style: italic;
 }
 
-#zfwcrkdlrl .gt_super {
+#bzarzlvqha .gt_super {
   font-size: 65%;
 }
 
-#zfwcrkdlrl .gt_footnote_marks {
+#bzarzlvqha .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zfwcrkdlrl .gt_asterisk {
+#bzarzlvqha .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zfwcrkdlrl .gt_indent_1 {
+#bzarzlvqha .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zfwcrkdlrl .gt_indent_2 {
+#bzarzlvqha .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zfwcrkdlrl .gt_indent_3 {
+#bzarzlvqha .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zfwcrkdlrl .gt_indent_4 {
+#bzarzlvqha .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zfwcrkdlrl .gt_indent_5 {
+#bzarzlvqha .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zfwcrkdlrl .katex-display {
+#bzarzlvqha .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zfwcrkdlrl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#bzarzlvqha div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 
@@ -1768,7 +1771,7 @@ table tr:nth-child(odd) {
 <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"></path></svg></div>
 <div class="value-box-area html-fill-item html-fill-container">
 <p class="value-box-title">Last update</p>
-<p class="value-box-value">Jun. 18, '26, 15:23</p>
+<p class="value-box-value">Aug. 07, '26, 09:54</p>
 </div>
 </div>
 </div>
