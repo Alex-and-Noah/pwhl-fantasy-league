@@ -161,6 +161,13 @@ standings |>
     position_change_since_yesterday,
     fantasy_points_change_since_yesterday
   ) |>
+  mutate(
+    team_image = paste0(
+      "<img src=\"",
+      team_image,
+      "\" style=\"width:5vh;\">"
+    )
+  ) |>
   arrange(
     desc(
       fantasy_points
@@ -174,17 +181,6 @@ standings |>
       "arrow-down" = "#c50101ff",
       height = "1.5em"
     )
-  ) |>
-  text_transform(
-    locations = cells_body(
-      columns = team_image
-    ),
-    fn = function(x) {
-      web_image(
-        url = x,
-        height = "5vh"
-      )
-    }
   ) |>
   tab_style(
     style = list(
@@ -200,6 +196,9 @@ standings |>
     locations = cells_body(
       columns = team_image
     )
+  ) |>
+  fmt_markdown(
+    columns = team_image
   ) |>
   cols_hide(
     c(
@@ -679,6 +678,9 @@ data |>
     escape = FALSE,
     rownames = FALSE,
     options=list(
+      paging = FALSE,
+      lengthChange = FALSE,
+      searching = FALSE,
       columnDefs = list(
         list(
           visible=FALSE,
