@@ -630,11 +630,11 @@ data <- lapply(
         Name == "Overall team stats"
       ) |>
       mutate(
-        team_image = fantasy_team_info$team_image,
+        Team = fantasy_team_info$team_image,
         team_colour = fantasy_team_info$team_colour
       ) |>
       select(
-        team_image,
+        Team,
         team_colour,
         G,
         A,
@@ -647,8 +647,8 @@ data <- lapply(
         Pts
       ) |>
       mutate(
-        team_image = web_image(
-          team_image,
+        Team = web_image(
+          Team,
           height="5vh"
         ),
         team_colour = fantasy_team_info$team_colour
@@ -671,10 +671,18 @@ data <- lapply(
 
 data |>
   datatable(
-    escape = FALSE
+    escape = FALSE,
+    options=list(
+      columnDefs = list(
+        list(
+          visible=FALSE,
+          targets="team_colour"
+        )
+      )
+    )
   ) %>%
   formatStyle(
-    columns = 'team_image',
+    columns = "Team",
     valueColumns = "team_colour",
     backgroundColor = styleEqual(
       data$team_colour,
