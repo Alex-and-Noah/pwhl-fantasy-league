@@ -25,7 +25,7 @@ Your fantasy team's score is updated daily with data from the previous day's gam
 
 | Skaters        | Goalies |
 | ------------- |-------------|
-| 🏒 2 point per goal<br>🤝 1 point per assist<br>🎯 0.1 points per shot<br>⛔ 0.1 points per blocked shot<br>✨ 2 points per win\*<br>😖 0 points per loss\*<br>🥇 1 point per OT loss\*      | 🧱 1 point per shutout<br>⛔ 0.05 points per save<br>✨ 2 points per win\*<br>😖 0 points per loss\*<br>🥇 1 point per OT loss\* |
+| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\*      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\* |
 
 You can check how your and everyone else's teams are doing [here](./team_standings.qmd). Note that eventually, only **regular season games** will contribute to your fantasy teams score.
 
