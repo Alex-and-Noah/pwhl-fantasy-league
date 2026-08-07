@@ -647,9 +647,14 @@ data <- lapply(
         Pts
       ) |>
       mutate(
-        Team = web_image(
+        # Team = web_image(
+        #   Team,
+        #   height="5vh;width=10vh"
+        # ),
+        Team = paste0(
+          "<img src=\"",
           Team,
-          height="5vh"
+          "\" style=\"width:5vh;\">"
         ),
         team_colour = fantasy_team_info$team_colour
       )
@@ -672,6 +677,7 @@ data <- lapply(
 data |>
   datatable(
     escape = FALSE,
+    rownames = FALSE,
     options=list(
       columnDefs = list(
         list(
@@ -680,15 +686,32 @@ data |>
         )
       )
     )
-  ) %>%
+  ) |>
+  formatStyle(
+    columns = "Team",
+    target="row",
+    valueColumns = "team_colour",
+    backgroundColor = styleEqual(
+      data$team_colour,
+      lapply(
+        data$team_colour,
+        function(x) {
+          paste0(
+            x,
+            "80"
+          )
+        }
+      )
+    ),
+    textAlign = "center"
+  ) |>
   formatStyle(
     columns = "Team",
     valueColumns = "team_colour",
     backgroundColor = styleEqual(
       data$team_colour,
       data$team_colour
-    ),
-    textAlign = "center"
+    )
   )
   # gt() |>
   # text_transform(
