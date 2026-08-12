@@ -13,6 +13,7 @@ library(DT)
 
 ```{r "source"}
 source("assign_fantasy_draft_value_2025.R")
+source("assign_fantasy_draft_value_2026.R")
 ```
 
 For the 2026-2027 season, we are making two changes to changes to the fantasy league regarding fantasy points and fantasy team drafting. First, the new structure for scoring fantasy points is as follows:
