@@ -12,7 +12,7 @@ library(DT)
 ```
 
 ```{r "source"}
-# source("assign_fantasy_draft_value_2025.R")
+source("assign_fantasy_draft_value_2025.R")
 ```
 
 For the 2026-2027 season, we are making two changes to changes to the fantasy league regarding fantasy points and fantasy team drafting. First, the new structure for scoring fantasy points is as follows:
@@ -23,7 +23,7 @@ For the 2026-2027 season, we are making two changes to changes to the fantasy le
 
 Second, all PWHL players will be assigned a **Fantasy Draft Value (FDV)**, and a **Value Cap** will be imposed to the fantasy teams that will be drafted this year. The FDV will be computed based on the new fantasy point structure applied retroactively to the 2025-2026 season.
 
-# 2025
+# 2026-2027 Season
 
 ```{r "2025 - variables"}
 
@@ -49,8 +49,10 @@ fantasy_draft_values_2026 <- readRDS(
 The FDV will be assigned differently based on whether the player is a new rookie in the upcoming season. In each case however, instead of looking at **Fantasy Points (FP)** earned last year, we look at the **Projected Fantasy Points (PFP)** earned last year. The PFP are defined as follows:
 
 $$
-\text{PFP} = 30 * \frac{\text{FP}}{\text{games_played}}.
+\text{PFP} = 30 * \frac{\text{FP}}{\text{GP}},
 $$
+
+where $GP:=$ games played.
 
 We take the average number of FP earned per game played and multiply that by the total number of games in a season for one team (30) to estimate how many FP would have been earned if the player played every game of the season.
 
@@ -94,25 +96,159 @@ fantasy_draft_values_2026 |>
   )
 ```
 
-## Rookie
+### Rookie
 
 Assigning FDVs to rookies is done by comparing the draft position of the upcoming rookie cohort with the performance of the rookies last season. Each rookie's FDV is computed as follows:
 
 $$
-\text{FDV} = 0.6 * \text{PFP}_{\text{max,rookie}} * \frac{\text{n_rookies} - \text{pos}_\text{draft} + 1}{\text{n_rookies}},
+\text{FDV} = \text{round}\left(0.6 * \text{PFP}_{\text{max,rookie}} * \frac{\text{N}_\text{rookie} - \text{pos}_\text{draft} + 1}{\text{N}_\text{rookie}}\right),
 $$
 
 where:
 
 - $\text{PFP}_{\text{max,rookie}}:=$ maximum PFP amongst all rookies last year
-- $\text{n_rookies}:=$ number of new rookies this year
-- $\text{pos}_\text{draft}:=$ position of rookie in draft order (integer from $\{1,\ldots,\text{n_rookies}\}$)
+- $\text{N}_\text{rookie}:=$ number of new rookies this year
+- $\text{pos}_\text{draft}:=$ position of rookie in draft order (integer from $\{1,\ldots,\text{N}_\text{rookie}\}$)
 
-During the 2025-2025 season, the $\text{PFP}_{\text{max,rookie}}$ was 46.43 obtained by Kristýna Kaltounková.
+The factor of 0.6 accounts for the risk of drafting a new rookie to a fantasy team.
 
-## Draft values vs. performance
+During the 2025-2025 season, the $\text{PFP}_{\text{max,rookie}}$ was 46.43 obtained by Kristýna Kaltounková, which yields the following FDVs for the new rookies of the 2026-2027 season:
 
-```{r "draft values vs. performance"}
+```{r "fdv for rookies"}
+fantasy_draft_values_2026 |>
+  filter(
+    !(rookie %in% c(0,1))
+  ) |>
+  select(
+    name,
+    fantasy_draft_value
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "FDV" = "fantasy_draft_value"
+    )
+  )
+```
+
+## Value Cap
+
+TBD
+
+# 2025-2026 Season
+
+We can check how this process for assigning FDVs compares against actual FP earned by computing FDVs for the 2025-2026 roster based on the 2024-2025 season and then aggregating all PFP/FP earned during the 2025-2026 season.
+
+## FP/PFP vs. FDV
+
+::: {.panel-tabset}
+
+### Non-rookies
+
+```{r "fp/pfp vs fdv - non-rookies"}
+fantasy_draft_values_2025 |>
+  inner_join(
+    fantasy_points_2025,
+    by = c(
+      "name",
+      "position"
+    )
+  ) |>
+  mutate(
+    rookie = rookie.y
+  ) |>
+  filter(
+    rookie == 0
+  ) |>
+  select(
+    name,
+    fantasy_points,
+    projected_fantasy_points,
+    fantasy_draft_value
+  ) |>
+  mutate(
+    payoff_net = fantasy_points - fantasy_draft_value,
+    payoff_factor = fantasy_points/fantasy_draft_value,
+    across(
+      where(is.numeric),
+      round,
+      digits = 2
+    )
+  ) |>
+  arrange(
+    desc(fantasy_draft_value),
+    name
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "FP" = "fantasy_points",
+      "PFP" = "projected_fantasy_points",
+      "FDV" = "fantasy_draft_value",
+      "FP-FDV" = "payoff_net",
+      "FP/FDV" = "payoff_factor"
+    )
+  )
+```
+
+### Rookies
+
+```{r "fp/pfp vs fdv - rookies"}
+fantasy_draft_values_2025 |>
+  inner_join(
+    fantasy_points_2025,
+    by = c(
+      "name",
+      "position"
+    )
+  ) |>
+  mutate(
+    rookie = rookie.y
+  ) |>
+  filter(
+    rookie == 1
+  ) |>
+  select(
+    name,
+    fantasy_points,
+    projected_fantasy_points,
+    fantasy_draft_value
+  ) |>
+  mutate(
+    payoff_net = fantasy_points - fantasy_draft_value,
+    payoff_factor = fantasy_points/fantasy_draft_value,
+    across(
+      where(is.numeric),
+      round,
+      digits = 2
+    )
+  ) |>
+  arrange(
+    desc(fantasy_draft_value),
+    name
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "FP" = "fantasy_points",
+      "PFP" = "projected_fantasy_points",
+      "FDV" = "fantasy_draft_value",
+      "FP-FDV" = "payoff_net",
+      "FP/FDV" = "payoff_factor"
+    )
+  )
+```
+
+:::
+
+## PFP over FDV - Scatter plot and Line of Best Fit
+
+::: {.panel-tabset}
+
+### Rookie Status
+
+```{r "2025 - plots: rookie status"}
+
 data <- fantasy_draft_values_2025 |>
   inner_join(
     fantasy_points_2025,
@@ -131,21 +267,8 @@ data <- fantasy_draft_values_2025 |>
     fantasy_draft_value,
     projected_fantasy_points,
     fantasy_points
-  ) |>
-  mutate(
-    payoff_net = fantasy_points - fantasy_draft_value,
-    payoff_factor = fantasy_points/fantasy_draft_value
   )
 
-data |>
-  datatable()
-```
-
-::: {.panel-tabset}
-
-## Rookie Status
-
-```{r "2025 - plots: rookie status"}
 ggplot(
   data,
   aes(
@@ -154,7 +277,7 @@ ggplot(
 ) +
   geom_point(
     aes(
-      y = projected_fantasy_points,
+      y = fantasy_points,
       colour = factor(rookie)
     ),
     size = 3
@@ -162,7 +285,7 @@ ggplot(
   geom_smooth(
     data = \(df) filter(df,rookie==1),
     aes(
-      y = projected_fantasy_points
+      y = fantasy_points
     ),
     method="lm",
     se=TRUE,
@@ -171,7 +294,7 @@ ggplot(
   geom_smooth(
     data = \(df) filter(df,rookie==0),
     aes(
-      y = projected_fantasy_points
+      y = fantasy_points
     ),
     method="lm",
     se=TRUE,
@@ -184,7 +307,7 @@ ggplot(
   )
 ```
 
-## Position
+### Position
 
 ```{r "2025 - plots: position"}
 ggplot(
@@ -195,7 +318,7 @@ ggplot(
 ) +
   geom_point(
     aes(
-      y = projected_fantasy_points,
+      y = fantasy_points,
       colour = factor(position)
     ),
     size = 3
@@ -203,7 +326,7 @@ ggplot(
   geom_smooth(
     data = \(df) filter(df,position == "F"),
     aes(
-      y = projected_fantasy_points
+      y = fantasy_points
     ),
     method="lm",
     se=TRUE,
@@ -212,7 +335,7 @@ ggplot(
   geom_smooth(
     data = \(df) filter(df,position == "D"),
     aes(
-      y = projected_fantasy_points
+      y = fantasy_points
     ),
     method="lm",
     se=TRUE,
@@ -221,7 +344,7 @@ ggplot(
   geom_smooth(
     data = \(df) filter(df,position == "G"),
     aes(
-      y = projected_fantasy_points
+      y = fantasy_points
     ),
     method="lm",
     se=TRUE,
@@ -238,8 +361,10 @@ ggplot(
 
 ## Fantasy teams
 
+Suppose the teams that were drafted during the 2025-2026 fantasy season included the FDVs for that season. We can compare the sum of these FDVs, representing the 'cost' of the fantasy team, against the FP output of the team throughout the season.
+
 ```{r "fantasy team comparison"}
-data <- lapply(
+lapply(
   names(fantasy_teams_2025),
   function(fantasy_team_name) {
     
@@ -252,7 +377,8 @@ data <- lapply(
           fantasy_points
         ) |>
         left_join(
-          fantasy_draft_values_2025
+          fantasy_draft_values_2025,
+          by = "name"
         ),
       fantasy_teams_2025[[fantasy_team_name]]$roster$goalies |>
         select(
@@ -262,7 +388,8 @@ data <- lapply(
           fantasy_points
         ) |>
         left_join(
-          fantasy_draft_values_2025
+          fantasy_draft_values_2025,
+          by = "name"
         )
     ) |>
       mutate(
@@ -270,10 +397,7 @@ data <- lapply(
       )
   }
 ) |>
-bind_rows()
-
-
-data |>
+  bind_rows() |>
   group_by(
     fantasy_team_name
   ) |>
@@ -282,13 +406,23 @@ data |>
     fantasy_points = sum(fantasy_points)
   ) |>
   mutate(
-    point_gain = fantasy_points - fantasy_draft_value
+    point_gain = fantasy_points - fantasy_draft_value,
+    across(
+      where(is.numeric),
+      round,
+      digits = 2
+    )
   ) |>
   arrange(
-    desc(point_gain)
+    desc(fantasy_points),
+    fantasy_team_name
   ) |>
-  datatable()
+  datatable(
+    colnames = c(
+      "Team" = "fantasy_team_name",
+      "FDV" = "fantasy_draft_value",
+      "FP" = "fantasy_points",
+      "Gain" = "point_gain"
+    )
+  )
 ```
-
-# 2026
-

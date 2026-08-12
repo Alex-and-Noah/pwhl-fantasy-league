@@ -161,6 +161,7 @@ all_skaters <- bind_rows(
     0.1*shots_blocked_by_player,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
+    fantasy_points_per_game = fantasy_points / max(5,games_played),
     projected_fantasy_points = 30*fantasy_points_per_game
   ) |>
   select(
@@ -190,6 +191,7 @@ all_goalies <- bind_rows(
       shots - goals_against
     ),
     fantasy_points_per_game = fantasy_points / games_played,
+    fantasy_points_per_game = fantasy_points / max(5,games_played),
     projected_fantasy_points = fantasy_points
   ) |>
   select(

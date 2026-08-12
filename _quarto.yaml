@@ -30,6 +30,8 @@ website:
         href: team_generator.qmd
       - text: "Info"
         href: draft_info.qmd
+      - text: "Draft Data"
+        href: fantasy_draft_data.qmd.qmd
     right:
     - icon: git
       menu:
