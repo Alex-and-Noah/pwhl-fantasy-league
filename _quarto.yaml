@@ -31,7 +31,7 @@ website:
       - text: "Info"
         href: draft_info.qmd
       - text: "Draft Data"
-        href: fantasy_draft_data.qmd.qmd
+        href: fantasy_draft_data.qmd
     right:
     - icon: git
       menu:
