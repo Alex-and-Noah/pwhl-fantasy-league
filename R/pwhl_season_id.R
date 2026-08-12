@@ -29,6 +29,9 @@ pwhl_season_id <- function(
       2026,
       2026,
       2026
+      # 2027,
+      # 2027,
+      # 2027
     ),
     "game_type_label" = c(
       "preseason",
@@ -40,6 +43,9 @@ pwhl_season_id <- function(
       "preseason",
       "regular",
       "playoffs"
+      # "preseason",
+      # "regular",
+      # "playoffs"
     ),
     "season_id" = c(
       2,
@@ -51,6 +57,9 @@ pwhl_season_id <- function(
       7,
       8,
       9
+      # 10,
+      # 11,
+      # 12
     )
   )
 

@@ -28,6 +28,8 @@ all_skaters <- bind_rows(
   select(
     name,
     team_code,
+    rookie,
+    position,
     goals,
     assists,
     shots,
@@ -50,6 +52,8 @@ all_goalies <- bind_rows(
   select(
     name,
     team_code,
+    rookie,
+    position,
     shots,
     goals_against,
     fantasy_points
@@ -60,34 +64,212 @@ all_fantasy_points <- bind_rows(
     select(
       name,
       team_code,
+      rookie,
+      position,
       fantasy_points
-    ) |>
-    mutate(
-      position = "skater"
-    ) |>
-    filter(
-      fantasy_points > median(
-        fantasy_points
-      )
     ),
   all_goalies |>
     select(
       name,
       team_code,
+      rookie,
+      position,
       fantasy_points
-    ) |>
-    mutate(
-      position = "goalie"
-    ) |>
+    )
+) %>%
+  mutate(
+    position = replace_values(
+      .$position,
+      "C" ~ "F",
+      "LW" ~ "F",
+      "RW" ~ "F",
+      "F" ~ "F",
+      "LD" ~ "D",
+      "RD" ~ "D",
+      "D" ~ "D",
+      "G" ~ "G"
+    ),
+    draft_round = 0,
+    draft_position = 0
+  )
+
+
+
+bind_rows(
+  all_skaters |>
     filter(
-      fantasy_points > median(
-        fantasy_points
+      rookie == 0
+    ) |>
+    summarise(
+      name = "non_rookie_skaters",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
+      )
+    ),
+  all_skaters |>
+    filter(
+      rookie == 1
+    ) |>
+    summarise(
+      name = "rookie_skaters",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
+      )
+    ),
+  all_skaters |>
+    summarise(
+      name = "all_skaters",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
+      )
+    ),
+  all_goalies |>
+    filter(
+      rookie == 0
+    ) |>
+    summarise(
+      name = "non_rookie_goalies",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
+      )
+    ),
+  all_goalies |>
+    filter(
+      rookie == 1
+    ) |>
+    summarise(
+      name = "rookie_goalies",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
+      )
+    ),
+  all_goalies |>
+    summarise(
+      name = "all_goalies",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
+      )
+    ),
+  all_fantasy_points |>
+    summarise(
+      name = "all_players",
+      min = min(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      median = median(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        fantasy_points,
+        na.rm = TRUE
       )
     )
 )
 
-summary(all_skaters$fantasy_points)
-summary(all_goalies$fantasy_points)
+summary(
+  all_skaters |>
+    filter(
+      rookie == 1
+    ) |>
+    select(
+      fantasy_points
+    )
+)
+
+summary(
+  all_skaters |>
+    filter(
+      rookie == 1
+    ) |>
+    select(
+      fantasy_points
+    )
+)
+
 
 # Look at upper half
 ggplot(

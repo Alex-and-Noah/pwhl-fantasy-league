@@ -37,7 +37,11 @@ pwhl_stats_fix <- function(
           httr::content(as = "text", encoding = "utf-8")
 
         res <- gsub("angular.callbacks._5\\(", "", res)
-        res <- gsub("}}]}]}])", "}}]}]}]", res)
+        # res <- gsub("}}]}]}])", "}}]}]}]", res)
+        # r <- res %>%
+        #   jsonlite::parse_json()
+
+        res <- sub(")", "", res)
         r <- res %>%
           jsonlite::parse_json()
 
