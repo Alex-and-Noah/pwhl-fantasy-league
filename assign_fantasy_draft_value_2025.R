@@ -289,7 +289,7 @@ saveRDS(
 )
 
 team_stats_2025 <- readRDS(
-  "team_stats_2025.rds"
+  "team_stats.rds"
 )
 
 all_skaters <- bind_rows(

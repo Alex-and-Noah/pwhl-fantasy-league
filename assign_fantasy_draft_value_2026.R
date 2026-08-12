@@ -167,7 +167,7 @@ team_stats <- get_team_stats(
 
 all_skaters <- bind_rows(
   lapply(
-    team_stats_2025,
+    team_stats,
     `[[`,
     1
   )
@@ -203,7 +203,7 @@ all_skaters <- bind_rows(
 
 all_goalies <- bind_rows(
   lapply(
-    team_stats_2025,
+    team_stats,
     `[[`,
     2
   )
