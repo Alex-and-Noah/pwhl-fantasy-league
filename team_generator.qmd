@@ -10,9 +10,14 @@ library(here)
 library(purrr)
 library(dplyr)
 library(DT)
+library(glue)
+
+season_id <- readRDS(
+  "season_id.rds"
+)
 
 team_stats <- readRDS(
-  "team_stats.rds"
+  glue("team_stats_season_{season_id}.rds")
 )
 ```
 

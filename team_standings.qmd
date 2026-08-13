@@ -16,17 +16,22 @@ library(ggimage)
 library(gt)
 library(purrr)
 library(DT)
+library(glue)
+
+season_id <- readRDS(
+  "season_id.rds"
+)
 
 current_schedule <- readRDS(
-  "current_schedule.rds"
+  glue("current_schedule_season_{season_id}.rds")
 )
 
 standings <- readRDS(
-  "standings.rds"
+  glue("standings_season_{season_id}.rds")
 )
 
 fantasy_teams <- readRDS(
-  "fantasy_teams.rds"
+  glue("fantasy_teams_season_{season_id}.rds")
 )
 ```
 

@@ -159,15 +159,20 @@ player_boxes_per_game <- get_player_boxes_per_game(
   current_schedule
 )
 
-team_stats <- get_team_stats(
+team_stat_season_8 <- get_team_stats(
   season_id,
   team_info,
   player_boxes_per_game
 )
 
+saveRDS(
+  team_stat_season_8,
+  file = glue("team_stats_season_{season_id}.rds")
+)
+
 all_skaters <- bind_rows(
   lapply(
-    team_stats,
+    team_stats_season_8,
     `[[`,
     1
   )
@@ -203,7 +208,7 @@ all_skaters <- bind_rows(
 
 all_goalies <- bind_rows(
   lapply(
-    team_stats,
+    team_stats_season_8,
     `[[`,
     2
   )
@@ -229,7 +234,7 @@ all_goalies <- bind_rows(
     projected_fantasy_points
   )
 
-fantasy_draft_values_2026 <- bind_rows(
+fantasy_draft_values_season_8 <- bind_rows(
   all_skaters |>
     select(
       name,
@@ -307,8 +312,8 @@ fantasy_draft_values_2026 <- bind_rows(
   )
 
 saveRDS(
-  fantasy_draft_values_2026,
-  file = "fantasy_draft_values_2026.rds"
+  fantasy_draft_values_season_8,
+  file = glue("fantasy_draft_values_season_8.rds")
 )
 
 # #%% Some analysis

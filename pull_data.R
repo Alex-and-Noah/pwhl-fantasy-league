@@ -8,6 +8,7 @@ library(ggimage)
 library(rsvg)
 library(here)
 library(htmltools)
+library(glue)
 
 invisible(
   lapply(
@@ -37,13 +38,18 @@ season_id <- get_season_id_of_current_date(
   season_schedules_by_id
 )
 
+saveRDS(
+  season_id,
+  file = glue("season_id.rds")
+)
+
 current_schedule <- season_schedules_by_id[[
   season_id
 ]]$schedule
 
 saveRDS(
   current_schedule,
-  file = "current_schedule.rds"
+  file = glue("current_schedule_season_{season_id}.rds")
 )
 
 current_date <- current_schedule |>
@@ -55,7 +61,7 @@ current_date <- current_schedule |>
 
 saveRDS(
   current_date,
-  file = "current_date.rds"
+  file = glue("current_date_season_{season_id}.rds")
 )
 
 next_game_day <- current_schedule |>
@@ -70,7 +76,7 @@ next_game_day <- current_schedule |>
 
 saveRDS(
   next_game_day,
-  file = "next_game_day.rds"
+  file = glue("next_game_day_season_{season_id}.rds")
 )
 
 team_info <- get_team_info(
@@ -79,7 +85,7 @@ team_info <- get_team_info(
 
 saveRDS(
   team_info,
-  file = "team_info.rds"
+  file = glue("team_info_season_{season_id}.rds")
 )
 
 player_boxes_per_game <- get_player_boxes_per_game(
@@ -88,7 +94,7 @@ player_boxes_per_game <- get_player_boxes_per_game(
 
 saveRDS(
   player_boxes_per_game,
-  file = "player_boxes_per_game.rds"
+  file = glue("player_boxes_per_game_season_{season_id}.rds")
 )
 
 team_stats <- get_team_stats(
@@ -99,7 +105,7 @@ team_stats <- get_team_stats(
 
 saveRDS(
   team_stats,
-  file = "team_stats.rds"
+  file = glue("team_stats_season_{season_id}.rds")
 )
 
 fantasy_teams <- get_fantasy_teams(
@@ -111,7 +117,7 @@ fantasy_teams <- get_fantasy_teams(
 
 saveRDS(
   fantasy_teams,
-  file = "fantasy_teams.rds"
+  file = glue("fantasy_teams_season_{season_id}.rds")
 )
 
 standings <- compute_standings(
@@ -121,7 +127,7 @@ standings <- compute_standings(
 
 saveRDS(
   standings,
-  file = "standings.rds"
+  file = glue("standings_season_{season_id}.rds")
 )
 
 # This file uses only the following functions: 

@@ -9,6 +9,7 @@ library(ggimage)
 library(rsvg)
 library(here)
 library(htmltools)
+library(glue)
 
 invisible(
   lapply(
@@ -135,15 +136,20 @@ player_boxes_per_game <- get_player_boxes_per_game(
   current_schedule
 )
 
-team_stats_2024 <- get_team_stats(
+team_stats_season_5 <- get_team_stats(
   season_id,
   team_info,
   player_boxes_per_game
 )
 
+saveRDS(
+  team_stats_season_5,
+  file = glue("team_stats_season_{season_id}.rds")
+)
+
 all_skaters <- bind_rows(
   lapply(
-    team_stats_2024,
+    team_stats_season_5,
     `[[`,
     1
   )
@@ -180,7 +186,7 @@ all_skaters <- bind_rows(
 
 all_goalies <- bind_rows(
   lapply(
-    team_stats_2024,
+    team_stats_season_5,
     `[[`,
     2
   )
@@ -285,16 +291,16 @@ fantasy_draft_values_2025 <- bind_rows(
 
 saveRDS(
   fantasy_draft_values_2025,
-  file = "fantasy_draft_values_2025.rds"
+  file = glue("fantasy_draft_values_season_{season_id}.rds")
 )
 
-team_stats_2025 <- readRDS(
-  "team_stats.rds"
+team_stats_season_8 <- readRDS(
+  "team_stats_season_8.rds"
 )
 
 all_skaters <- bind_rows(
   lapply(
-    team_stats_2025,
+    team_stats_season_8,
     `[[`,
     1
   )
@@ -330,7 +336,7 @@ all_skaters <- bind_rows(
 
 all_goalies <- bind_rows(
   lapply(
-    team_stats_2025,
+    team_stats_season_8,
     `[[`,
     2
   )
@@ -356,7 +362,7 @@ all_goalies <- bind_rows(
     projected_fantasy_points
   )
 
-fantasy_points_2025 <- bind_rows(
+fantasy_points_season_8 <- bind_rows(
   all_skaters |>
     select(
       name,
@@ -400,8 +406,8 @@ fantasy_points_2025 <- bind_rows(
   )
 
 saveRDS(
-  fantasy_points_2025,
-  file = "fantasy_points_2025.rds"
+  fantasy_points_season_8,
+  file = "fantasy_points_season_8.rds"
 )
 
 # data <- fantasy_draft_values_2025 |>

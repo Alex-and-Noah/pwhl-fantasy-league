@@ -10,13 +10,18 @@ execute:
 library(here)
 library(gt)
 library(dplyr)
+library(glue)
+
+season_id <- readRDS(
+  "season_id.rds"
+)
 
 current_schedule <- readRDS(
-  "current_schedule.rds"
+  glue("current_schedule_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  "team_info.rds"
+  glue("team_info_season_{season_id}.rds")
 )
 ```
 
