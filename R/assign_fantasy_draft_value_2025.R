@@ -3,10 +3,7 @@ library(tidyverse)
 library(gt)
 library(gtExtras)
 library(bslib)
-library(shiny)
-library(bsicons)
 library(ggimage)
-library(rsvg)
 library(here)
 library(htmltools)
 library(glue)
@@ -102,8 +99,8 @@ draft_order <- list(
     values_to = "name"
   ) |>
   separate(
-    col = name, 
-    into = c("name", "position"), 
+    col = name,
+    into = c("name", "position"),
     sep = "[\\(\\)]",
     extra = "drop",
     fill = "right"
@@ -112,9 +109,9 @@ draft_order <- list(
     name = trimws(name),
     draft_round = as.numeric(draft_round),
     draft_position = as.numeric(draft_position),
-    overall_draft_position = max(draft_position)*(
-      draft_round - 1
-    ) + draft_position
+    overall_draft_position = max(draft_position) *
+      (draft_round - 1) +
+      draft_position
   )
 
 season_schedules_by_id <- get_season_schedules_by_id()
@@ -155,20 +152,17 @@ all_skaters <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 2*(
-      goals - short_handed_goals
-    ) +
-    3*short_handed_goals +
-    1*(
-      assists - short_handed_assists
-    ) +
-    2*short_handed_assists +
-    0.1*shots + 
-    0.1*shots_blocked_by_player,
+    fantasy_points = 2 *
+      (goals - short_handed_goals) +
+      3 * short_handed_goals +
+      1 * (assists - short_handed_assists) +
+      2 * short_handed_assists +
+      0.1 * shots +
+      0.1 * shots_blocked_by_player,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
-    fantasy_points_per_game = fantasy_points / max(5,games_played),
-    projected_fantasy_points = 30*fantasy_points_per_game
+    fantasy_points_per_game = fantasy_points / max(5, games_played),
+    projected_fantasy_points = 30 * fantasy_points_per_game
   ) |>
   select(
     name,
@@ -190,14 +184,11 @@ all_goalies <- bind_rows(
     `[[`,
     2
   )
-) |> 
+) |>
   mutate(
-    fantasy_points = 1*shutouts +
-    0.05*(
-      shots - goals_against
-    ),
+    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
     fantasy_points_per_game = fantasy_points / games_played,
-    fantasy_points_per_game = fantasy_points / max(5,games_played),
+    fantasy_points_per_game = fantasy_points / max(5, games_played),
     projected_fantasy_points = fantasy_points
   ) |>
   select(
@@ -254,7 +245,7 @@ fantasy_draft_values_2025 <- bind_rows(
       draft_round = 0,
       draft_position = 0,
       overall_draft_position = 0,
-      rookie = -1 ,
+      rookie = -1,
       fantasy_points = 0,
       fantasy_points_per_game = 0,
       projected_fantasy_points = 0
@@ -267,14 +258,16 @@ fantasy_draft_values_2025 <- bind_rows(
       ),
       rookie == -1 & overall_draft_position != 0 ~ round(
         . |>
-           filter(
+          filter(
             rookie == 1
-          ) |> summarise(
+          ) |>
+          summarise(
             max = max(projected_fantasy_points)
           ) |>
-          pull() * 0.6 *  (
-            max(overall_draft_position) - overall_draft_position + 1
-          ) / max(overall_draft_position)
+          pull() *
+          0.6 *
+          (max(overall_draft_position) - overall_draft_position + 1) /
+          max(overall_draft_position)
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
       .default = round(
@@ -306,19 +299,16 @@ all_skaters <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 2*(
-      goals - short_handed_goals
-    ) +
-    3*short_handed_goals +
-    1*(
-      assists - short_handed_assists
-    ) +
-    2*short_handed_assists +
-    0.1*shots + 
-    0.1*shots_blocked_by_player,
+    fantasy_points = 2 *
+      (goals - short_handed_goals) +
+      3 * short_handed_goals +
+      1 * (assists - short_handed_assists) +
+      2 * short_handed_assists +
+      0.1 * shots +
+      0.1 * shots_blocked_by_player,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
-    projected_fantasy_points = 30*fantasy_points_per_game
+    projected_fantasy_points = 30 * fantasy_points_per_game
   ) |>
   select(
     name,
@@ -340,12 +330,9 @@ all_goalies <- bind_rows(
     `[[`,
     2
   )
-) |> 
+) |>
   mutate(
-    fantasy_points = 1*shutouts +
-    0.05*(
-      shots - goals_against
-    ),
+    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
     fantasy_points_per_game = fantasy_points / games_played,
     projected_fantasy_points = fantasy_points
   ) |>

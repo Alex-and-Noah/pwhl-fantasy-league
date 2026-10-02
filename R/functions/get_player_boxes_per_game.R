@@ -14,16 +14,16 @@ library(magrittr)
 get_player_boxes_per_game <- function(
   current_schedule
 ) {
-
   player_boxes_per_game <- list()
 
   for (game_id_iterator in current_schedule$game_id) {
-
     player_boxes_per_game[[game_id_iterator]] <- pwhl_player_box(
       game_id = game_id_iterator
     )
-    
-    player_boxes_per_game[[game_id_iterator]]$skaters <- player_boxes_per_game[[game_id_iterator]]$skaters |>
+
+    player_boxes_per_game[[game_id_iterator]]$skaters <- player_boxes_per_game[[
+      game_id_iterator
+    ]]$skaters |>
       mutate(
         name = paste0(
           first_name,
@@ -39,43 +39,39 @@ get_player_boxes_per_game <- function(
           ) |>
           pull(),
         win = if_else(
-          (
-            toi != "0"
-          ) & (
-            team_id == current_schedule |>
-              filter(
-                game_id == game_id_iterator
-              ) |>
-              select(
-                winner_id
-              ) |>
-              pull()
-          ),
+          (toi != "0") &
+            (team_id ==
+              current_schedule |>
+                filter(
+                  game_id == game_id_iterator
+                ) |>
+                select(
+                  winner_id
+                ) |>
+                pull()),
           1,
           0
         ),
         ot_loss = if_else(
-          (
-            toi != "0"
-          ) & (
-            team_id != current_schedule |>
-              filter(
-                game_id == game_id_iterator
-              ) |>
-              select(
-                winner_id
-              ) |>
-              pull()
-          ) & (
-            "Final OT" == current_schedule |>
-              filter(
-                game_id == game_id_iterator
-              ) |>
-              select(
-                game_status
-              ) |>
-              pull()
-          ),
+          (toi != "0") &
+            (team_id !=
+              current_schedule |>
+                filter(
+                  game_id == game_id_iterator
+                ) |>
+                select(
+                  winner_id
+                ) |>
+                pull()) &
+            ("Final OT" ==
+              current_schedule |>
+                filter(
+                  game_id == game_id_iterator
+                ) |>
+                select(
+                  game_status
+                ) |>
+                pull()),
           1,
           0
         )
@@ -85,7 +81,9 @@ get_player_boxes_per_game <- function(
         -last_name
       )
 
-    player_boxes_per_game[[game_id_iterator]]$goalies <- player_boxes_per_game[[game_id_iterator]]$goalies |>
+    player_boxes_per_game[[game_id_iterator]]$goalies <- player_boxes_per_game[[
+      game_id_iterator
+    ]]$goalies |>
       mutate(
         name = paste0(
           first_name,
@@ -101,43 +99,39 @@ get_player_boxes_per_game <- function(
           ) |>
           pull(),
         win = if_else(
-          (
-            toi != "0"
-          ) & (
-            team_id == current_schedule |>
-              filter(
-                game_id == game_id_iterator
-              ) |>
-              select(
-                winner_id
-              ) |>
-              pull()
-          ),
+          (toi != "0") &
+            (team_id ==
+              current_schedule |>
+                filter(
+                  game_id == game_id_iterator
+                ) |>
+                select(
+                  winner_id
+                ) |>
+                pull()),
           1,
           0
         ),
         ot_loss = if_else(
-          (
-            toi != "0"
-          ) & (
-            team_id != current_schedule |>
-              filter(
-                game_id == game_id_iterator
-              ) |>
-              select(
-                winner_id
-              ) |>
-              pull()
-          ) & (
-            "Final OT" == current_schedule |>
-              filter(
-                game_id == game_id_iterator
-              ) |>
-              select(
-                game_status
-              ) |>
-              pull()
-          ),
+          (toi != "0") &
+            (team_id !=
+              current_schedule |>
+                filter(
+                  game_id == game_id_iterator
+                ) |>
+                select(
+                  winner_id
+                ) |>
+                pull()) &
+            ("Final OT" ==
+              current_schedule |>
+                filter(
+                  game_id == game_id_iterator
+                ) |>
+                select(
+                  game_status
+                ) |>
+                pull()),
           1,
           0
         )

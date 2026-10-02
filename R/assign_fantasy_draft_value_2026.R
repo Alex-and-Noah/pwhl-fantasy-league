@@ -3,10 +3,7 @@ library(tidyverse)
 library(gt)
 library(gtExtras)
 library(bslib)
-library(shiny)
-library(bsicons)
 library(ggimage)
-library(rsvg)
 library(here)
 library(htmltools)
 
@@ -31,85 +28,85 @@ current_date <- as.Date("2026-04-25")
 
 draft_order <- list(
   "1" = list(
-    "1"  = "Caroline Harvey (D)",
-    "2"  = "Abbey Murphy (F)",
-    "3"  = "Tessa Janecke (F)",
-    "4"  = "Laila Edwards (D)",
-    "5"  = "Lacey Eden (F)",
-    "6"  = "Nelli Laitinen (D)",
-    "7"  = "Emma Peschel (D)",
-    "8"  = "Kirsten Simms (F)",
-    "9"  = "Sara Swiderski (D)",
+    "1" = "Caroline Harvey (D)",
+    "2" = "Abbey Murphy (F)",
+    "3" = "Tessa Janecke (F)",
+    "4" = "Laila Edwards (D)",
+    "5" = "Lacey Eden (F)",
+    "6" = "Nelli Laitinen (D)",
+    "7" = "Emma Peschel (D)",
+    "8" = "Kirsten Simms (F)",
+    "9" = "Sara Swiderski (D)",
     "10" = "Grace Dwyer (D)",
     "11" = "Vivian Jungels (D)",
     "12" = "Petra Nieminen (F)"
   ),
   "2" = list(
-    "1"  = "Issy Wunder (F)",
-    "2"  = "Sydney Morrow (D)",
-    "3"  = "Andrea Brändli (G)",
-    "4"  = "Sloane Matthews (F)",
-    "5"  = "Thea Johansson (F)",
-    "6"  = "Jade Iginla (F)",
-    "7"  = "Elisa Holopainen (F)",
-    "8"  = "Jamie Nelson (F)",
-    "9"  = "Viivi Vainikka (F)",
+    "1" = "Issy Wunder (F)",
+    "2" = "Sydney Morrow (D)",
+    "3" = "Andrea Brändli (G)",
+    "4" = "Sloane Matthews (F)",
+    "5" = "Thea Johansson (F)",
+    "6" = "Jade Iginla (F)",
+    "7" = "Elisa Holopainen (F)",
+    "8" = "Jamie Nelson (F)",
+    "9" = "Viivi Vainikka (F)",
     "10" = "Casey Borgiel (D)",
     "11" = "Jordan Ray (F)",
     "12" = "Avi Adam (F)"
   ),
   "3" = list(
-    "1"  = "Jules Constantinople (F)",
-    "2"  = "Emerson Jarvis (F)",
-    "3"  = "Leah Stecker (D)",
-    "4"  = "Tia Chan (G)",
-    "5"  = "Josefin Bouveng (F)",
-    "6"  = "Elyssa Biederman (F)",
-    "7"  = "Carina DiAntonio (F)",
-    "8"  = "Brooke Disher (D)",
-    "9"  = "Madelyn Christian (F)",
+    "1" = "Jules Constantinople (F)",
+    "2" = "Emerson Jarvis (F)",
+    "3" = "Leah Stecker (D)",
+    "4" = "Tia Chan (G)",
+    "5" = "Josefin Bouveng (F)",
+    "6" = "Elyssa Biederman (F)",
+    "7" = "Carina DiAntonio (F)",
+    "8" = "Brooke Disher (D)",
+    "9" = "Madelyn Christian (F)",
     "10" = "MK O'Brien (F)",
     "11" = "Tereza Pištěková (F)",
     "12" = "Zoe Uens (F)"
   ),
   "4" = list(
-    "1"  = "Katie DeSa (G)",
-    "2"  = "Grace Elliott (F)",
-    "3"  = "Kyla Josifovic (F)",
-    "4"  = "Lily Shannon (F)",
-    "5"  = "Saskia Maurer (G)",
-    "6"  = "Megan Woodworth (F)",
-    "7"  = "Katelyn Roberts (F)",
-    "8"  = "Jane Kuehl (F)",
-    "9"  = "Tova Henderson (D)",
+    "1" = "Katie DeSa (G)",
+    "2" = "Grace Elliott (F)",
+    "3" = "Kyla Josifovic (F)",
+    "4" = "Lily Shannon (F)",
+    "5" = "Saskia Maurer (G)",
+    "6" = "Megan Woodworth (F)",
+    "7" = "Katelyn Roberts (F)",
+    "8" = "Jane Kuehl (F)",
+    "9" = "Tova Henderson (D)",
     "10" = "Jaden Bogden (F)",
     "11" = "Tory Mariano (D)",
     "12" = "Hailey MacLeod (G)"
   ),
   "5" = list(
-    "1"  = "Kendall Butze (D)",
-    "2"  = "Gracie Gilkyson (D)",
-    "3"  = "Sena Catterall (F)",
-    "4"  = "McKenna Van Gelder (F)",
-    "5"  = "Alexis Petford (F)",
-    "6"  = "Emma-Sofie Nordstrøm (G)",
-    "7"  = "Grace Wolfe (D)",
-    "8"  = "Emerson O'Leary (F)",
-    "9"  = "Darya Gredzen (G)",
+    "1" = "Kendall Butze (D)",
+    "2" = "Gracie Gilkyson (D)",
+    "3" = "Sena Catterall (F)",
+    "4" = "McKenna Van Gelder (F)",
+    "5" = "Alexis Petford (F)",
+    "6" = "Emma-Sofie Nordstrøm (G)",
+    "7" = "Grace Wolfe (D)",
+    "8" = "Emerson O'Leary (F)",
+    "9" = "Darya Gredzen (G)",
     "10" = "Jenna Goodwin (F)",
     "11" = "Neena Brick (F)",
     "12" = "Erica Rieder (D)"
   ),
   "6" = list(
-    "1"  = "Ashley Messier (D)",
-    "2"  = "Gabriella Durante (G)",
-    "3"  = "Georgia Schiff (F)",
-    "4"  = "Reichen Kirchmair (F)",
-    "5"  = "Sydney Healey (F)",
-    "6"  = "Mya Vaslet (F)",
-    "7"  = "Naomi Boucher (F)",
-    "8"  = "Alyssa Regalado (D)",
-    "9"  = "Lara Beecher (F)",
+    "1" = "Ashley Messier (D)",
+    "2" = "Gabriella Durante (G)",
+    "3" = "Georgia Schiff (F)",
+    "4" = "Reichen Kirchmair (F)",
+    "5" = "Sydney Healey (F)",
+    "6" = "Mya Vaslet (F)",
+    "7" = "Naomi Boucher (F)",
+    "8" = "Alyssa Regalado (D)",
+    "9" = "Lara Beecher (F)",
     "10" = "Maeve Kelly (D)",
     "11" = "Taylor Otremba (F)",
     "12" = "Émilie Lavoie (F)"
@@ -125,8 +122,8 @@ draft_order <- list(
     values_to = "name"
   ) |>
   separate(
-    col = name, 
-    into = c("name", "position"), 
+    col = name,
+    into = c("name", "position"),
     sep = "[\\(\\)]",
     extra = "drop",
     fill = "right"
@@ -135,9 +132,9 @@ draft_order <- list(
     name = trimws(name),
     draft_round = as.numeric(draft_round),
     draft_position = as.numeric(draft_position),
-    overall_draft_position = max(draft_position)*(
-      draft_round - 1
-    ) + draft_position
+    overall_draft_position = max(draft_position) *
+      (draft_round - 1) +
+      draft_position
   )
 
 season_schedules_by_id <- get_season_schedules_by_id()
@@ -178,19 +175,16 @@ all_skaters <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 2*(
-      goals - short_handed_goals
-    ) +
-    3*short_handed_goals +
-    1*(
-      assists - short_handed_assists
-    ) +
-    2*short_handed_assists +
-    0.1*shots + 
-    0.1*shots_blocked_by_player,
+    fantasy_points = 2 *
+      (goals - short_handed_goals) +
+      3 * short_handed_goals +
+      1 * (assists - short_handed_assists) +
+      2 * short_handed_assists +
+      0.1 * shots +
+      0.1 * shots_blocked_by_player,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
-    projected_fantasy_points = 30*fantasy_points_per_game
+    projected_fantasy_points = 30 * fantasy_points_per_game
   ) |>
   select(
     name,
@@ -212,12 +206,9 @@ all_goalies <- bind_rows(
     `[[`,
     2
   )
-) |> 
+) |>
   mutate(
-    fantasy_points = 1*shutouts +
-    0.05*(
-      shots - goals_against
-    ),
+    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
     fantasy_points_per_game = fantasy_points / games_played,
     projected_fantasy_points = fantasy_points
   ) |>
@@ -275,7 +266,7 @@ fantasy_draft_values_season_8 <- bind_rows(
       draft_round = 0,
       draft_position = 0,
       overall_draft_position = 0,
-      rookie = -1 ,
+      rookie = -1,
       fantasy_points = 0,
       fantasy_points_per_game = 0,
       projected_fantasy_points = 0
@@ -288,14 +279,16 @@ fantasy_draft_values_season_8 <- bind_rows(
       ),
       rookie == -1 & overall_draft_position != 0 ~ round(
         . |>
-           filter(
+          filter(
             rookie == 1
-          ) |> summarise(
+          ) |>
+          summarise(
             max = max(projected_fantasy_points)
           ) |>
-          pull() * 0.6 *  (
-            max(overall_draft_position) - overall_draft_position + 1
-          ) / max(overall_draft_position)
+          pull() *
+          0.6 *
+          (max(overall_draft_position) - overall_draft_position + 1) /
+          max(overall_draft_position)
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
       .default = round(
@@ -354,7 +347,7 @@ saveRDS(
 # data <- lapply(
 #   names(fantasy_teams_2025),
 #   function(fantasy_team_name) {
-    
+
 #     bind_rows(
 #       fantasy_teams_2025[[fantasy_team_name]]$roster$skaters |>
 #         select(
@@ -383,7 +376,6 @@ saveRDS(
 #   }
 # ) |>
 # bind_rows()
-
 
 # data |>
 #   group_by(

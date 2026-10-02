@@ -8,7 +8,7 @@ execute:
 
 # Rules
 
-Choose your fantasy team name, colour, logo and roster in the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing). (If you want some inspiration for your draft, you can check out the [team generator](./team_generator.qmd))<br>
+Choose your fantasy team name, colour, logo and roster in the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing).<br>
 &nbsp;&nbsp;&nbsp;&nbsp;🔴🟡🔵**Team Colour:** Valid hexadecimal colour code<br>
 &nbsp;&nbsp;&nbsp;&nbsp;👩‍👩‍👧📷🖥️**Team Image:** Valid link to any image on the web<br><br>
 Your team should have exactly the following (the Google Sheet dropdowns force this structure, don't worry!):<br>

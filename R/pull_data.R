@@ -2,10 +2,7 @@ library(tidyverse)
 library(gt)
 library(gtExtras)
 library(bslib)
-library(shiny)
-library(bsicons)
 library(ggimage)
-library(rsvg)
 library(here)
 library(htmltools)
 library(glue)
@@ -131,7 +128,7 @@ saveRDS(
   file = glue("standings_season_{season_id}.rds")
 )
 
-# This file uses only the following functions: 
+# This file uses only the following functions:
 
 # compute_fantasy_roster_points_overall
 # compute_fantasy_roster_points_per_game
