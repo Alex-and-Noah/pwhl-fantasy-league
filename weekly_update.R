@@ -15,7 +15,6 @@ This is an email.
       "
 Code by Alex <3
 "
-        )
     )
   )
 }
