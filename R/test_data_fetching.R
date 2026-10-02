@@ -9,7 +9,7 @@ library(rsvg)
 invisible(
   lapply(
     list.files(
-      "./R",
+      "./R/functions/",
       full.names = TRUE
     ),
     source
