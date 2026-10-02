@@ -9,10 +9,10 @@ make_email <- function(df) {
 
 This is an email.
 "
-            )
-        ),
-        footer = md(
-            "
+      )
+    ),
+    footer = md(
+      "
 Code by Alex <3
 "
         )
