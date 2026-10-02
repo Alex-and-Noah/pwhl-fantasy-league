@@ -26,8 +26,6 @@ website:
         href: pwhl_rosters.qmd
       - text: "Schedule"
         href: schedule.qmd
-      - text: "Team Generator"
-        href: team_generator.qmd
       - text: "Info"
         href: draft_info.qmd
       - text: "Draft Data"
