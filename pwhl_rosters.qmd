@@ -12,6 +12,7 @@ library(purrr)
 library(knitr)
 library(gt)
 library(dplyr)
+library(glue)
 
 invisible(
   lapply(
@@ -26,16 +27,20 @@ invisible(
 environment(custom_gt_split) <- asNamespace('gt')
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
+season_id <- readRDS(
+  "season_id.rds"
+)
+
 team_stats <- readRDS(
-  "team_stats.rds"
+  glue("team_stats_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  "team_info.rds"
+  glue("team_info_season_{season_id}.rds")
 )
 
 fantasy_teams <- readRDS(
-  "fantasy_teams.rds"
+  glue("fantasy_teams_season_{season_id}.rds")
 )
 ```
 

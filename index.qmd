@@ -20,17 +20,22 @@ library(bslib)
 library(data.table)
 library(ggplot2)
 library(lubridate)
+library(glue)
+
+season_id <- readRDS(
+  "season_id.rds"
+)
 
 current_schedule <- readRDS(
-  "current_schedule.rds"
+  glue("current_schedule_season_{season_id}.rds")
 )
 
 current_date <- readRDS(
-  "current_date.rds"
+  glue("current_date_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  "team_info.rds"
+  glue("team_info_season_{season_id}.rds")
 )
 
 todays_games <- current_schedule |>
@@ -176,7 +181,7 @@ if (
 ```{r "standings overview"}
 
 standings <- readRDS(
-  "standings.rds"
+  glue("standings_season_{season_id}.rds")
 )
 
 standings |>
@@ -314,11 +319,11 @@ standings |>
 ```{r "trades"}
 
 fantasy_teams <- readRDS(
-  "fantasy_teams.rds"
+  glue("fantasy_teams_season_{season_id}.rds")
 )
 
 team_stats <- readRDS(
-  "team_stats.rds"
+  glue("team_stats_season_{season_id}.rds")
 )
 
 trades_df <- fantasy_teams |>
@@ -537,12 +542,8 @@ if (
 
 ```{r "next game day"}
 
-current_schedule <- readRDS(
-  "current_schedule.rds"
-)
-
 next_game_day <- readRDS(
-  "next_game_day.rds"
+  glue("next_game_day_season_{season_id}.rds")
 )
 
 p_args <- current_schedule |>

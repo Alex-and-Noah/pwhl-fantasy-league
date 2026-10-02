@@ -1,9 +1,12 @@
 library(dplyr)
 library(tibble)
+library(purrr)
+library(glue)
 
 #' @title  **Get PWHL Fantasy Teams and Points**
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
 #'
+#' @param season_id Current season ID
 #' @param current_schedule Entire schedule for current season
 #' @param current_date Current date
 #' @param team_stats All PWHL player info and stats
@@ -12,6 +15,7 @@ library(tibble)
 #' @export
 
 get_fantasy_teams <- function(
+  season_id,
   current_schedule,
   current_date,
   team_stats,
@@ -51,6 +55,8 @@ get_fantasy_teams <- function(
   )
 
   fantasy_teams <- list()
+
+  fantasy_team_boxes_per_date <- list()
 
   for (i in seq_len(nrow(df))) {
 
@@ -129,6 +135,55 @@ get_fantasy_teams <- function(
       by = "day"
     )
 
+    fantasy_team_boxes_per_date_for_team <- lapply(
+      days_seq,
+      function(d) {
+        compute_fantasy_roster_points_overall(
+          fantasy_teams[[
+            df$team_name[[i]]
+          ]][[
+            "roster"
+          ]],
+          fantasy_teams[[
+            df$team_name[[i]]
+          ]][[
+            "info"
+          ]],
+          player_boxes_per_game[
+            current_schedule |>
+              filter(
+                game_date == d
+              )|>
+              select(
+                game_id
+              ) |>
+              pull()
+          ]
+        ) |>
+        map(
+          ~ mutate(
+            .x,
+            game_date = d
+          )
+        )
+      }
+    )
+
+    fantasy_team_boxes_per_date[[
+      df$team_name[[i]]
+    ]] <- list(
+      "skaters" = map(
+        fantasy_team_boxes_per_date_for_team,
+        1
+      ) |>
+        bind_rows(),
+      "goalies" = map(
+        fantasy_team_boxes_per_date_for_team,
+        2
+      ) |>
+        bind_rows()
+    )
+
     for (d in days_seq) {
 
       d_date <- as.Date(d)
@@ -142,29 +197,15 @@ get_fantasy_teams <- function(
           "fantasy_points_",
           d_date
         )
-      ]] <- compute_fantasy_roster_points_overall(
-        fantasy_teams[[
-          df$team_name[[i]]
-        ]][[
-          "roster"
-        ]],
-        fantasy_teams[[
-          df$team_name[[i]]
-        ]][[
-          "info"
-        ]],
-        player_boxes_per_game[
-          current_schedule |>
-            filter(
-              game_date <= d
-            )|>
-            select(
-              game_id
-            ) |>
-            pull()
-        ]
-      ) %>% map(
-        ~ .x %>% summarise(
+      ]] <- fantasy_team_boxes_per_date[[
+        df$team_name[[i]]
+      ]] %>%
+      map(
+        ~ .x |>
+        filter(
+          game_date <= d
+        ) |>
+        summarise(
           across(
             "fantasy_points",
             \(x) sum(x, na.rm = TRUE)
@@ -175,6 +216,11 @@ get_fantasy_teams <- function(
       sum()
     }
   }
+
+  saveRDS(
+    fantasy_team_boxes_per_date,
+    file = glue("fantasy_team_boxes_per_date_season_{season_id}.rds")
+  )
 
   return(
     fantasy_teams
