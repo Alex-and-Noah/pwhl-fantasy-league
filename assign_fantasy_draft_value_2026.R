@@ -159,14 +159,14 @@ player_boxes_per_game <- get_player_boxes_per_game(
   current_schedule
 )
 
-team_stat_season_8 <- get_team_stats(
+team_stats_season_8 <- get_team_stats(
   season_id,
   team_info,
   player_boxes_per_game
 )
 
 saveRDS(
-  team_stat_season_8,
+  team_stats_season_8,
   file = glue("team_stats_season_{season_id}.rds")
 )
 
@@ -318,7 +318,7 @@ saveRDS(
 
 # #%% Some analysis
 
-# fantasy_draft_values_2026 |>
+# fantasy_draft_values_season_8 |>
 #   group_by(
 #     position
 #   ) |>
@@ -333,9 +333,15 @@ saveRDS(
 #       fantasy_draft_value,
 #       probs = 0.75
 #     )
+#   ) |>
+#   arrange(
+#     factor(
+#       position,
+#       levels = c("F","D","G")
+#     )
 #   )
 
-# fantasy_draft_values_2026 |>
+# fantasy_draft_values_season_8 |>
 # arrange(
 #   position,
 #   desc(fantasy_draft_value)
@@ -358,7 +364,7 @@ saveRDS(
 #           fantasy_points
 #         ) |>
 #         left_join(
-#           fantasy_draft_values_2026
+#           fantasy_draft_values_season_8
 #         ),
 #       fantasy_teams_2025[[fantasy_team_name]]$roster$goalies |>
 #         select(
@@ -368,7 +374,7 @@ saveRDS(
 #           fantasy_points
 #         ) |>
 #         left_join(
-#           fantasy_draft_values_2026
+#           fantasy_draft_values_season_8
 #         )
 #     ) |>
 #       mutate(
