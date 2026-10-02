@@ -47,7 +47,7 @@ pwhl_stats_fix <- function(
 
         players <- data.frame()
 
-        data = r[[1]]$sections[[1]]$data
+        data <- r[[1]]$sections[[1]]$data
 
         for (y in 1:length(data)) {
           players <- dplyr::bind_rows(
@@ -89,7 +89,6 @@ pwhl_stats_fix <- function(
               as.numeric
             )
           )
-          
       } else {
         URL <- glue::glue(
           "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team={team_id}&position=skaters&rookies=0&statsType=standard&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=points&league_id=1&lang=en&division=-1&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._6"
@@ -110,7 +109,7 @@ pwhl_stats_fix <- function(
 
         players <- data.frame()
 
-        data = r[[1]]$sections[[1]]$data
+        data <- r[[1]]$sections[[1]]$data
 
         for (y in 1:length(data)) {
           players <- dplyr::bind_rows(

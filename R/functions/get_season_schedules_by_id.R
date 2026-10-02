@@ -17,7 +17,6 @@ library(magrittr)
 #' @export
 
 get_season_schedules_by_id <- function() {
-
   season_dates_and_types <- pwhl_season_id()
 
   season_schedules_by_id <- list()
@@ -61,45 +60,55 @@ get_season_schedules_by_id <- function() {
   }
 
   for (season_id_var in season_dates_and_types$season_id) {
-
-    season_schedules_by_id[[
+    if (
+      !identical(
+        season_schedules_by_id[[
           as.character(
             season_id_var
           )
-        ]][["info"]] <- season_schedules_by_id[[
-          as.character(
-            season_id_var
-          )
-        ]][["info"]] |> mutate(
+        ]],
+        FALSE
+      )
+    ) {
+      season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["info"]] <- season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["info"]] |>
+        mutate(
           start_date_temp = season_schedules_by_id[[
             as.character(
               season_id_var
             )
           ]][["schedule"]] |>
-          select(
-            game_date
-          ) |>
-          first() |>
-          pull(),
+            select(
+              game_date
+            ) |>
+            first() |>
+            pull(),
           end_date_temp = season_schedules_by_id[[
             as.character(
               season_id_var
             )
           ]][["schedule"]] |>
-          select(
-            game_date
-          ) |>
-          last() |>
-          pull()
+            select(
+              game_date
+            ) |>
+            last() |>
+            pull()
         ) %>%
         mutate(
           start_date = str_split(
             .$start_date_temp,
             pattern = ", "
           ) |>
-          map(
-            last
-          ),
+            map(
+              last
+            ),
           start_date = ifelse(
             .$game_type_label == "playoffs",
             paste0(
@@ -113,14 +122,14 @@ get_season_schedules_by_id <- function() {
               .$start_date
             )
           ) |>
-          ymd(),
+            ymd(),
           end_date = str_split(
             .$end_date_temp,
             pattern = ", "
           ) |>
-          map(
-            last
-          ),
+            map(
+              last
+            ),
           end_date = ifelse(
             .$game_type_label == "preseason",
             paste0(
@@ -134,7 +143,7 @@ get_season_schedules_by_id <- function() {
               .$end_date
             )
           ) |>
-          ymd()
+            ymd()
         ) |>
         select(
           season_id,
@@ -144,43 +153,54 @@ get_season_schedules_by_id <- function() {
           end_date
         )
 
-    season_schedules_by_id[[
-      as.character(
-        season_id_var
-      )
-    ]][["schedule"]] <- season_schedules_by_id[[
-      as.character(
-        season_id_var
-      )
-    ]][["schedule"]] %>% mutate(
-      game_date = mapply(
-        str_split,
-        .$game_date,
-        pattern = ", "
-      ) |>
-      map(
-        last
-      ),
-      game_date = paste0(
-        season_schedules_by_id[[
-          as.character(
-            season_id_var
+      season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["schedule"]] <- season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["schedule"]] %>%
+        mutate(
+          game_date = mapply(
+            str_split,
+            .$game_date,
+            pattern = ", "
+          ) |>
+            map(
+              last
+            ),
+          game_date = paste0(
+            season_schedules_by_id[[
+              as.character(
+                season_id_var
+              )
+            ]][["info"]]$season_year,
+            " ",
+            game_date
+          ) |>
+            ymd(),
+          game_date = if_else(
+            game_date >
+              ymd(
+                season_schedules_by_id[[
+                  as.character(
+                    season_id_var
+                  )
+                ]][["info"]]$end_date
+              ),
+            game_date - years(1),
+            game_date
           )
-        ]][["info"]]$season_year,
-        " ",
-        game_date
-      ) |>
-      ymd(),
-      game_date = if_else(
-        game_date > ymd(season_schedules_by_id[[
-          as.character(
-            season_id_var
-          )
-        ]][["info"]]$end_date),
-        game_date - years(1),
-        game_date
-      )
-    )
+        )
+    } else {
+      season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]] <- NULL
+    }
   }
 
   return(

@@ -304,6 +304,57 @@ fantasy_draft_values_season_8 <- bind_rows(
     fantasy_draft_value
   )
 
+current_date <- today(
+  tzone = "EST"
+)
+
+season_id <- get_season_id_of_current_date(
+  current_date,
+  season_schedules_by_id
+)
+
+current_schedule <- season_schedules_by_id[[
+  season_id
+]]$schedule
+
+team_info <- get_team_info(
+  season_id
+)
+
+fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
+  select(
+    -team_code
+  ) |>
+  right_join(
+    bind_rows(
+      lapply(
+        team_info$team_id,
+        function(team_id_val) {
+          pwhl_team_roster(
+            season_id,
+            team_info,
+            team_id = team_id_val
+          ) |>
+            select(
+              name,
+              team_id
+            ) |>
+            mutate(
+              team_code = team_info |>
+                filter(
+                  team_id == team_id_val
+                ) |>
+                select(
+                  team_code
+                ) |>
+                pull()
+            )
+        }
+      )
+    ),
+    by = join_by(name)
+  )
+
 saveRDS(
   fantasy_draft_values_season_8,
   file = glue("fantasy_draft_values_season_8.rds")
