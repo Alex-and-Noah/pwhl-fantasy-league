@@ -136,6 +136,35 @@ fantasy_draft_values_season_8 |>
 
 TBD
 
+Preliminary value cap: Find the 75th percentile of FDVs by position and multiply these by the number of alloted slots per position, respectively. The percentiles are as follows:
+
+```{r "fdv percentiles"}
+fantasy_draft_values_season_8 |>
+  group_by(
+    position
+  ) |>
+  summarise(
+    q725= quantile(
+      fantasy_draft_value,
+      probs = 0.25
+    ),
+    median = median(fantasy_draft_value),
+    mean = mean(fantasy_draft_value),
+    q75 = quantile(
+      fantasy_draft_value,
+      probs = 0.75
+    )
+  ) |>
+  arrange(
+    factor(
+      position,
+      levels = c("F","D","G")
+    )
+  )
+```
+
+Therefore, the salary cap is computed as `6*(25) + 4*(21.5) + 2*(22.2) = 280.4`, which we will round to `280`.
+
 # 2025-2026 Season
 
 We can check how this process for assigning FDVs compares against actual FP earned by computing FDVs for the 2025-2026 roster based on the 2024-2025 season and then aggregating all PFP/FP earned during the 2025-2026 season.
