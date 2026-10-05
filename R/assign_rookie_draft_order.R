@@ -79,13 +79,13 @@ draft_order_2025 <- list(
   mutate(
     draft_round = as.numeric(draft_round),
     draft_position = as.numeric(draft_position),
-    overall_draft_position = max(draft_position)*(
-      draft_round - 1
-    ) + draft_position
+    overall_draft_position = max(draft_position) *
+      (draft_round - 1) +
+      draft_position
   )
 
 team_stats <- readRDS(
-  "team_stats.rds"
+  "data/team_stats.rds"
 )
 
 all_skaters <- bind_rows(
@@ -96,19 +96,16 @@ all_skaters <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 2*(
-      goals - short_handed_goals
-    ) +
-    3*short_handed_goals +
-    1*(
-      assists - short_handed_assists
-    ) +
-    2*short_handed_assists +
-    0.1*shots + 
-    0.1*shots_blocked_by_player,
+    fantasy_points = 2 *
+      (goals - short_handed_goals) +
+      3 * short_handed_goals +
+      1 * (assists - short_handed_assists) +
+      2 * short_handed_assists +
+      0.1 * shots +
+      0.1 * shots_blocked_by_player,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
-    projected_fantasy_points = 30*fantasy_points_per_game
+    projected_fantasy_points = 30 * fantasy_points_per_game
   ) |>
   select(
     name,
@@ -130,14 +127,11 @@ all_goalies <- bind_rows(
     `[[`,
     2
   )
-) |> 
+) |>
   mutate(
-    fantasy_points = 1*shutouts +
-    0.05*(
-      shots - goals_against
-    ),
+    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
     fantasy_points_per_game = fantasy_points / games_played,
-    projected_fantasy_points = 30*fantasy_points_per_game
+    projected_fantasy_points = 30 * fantasy_points_per_game
   ) |>
   select(
     name,
@@ -207,12 +201,13 @@ all_fantasy_points <- bind_rows(
         all_fantasy_points |>
           filter(
             rookie == 1
-          ) |> summarise(
+          ) |>
+          summarise(
             max = max(projected_fantasy_points)
           ) |>
-          pull() * (
-            max(overall_draft_position) - overall_draft_position + 1
-          ) / max(overall_draft_position)
+          pull() *
+          (max(overall_draft_position) - overall_draft_position + 1) /
+          max(overall_draft_position)
       ),
       rookie == 1 & overall_draft_position != 0 ~ 1,
       .default = round(
@@ -233,9 +228,9 @@ ggplot(
 ) +
   geom_point() +
   geom_smooth(
-    method="lm",
-    se=FALSE,
-    col="red"
+    method = "lm",
+    se = FALSE,
+    col = "red"
   )
 
 bind_rows(
@@ -371,29 +366,29 @@ bind_rows(
         na.rm = TRUE
       )
     ),
-    all_fantasy_points |>
-      filter(
-        rookie == 1
-      ) |>
-      summarise(
-        name = "all_rookies",
-        min = min(
-          projected_fantasy_points,
-          na.rm = TRUE
-        ),
-        median = median(
-          projected_fantasy_points,
-          na.rm = TRUE
-        ),
-        mean = mean(
-          projected_fantasy_points,
-          na.rm = TRUE
-        ),
-        max = max(
-          projected_fantasy_points,
-          na.rm = TRUE
-        )
+  all_fantasy_points |>
+    filter(
+      rookie == 1
+    ) |>
+    summarise(
+      name = "all_rookies",
+      min = min(
+        projected_fantasy_points,
+        na.rm = TRUE
       ),
+      median = median(
+        projected_fantasy_points,
+        na.rm = TRUE
+      ),
+      mean = mean(
+        projected_fantasy_points,
+        na.rm = TRUE
+      ),
+      max = max(
+        projected_fantasy_points,
+        na.rm = TRUE
+      )
+    ),
   all_fantasy_points |>
     summarise(
       name = "all_players",
@@ -476,90 +471,90 @@ team_stats <- get_team_stats(
 
 draft_order_2026 <- list(
   "1" = list(
-    "1"  = "Caroline Harvey",
-    "2"  = "Abbey Murphy",
-    "3"  = "Tessa Janecke",
-    "4"  = "Laila Edwards",
-    "5"  = "Lacey Eden",
-    "6"  = "Nelli Laitinen",
-    "7"  = "Emma Peschel",
-    "8"  = "Kirsten Simms",
-    "9"  = "Sara Swiderski",
+    "1" = "Caroline Harvey",
+    "2" = "Abbey Murphy",
+    "3" = "Tessa Janecke",
+    "4" = "Laila Edwards",
+    "5" = "Lacey Eden",
+    "6" = "Nelli Laitinen",
+    "7" = "Emma Peschel",
+    "8" = "Kirsten Simms",
+    "9" = "Sara Swiderski",
     "10" = "Grace Dwyer",
     "11" = "Vivian Jungels",
     "12" = "Petra Nieminen"
   ),
   "2" = list(
-    "1"  = "Issy Wunder",
-    "2"  = "Sydney Morrow",
-    "3"  = "Andrea Brändli",
-    "4"  = "Sloane Matthews",
-    "5"  = "Thea Johansson",
-    "6"  = "Jade Iginla",
-    "7"  = "Elisa Holopainen",
-    "8"  = "Jamie Nelson",
-    "9"  = "Viivi Vainikka",
+    "1" = "Issy Wunder",
+    "2" = "Sydney Morrow",
+    "3" = "Andrea Brändli",
+    "4" = "Sloane Matthews",
+    "5" = "Thea Johansson",
+    "6" = "Jade Iginla",
+    "7" = "Elisa Holopainen",
+    "8" = "Jamie Nelson",
+    "9" = "Viivi Vainikka",
     "10" = "Casey Borgiel",
     "11" = "Jordan Ray",
     "12" = "Avi Adam"
   ),
   "3" = list(
-    "1"  = "Jules Constantinople",
-    "2"  = "Emerson Jarvis",
-    "3"  = "Leah Stecker",
-    "4"  = "Tia Chan",
-    "5"  = "Josefin Bouveng",
-    "6"  = "Elyssa Biederman",
-    "7"  = "Carina DiAntonio",
-    "8"  = "Brooke Disher",
-    "9"  = "Madelyn Christian",
+    "1" = "Jules Constantinople",
+    "2" = "Emerson Jarvis",
+    "3" = "Leah Stecker",
+    "4" = "Tia Chan",
+    "5" = "Josefin Bouveng",
+    "6" = "Elyssa Biederman",
+    "7" = "Carina DiAntonio",
+    "8" = "Brooke Disher",
+    "9" = "Madelyn Christian",
     "10" = "MK O'Brien",
     "11" = "Tereza Pištěková",
     "12" = "Zoe Uens"
   ),
   "4" = list(
-    "1"  = "Katie DeSa",
-    "2"  = "Grace Elliott",
-    "3"  = "Kyla Josifovic",
-    "4"  = "Lily Shannon",
-    "5"  = "Saskia Maurer",
-    "6"  = "Megan Woodworth",
-    "7"  = "Katelyn Roberts",
-    "8"  = "Jane Kuehl",
-    "9"  = "Tova Henderson",
+    "1" = "Katie DeSa",
+    "2" = "Grace Elliott",
+    "3" = "Kyla Josifovic",
+    "4" = "Lily Shannon",
+    "5" = "Saskia Maurer",
+    "6" = "Megan Woodworth",
+    "7" = "Katelyn Roberts",
+    "8" = "Jane Kuehl",
+    "9" = "Tova Henderson",
     "10" = "Jaden Bogden",
     "11" = "Tory Mariano",
     "12" = "Hailey MacLeod"
   ),
   "5" = list(
-    "1"  = "Kendall Butze",
-    "2"  = "Gracie Gilkyson",
-    "3"  = "Sena Catterall",
-    "4"  = "McKenna Van Gelder",
-    "5"  = "Alexis Petford",
-    "6"  = "Emma-Sofie Nordstrøm",
-    "7"  = "Grace Wolfe",
-    "8"  = "Emerson O'Leary",
-    "9"  = "Darya Gredzen",
+    "1" = "Kendall Butze",
+    "2" = "Gracie Gilkyson",
+    "3" = "Sena Catterall",
+    "4" = "McKenna Van Gelder",
+    "5" = "Alexis Petford",
+    "6" = "Emma-Sofie Nordstrøm",
+    "7" = "Grace Wolfe",
+    "8" = "Emerson O'Leary",
+    "9" = "Darya Gredzen",
     "10" = "Jenna Goodwin",
     "11" = "Neena Brick",
     "12" = "Erica Rieder"
   ),
   "6" = list(
-    "1"  = "Ashley Messier",
-    "2"  = "Gabriella Durante",
-    "3"  = "Georgia Schiff",
-    "4"  = "Reichen Kirchmair",
-    "5"  = "Sydney Healey",
-    "6"  = "Mya Vaslet",
-    "7"  = "Naomi Boucher",
-    "8"  = "Alyssa Regalado",
-    "9"  = "Lara Beecher",
+    "1" = "Ashley Messier",
+    "2" = "Gabriella Durante",
+    "3" = "Georgia Schiff",
+    "4" = "Reichen Kirchmair",
+    "5" = "Sydney Healey",
+    "6" = "Mya Vaslet",
+    "7" = "Naomi Boucher",
+    "8" = "Alyssa Regalado",
+    "9" = "Lara Beecher",
     "10" = "Maeve Kelly",
     "11" = "Taylor Otremba",
     "12" = "Émilie Lavoie"
   )
-)  |>
+) |>
   bind_rows() |>
   rownames_to_column(
     var = "draft_round"
@@ -572,7 +567,7 @@ draft_order_2026 <- list(
   mutate(
     draft_round = as.numeric(draft_round),
     draft_position = as.numeric(draft_position),
-    overall_draft_position = max(draft_position)*(
-      draft_round - 1
-    ) + draft_position
+    overall_draft_position = max(draft_position) *
+      (draft_round - 1) +
+      draft_position
   )

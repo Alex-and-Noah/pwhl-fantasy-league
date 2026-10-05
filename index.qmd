@@ -23,19 +23,19 @@ library(lubridate)
 library(glue)
 
 season_id <- readRDS(
-  "season_id.rds"
+  "data/season_id.rds"
 )
 
 current_schedule <- readRDS(
-  glue("current_schedule_season_{season_id}.rds")
+  glue("data/current_schedule_season_{season_id}.rds")
 )
 
 current_date <- readRDS(
-  glue("current_date_season_{season_id}.rds")
+  glue("data/current_date_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  glue("team_info_season_{season_id}.rds")
+  glue("data/team_info_season_{season_id}.rds")
 )
 
 todays_games <- current_schedule |>
@@ -183,7 +183,7 @@ if (
 ```{r "standings overview"}
 
 standings <- readRDS(
-  glue("standings_season_{season_id}.rds")
+  glue("data/standings_season_{season_id}.rds")
 )
 
 standings |>
@@ -321,11 +321,11 @@ standings |>
 ```{r "trades"}
 
 fantasy_teams <- readRDS(
-  glue("fantasy_teams_season_{season_id}.rds")
+  glue("data/fantasy_teams_season_{season_id}.rds")
 )
 
 team_stats <- readRDS(
-  glue("team_stats_season_{season_id}.rds")
+  glue("data/team_stats_season_{season_id}.rds")
 )
 
 trades_df <- fantasy_teams |>
@@ -546,7 +546,7 @@ if (
 ```{r "next game day"}
 
 next_game_day <- readRDS(
-  glue("next_game_day_season_{season_id}.rds")
+  glue("data/next_game_day_season_{season_id}.rds")
 )
 
 p_args <- current_schedule |>

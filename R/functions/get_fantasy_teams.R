@@ -21,7 +21,6 @@ get_fantasy_teams <- function(
   team_stats,
   player_boxes_per_game
 ) {
-
   df <- get_google_sheet()
 
   df <- left_join(
@@ -36,30 +35,29 @@ get_fantasy_teams <- function(
       )
     )
   ) |>
-  group_by(
-    by = team_name
-  ) |>
-  summarise(
-    across(
-      everything(),
-      last
+    group_by(
+      by = team_name
+    ) |>
+    summarise(
+      across(
+        everything(),
+        last
+      )
+    ) |>
+    select(
+      c(
+        names(
+          df
+        ),
+        last_game_row_name_of_trade_date
+      )
     )
-  ) |>
-  select(
-    c(
-      names(
-        df
-      ),
-      last_game_row_name_of_trade_date
-    )
-  )
 
   fantasy_teams <- list()
 
   fantasy_team_boxes_per_date <- list()
 
   for (i in seq_len(nrow(df))) {
-
     fantasy_teams[[
       df$team_name[[i]]
     ]] <- list()
@@ -104,25 +102,25 @@ get_fantasy_teams <- function(
           "new_player"
         )
       ] |>
-      as.list()
+        as.list()
     ) |>
-    compute_fantasy_roster_points_overall(
-      fantasy_teams[[
-        df$team_name[[i]]
-      ]][[
-        "info"
-      ]],
-      player_boxes_per_game[
-        current_schedule |>
-          filter(
-            game_date <= current_date
-          )|>
-          select(
-            game_id
-          ) |>
-          pull()
-      ]
-    )
+      compute_fantasy_roster_points_overall(
+        fantasy_teams[[
+          df$team_name[[i]]
+        ]][[
+          "info"
+        ]],
+        player_boxes_per_game[
+          current_schedule |>
+            filter(
+              game_date <= current_date
+            ) |>
+            select(
+              game_id
+            ) |>
+            pull()
+        ]
+      )
 
     days_seq <- seq(
       current_schedule$game_date |>
@@ -153,19 +151,19 @@ get_fantasy_teams <- function(
             current_schedule |>
               filter(
                 game_date == d
-              )|>
+              ) |>
               select(
                 game_id
               ) |>
               pull()
           ]
         ) |>
-        map(
-          ~ mutate(
-            .x,
-            game_date = d
+          map(
+            ~ mutate(
+              .x,
+              game_date = d
+            )
           )
-        )
       }
     )
 
@@ -185,7 +183,6 @@ get_fantasy_teams <- function(
     )
 
     for (d in days_seq) {
-
       d_date <- as.Date(d)
 
       fantasy_teams[[
@@ -200,26 +197,26 @@ get_fantasy_teams <- function(
       ]] <- fantasy_team_boxes_per_date[[
         df$team_name[[i]]
       ]] %>%
-      map(
-        ~ .x |>
-        filter(
-          game_date <= d
+        map(
+          ~ .x |>
+            filter(
+              game_date <= d
+            ) |>
+            summarise(
+              across(
+                "fantasy_points",
+                \(x) sum(x, na.rm = TRUE)
+              )
+            )
         ) |>
-        summarise(
-          across(
-            "fantasy_points",
-            \(x) sum(x, na.rm = TRUE)
-          )
-        )
-      ) |>
-      unlist() |>
-      sum()
+        unlist() |>
+        sum()
     }
   }
 
   saveRDS(
     fantasy_team_boxes_per_date,
-    file = glue("fantasy_team_boxes_per_date_season_{season_id}.rds")
+    file = glue("data/fantasy_team_boxes_per_date_season_{season_id}.rds")
   )
 
   return(
