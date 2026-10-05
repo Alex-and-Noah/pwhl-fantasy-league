@@ -112,13 +112,14 @@ get_team_stats <- function(
           group_by(
             name
           ) |>
-          select(
-            win,
-            ot_loss
-          ) |>
           summarise(
             wins = sum(win),
             ot_losses = sum(ot_loss)
+          ) |>
+          select(
+            name,
+            wins,
+            ot_losses
           ),
         by = "name"
       )
@@ -204,13 +205,14 @@ get_team_stats <- function(
           filter(
             toi != "0"
           ) |>
-          select(
-            win,
-            ot_loss
-          ) |>
           summarise(
             wins = sum(win),
             ot_losses = sum(ot_loss)
+          ) |>
+          select(
+            name,
+            wins,
+            ot_losses
           ),
         by = "name"
       )
