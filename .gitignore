@@ -60,4 +60,4 @@ dashboard.html
 
 /_freeze/
 
-data/*
+static/data/*
