@@ -24,8 +24,8 @@ current_date <- today(
   tzone = "EST"
 )
 
-current_date <- as.Date("2026-04-25")
-# current_date <- as.Date("2025-11-15")
+# current_date <- as.Date("2026-04-25")
+current_date <- as.Date("2025-11-8")
 # current_date <- as.Date("2026-05-20")
 
 season_schedules_by_id <- get_season_schedules_by_id()
@@ -49,17 +49,17 @@ saveRDS(
   file = glue("current_schedule_season_{season_id}.rds")
 )
 
-current_date <- current_schedule |>
-  select(
-    game_date
-  ) |>
-  last() |>
-  pull()
+# current_date <- current_schedule |>
+#   select(
+#     game_date
+#   ) |>
+#   last() |>
+#   pull()
 
-saveRDS(
-  current_date,
-  file = glue("current_date_season_{season_id}.rds")
-)
+# saveRDS(
+#   current_date,
+#   file = glue("current_date_season_{season_id}.rds")
+# )
 
 next_game_day <- current_schedule |>
   filter(
