@@ -381,7 +381,7 @@ fantasy_draft_values_season_5 <- fantasy_draft_values_season_5 |>
   )
 
 saveRDS(
-  fantasy_draft_values_2025,
+  fantasy_draft_values_season_5,
   file = glue("data/fantasy_draft_values_season_{season_id}.rds")
 )
 
