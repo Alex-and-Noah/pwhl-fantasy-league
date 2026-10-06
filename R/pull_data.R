@@ -24,7 +24,7 @@ current_date <- today(
   tzone = "EST"
 )
 
-current_date <- as.Date("2026-04-25")
+current_date <- as.Date("2026-01-25")
 # current_date <- as.Date("2025-11-15")
 # current_date <- as.Date("2026-05-20")
 
@@ -37,7 +37,7 @@ season_id <- get_season_id_of_current_date(
 
 saveRDS(
   season_id,
-  file = glue("season_id.rds")
+  file = glue("data/season_id.rds")
 )
 
 current_schedule <- season_schedules_by_id[[
@@ -46,19 +46,19 @@ current_schedule <- season_schedules_by_id[[
 
 saveRDS(
   current_schedule,
-  file = glue("current_schedule_season_{season_id}.rds")
+  file = glue("data/current_schedule_season_{season_id}.rds")
 )
 
-current_date <- current_schedule |>
-  select(
-    game_date
-  ) |>
-  last() |>
-  pull()
+# current_date <- current_schedule |>
+#   select(
+#     game_date
+#   ) |>
+#   last() |>
+#   pull()
 
 saveRDS(
   current_date,
-  file = glue("current_date_season_{season_id}.rds")
+  file = glue("data/current_date_season_{season_id}.rds")
 )
 
 next_game_day <- current_schedule |>
@@ -73,7 +73,7 @@ next_game_day <- current_schedule |>
 
 saveRDS(
   next_game_day,
-  file = glue("next_game_day_season_{season_id}.rds")
+  file = glue("data/next_game_day_season_{season_id}.rds")
 )
 
 team_info <- get_team_info(
@@ -82,7 +82,7 @@ team_info <- get_team_info(
 
 saveRDS(
   team_info,
-  file = glue("team_info_season_{season_id}.rds")
+  file = glue("data/team_info_season_{season_id}.rds")
 )
 
 player_boxes_per_game <- get_player_boxes_per_game(
@@ -91,7 +91,7 @@ player_boxes_per_game <- get_player_boxes_per_game(
 
 saveRDS(
   player_boxes_per_game,
-  file = glue("player_boxes_per_game_season_{season_id}.rds")
+  file = glue("data/player_boxes_per_game_season_{season_id}.rds")
 )
 
 team_stats <- get_team_stats(
@@ -102,7 +102,7 @@ team_stats <- get_team_stats(
 
 saveRDS(
   team_stats,
-  file = glue("team_stats_season_{season_id}.rds")
+  file = glue("data/team_stats_season_{season_id}.rds")
 )
 
 fantasy_teams <- get_fantasy_teams(
@@ -115,7 +115,7 @@ fantasy_teams <- get_fantasy_teams(
 
 saveRDS(
   fantasy_teams,
-  file = glue("fantasy_teams_season_{season_id}.rds")
+  file = glue("data/fantasy_teams_season_{season_id}.rds")
 )
 
 standings <- compute_standings(
@@ -125,7 +125,7 @@ standings <- compute_standings(
 
 saveRDS(
   standings,
-  file = glue("standings_season_{season_id}.rds")
+  file = glue("data/standings_season_{season_id}.rds")
 )
 
 # This file uses only the following functions:

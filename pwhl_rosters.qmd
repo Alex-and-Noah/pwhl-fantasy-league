@@ -24,23 +24,23 @@ invisible(
   )
 )
 
-environment(custom_gt_split) <- asNamespace('gt')
+environment(custom_gt_split) <- asNamespace("gt")
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
 season_id <- readRDS(
-  "season_id.rds"
+  "data/season_id.rds"
 )
 
 team_stats <- readRDS(
-  glue("team_stats_season_{season_id}.rds")
+  glue("data/team_stats_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  glue("team_info_season_{season_id}.rds")
+  glue("data/team_info_season_{season_id}.rds")
 )
 
 fantasy_teams <- readRDS(
-  glue("fantasy_teams_season_{season_id}.rds")
+  glue("data/fantasy_teams_season_{season_id}.rds")
 )
 ```
 
@@ -89,6 +89,6 @@ res <- purrr::map_chr(
   }
 )
 
-cat(res, sep = '\n')
+cat(res, sep = "\n")
 ```
 :::

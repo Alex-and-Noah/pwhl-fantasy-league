@@ -29,19 +29,19 @@ Second, all PWHL players will be assigned a **Fantasy Draft Value (FDV)**, and a
 ```{r "2025 - variables"}
 
 fantasy_draft_values_season_5 <- readRDS(
-    "fantasy_draft_values_season_5.rds"
+  "data/fantasy_draft_values_season_5.rds"
 )
 
 fantasy_points_season_8 <- readRDS(
-  "fantasy_points_season_8.rds"
+  "data/fantasy_points_season_8.rds"
 )
 
 fantasy_teams_season_8 <- readRDS(
-  "fantasy_teams_season_8.rds"
+  "data/fantasy_teams_season_8.rds"
 )
 
 fantasy_draft_values_season_8 <- readRDS(
-  "fantasy_draft_values_season_8.rds"
+  "data/fantasy_draft_values_season_8.rds"
 )
 ```
 
@@ -64,7 +64,7 @@ If the player is not a rookie, the FDV is is simply the player's earned PFP last
 ```{r "fdv for non-rookies"}
 fantasy_draft_values_season_8 |>
   filter(
-    rookie %in% c(0,1)
+    rookie %in% c(0, 1)
   ) |>
   left_join(
     fantasy_points_season_8,
@@ -118,7 +118,7 @@ During the 2025-2025 season, the $\text{PFP}_{\text{max,rookie}}$ was 46.43 obta
 ```{r "fdv for rookies"}
 fantasy_draft_values_season_8 |>
   filter(
-    !(rookie %in% c(0,1))
+    !(rookie %in% c(0, 1))
   ) |>
   select(
     name,
@@ -144,7 +144,7 @@ fantasy_draft_values_season_8 |>
     position
   ) |>
   summarise(
-    q725= quantile(
+    q725 = quantile(
       fantasy_draft_value,
       probs = 0.25
     ),
@@ -158,7 +158,7 @@ fantasy_draft_values_season_8 |>
   arrange(
     factor(
       position,
-      levels = c("F","D","G")
+      levels = c("F", "D", "G")
     )
   )
 ```
@@ -198,7 +198,7 @@ fantasy_draft_values_season_5 |>
   ) |>
   mutate(
     payoff_net = fantasy_points - fantasy_draft_value,
-    payoff_factor = fantasy_points/fantasy_draft_value,
+    payoff_factor = fantasy_points / fantasy_draft_value,
     across(
       where(is.numeric),
       round,
@@ -246,7 +246,7 @@ fantasy_draft_values_season_5 |>
   ) |>
   mutate(
     payoff_net = fantasy_points - fantasy_draft_value,
-    payoff_factor = fantasy_points/fantasy_draft_value,
+    payoff_factor = fantasy_points / fantasy_draft_value,
     across(
       where(is.numeric),
       round,
@@ -313,22 +313,22 @@ ggplot(
     size = 3
   ) +
   geom_smooth(
-    data = \(df) filter(df,rookie==1),
+    data = \(df) filter(df, rookie == 1),
     aes(
       y = fantasy_points
     ),
-    method="lm",
-    se=TRUE,
-    col="blue"
+    method = "lm",
+    se = TRUE,
+    col = "blue"
   ) +
   geom_smooth(
-    data = \(df) filter(df,rookie==0),
+    data = \(df) filter(df, rookie == 0),
     aes(
       y = fantasy_points
     ),
-    method="lm",
-    se=TRUE,
-    col="red"
+    method = "lm",
+    se = TRUE,
+    col = "red"
   ) +
   geom_line(
     aes(
@@ -354,31 +354,31 @@ ggplot(
     size = 3
   ) +
   geom_smooth(
-    data = \(df) filter(df,position == "F"),
+    data = \(df) filter(df, position == "F"),
     aes(
       y = fantasy_points
     ),
-    method="lm",
-    se=TRUE,
-    col="green"
+    method = "lm",
+    se = TRUE,
+    col = "green"
   ) +
   geom_smooth(
-    data = \(df) filter(df,position == "D"),
+    data = \(df) filter(df, position == "D"),
     aes(
       y = fantasy_points
     ),
-    method="lm",
-    se=TRUE,
-    col="red"
+    method = "lm",
+    se = TRUE,
+    col = "red"
   ) +
   geom_smooth(
-    data = \(df) filter(df,position == "G"),
+    data = \(df) filter(df, position == "G"),
     aes(
       y = fantasy_points
     ),
-    method="lm",
-    se=TRUE,
-    col="blue"
+    method = "lm",
+    se = TRUE,
+    col = "blue"
   ) +
   geom_line(
     aes(
@@ -397,7 +397,6 @@ Suppose the teams that were drafted during the 2025-2026 fantasy season included
 lapply(
   names(fantasy_teams_season_8),
   function(fantasy_team_name) {
-    
     bind_rows(
       fantasy_teams_season_8[[fantasy_team_name]]$roster$skaters |>
         select(

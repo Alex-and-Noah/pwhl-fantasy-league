@@ -23,28 +23,29 @@ library(lubridate)
 library(glue)
 
 season_id <- readRDS(
-  "season_id.rds"
+  "data/season_id.rds"
 )
 
 current_schedule <- readRDS(
-  glue("current_schedule_season_{season_id}.rds")
+  glue("data/current_schedule_season_{season_id}.rds")
 )
 
 current_date <- readRDS(
-  glue("current_date_season_{season_id}.rds")
+  glue("data/current_date_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  glue("team_info_season_{season_id}.rds")
+  glue("data/team_info_season_{season_id}.rds")
 )
 
 todays_games <- current_schedule |>
   filter(
     game_date == current_date
-  ) |> left_join(
+  ) |>
+  left_join(
     team_info %>%
       rename_with(
-        ~paste0(
+        ~ paste0(
           "home_",
           .
         )
@@ -52,10 +53,11 @@ todays_games <- current_schedule |>
     by = join_by(
       home_team == home_team_label
     )
-  ) |> left_join(
+  ) |>
+  left_join(
     team_info %>%
       rename_with(
-        ~paste0(
+        ~ paste0(
           "away_",
           .
         )
@@ -181,7 +183,7 @@ if (
 ```{r "standings overview"}
 
 standings <- readRDS(
-  glue("standings_season_{season_id}.rds")
+  glue("data/standings_season_{season_id}.rds")
 )
 
 standings |>
@@ -319,11 +321,11 @@ standings |>
 ```{r "trades"}
 
 fantasy_teams <- readRDS(
-  glue("fantasy_teams_season_{season_id}.rds")
+  glue("data/fantasy_teams_season_{season_id}.rds")
 )
 
 team_stats <- readRDS(
-  glue("team_stats_season_{season_id}.rds")
+  glue("data/team_stats_season_{season_id}.rds")
 )
 
 trades_df <- fantasy_teams |>
@@ -331,7 +333,8 @@ trades_df <- fantasy_teams |>
     `[[`,
     1
   ) |>
-  bind_rows() |> mutate(
+  bind_rows() |>
+  mutate(
     team_name = names(
       fantasy_teams
     )
@@ -339,7 +342,7 @@ trades_df <- fantasy_teams |>
   filter(
     !is.na(trade_date)
   )
-  
+
 
 player_headshots <- bind_rows(
   team_stats |>
@@ -543,16 +546,17 @@ if (
 ```{r "next game day"}
 
 next_game_day <- readRDS(
-  glue("next_game_day_season_{season_id}.rds")
+  glue("data/next_game_day_season_{season_id}.rds")
 )
 
 p_args <- current_schedule |>
   filter(
     game_date == next_game_day
-  ) |> left_join(
+  ) |>
+  left_join(
     team_info |>
       rename_with(
-        ~paste0(
+        ~ paste0(
           "home_",
           .
         )
@@ -562,10 +566,11 @@ p_args <- current_schedule |>
         home_team_code
       ),
     by = "home_team_id"
-  ) |> left_join(
+  ) |>
+  left_join(
     team_info |>
       rename_with(
-        ~paste0(
+        ~ paste0(
           "away_",
           .
         )
