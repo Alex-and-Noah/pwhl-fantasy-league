@@ -60,130 +60,147 @@ get_season_schedules_by_id <- function() {
   }
 
   for (season_id_var in season_dates_and_types$season_id) {
-    season_schedules_by_id[[
-      as.character(
-        season_id_var
-      )
-    ]][["info"]] <- season_schedules_by_id[[
-      as.character(
-        season_id_var
-      )
-    ]][["info"]] |>
-      mutate(
-        start_date_temp = season_schedules_by_id[[
+    if (
+      !identical(
+        season_schedules_by_id[[
           as.character(
             season_id_var
           )
-        ]][["schedule"]] |>
-          select(
-            game_date
-          ) |>
-          first() |>
-          pull(),
-        end_date_temp = season_schedules_by_id[[
-          as.character(
-            season_id_var
-          )
-        ]][["schedule"]] |>
-          select(
-            game_date
-          ) |>
-          last() |>
-          pull()
-      ) %>%
-      mutate(
-        start_date = str_split(
-          .$start_date_temp,
-          pattern = ", "
-        ) |>
-          map(
-            last
-          ),
-        start_date = ifelse(
-          .$game_type_label == "playoffs",
-          paste0(
-            .$season_year,
-            " ",
-            .$start_date
-          ),
-          paste0(
-            .$season_year - 1,
-            " ",
-            .$start_date
-          )
-        ) |>
-          ymd(),
-        end_date = str_split(
-          .$end_date_temp,
-          pattern = ", "
-        ) |>
-          map(
-            last
-          ),
-        end_date = ifelse(
-          .$game_type_label == "preseason",
-          paste0(
-            .$season_year - 1,
-            " ",
-            .$end_date
-          ),
-          paste0(
-            .$season_year,
-            " ",
-            .$end_date
-          )
-        ) |>
-          ymd()
-      ) |>
-      select(
-        season_id,
-        season_year,
-        game_type_label,
-        start_date,
-        end_date
+        ]],
+        FALSE
       )
-
-    season_schedules_by_id[[
-      as.character(
-        season_id_var
-      )
-    ]][["schedule"]] <- season_schedules_by_id[[
-      as.character(
-        season_id_var
-      )
-    ]][["schedule"]] %>%
-      mutate(
-        game_date = mapply(
-          str_split,
-          .$game_date,
-          pattern = ", "
-        ) |>
-          map(
-            last
-          ),
-        game_date = paste0(
-          season_schedules_by_id[[
+    ) {
+      season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["info"]] <- season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["info"]] |>
+        mutate(
+          start_date_temp = season_schedules_by_id[[
             as.character(
               season_id_var
             )
-          ]][["info"]]$season_year,
-          " ",
-          game_date
-        ) |>
-          ymd(),
-        game_date = if_else(
-          game_date >
-            ymd(
-              season_schedules_by_id[[
-                as.character(
-                  season_id_var
-                )
-              ]][["info"]]$end_date
+          ]][["schedule"]] |>
+            select(
+              game_date
+            ) |>
+            first() |>
+            pull(),
+          end_date_temp = season_schedules_by_id[[
+            as.character(
+              season_id_var
+            )
+          ]][["schedule"]] |>
+            select(
+              game_date
+            ) |>
+            last() |>
+            pull()
+        ) %>%
+        mutate(
+          start_date = str_split(
+            .$start_date_temp,
+            pattern = ", "
+          ) |>
+            map(
+              last
             ),
-          game_date - years(1),
-          game_date
+          start_date = ifelse(
+            .$game_type_label == "playoffs",
+            paste0(
+              .$season_year,
+              " ",
+              .$start_date
+            ),
+            paste0(
+              .$season_year - 1,
+              " ",
+              .$start_date
+            )
+          ) |>
+            ymd(),
+          end_date = str_split(
+            .$end_date_temp,
+            pattern = ", "
+          ) |>
+            map(
+              last
+            ),
+          end_date = ifelse(
+            .$game_type_label == "preseason",
+            paste0(
+              .$season_year - 1,
+              " ",
+              .$end_date
+            ),
+            paste0(
+              .$season_year,
+              " ",
+              .$end_date
+            )
+          ) |>
+            ymd()
+        ) |>
+        select(
+          season_id,
+          season_year,
+          game_type_label,
+          start_date,
+          end_date
         )
-      )
+
+      season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["schedule"]] <- season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]][["schedule"]] %>%
+        mutate(
+          game_date = mapply(
+            str_split,
+            .$game_date,
+            pattern = ", "
+          ) |>
+            map(
+              last
+            ),
+          game_date = paste0(
+            season_schedules_by_id[[
+              as.character(
+                season_id_var
+              )
+            ]][["info"]]$season_year,
+            " ",
+            game_date
+          ) |>
+            ymd(),
+          game_date = if_else(
+            game_date >
+              ymd(
+                season_schedules_by_id[[
+                  as.character(
+                    season_id_var
+                  )
+                ]][["info"]]$end_date
+              ),
+            game_date - years(1),
+            game_date
+          )
+        )
+    } else {
+      season_schedules_by_id[[
+        as.character(
+          season_id_var
+        )
+      ]] <- NULL
+    }
   }
 
   return(
@@ -362,10 +379,10 @@ pwhl_season_id <- function(
       2025,
       2026,
       2026,
-      2026
-      # 2027,
-      # 2027,
-      # 2027
+      2026,
+      2027,
+      2027,
+      2027
     ),
     "game_type_label" = c(
       "preseason",
@@ -376,10 +393,10 @@ pwhl_season_id <- function(
       "playoffs",
       "preseason",
       "regular",
+      "playoffs",
+      "preseason",
+      "regular",
       "playoffs"
-      # "preseason",
-      # "regular",
-      # "playoffs"
     ),
     "season_id" = c(
       2,
@@ -390,10 +407,10 @@ pwhl_season_id <- function(
       6,
       7,
       8,
-      9
-      # 10,
-      # 11,
-      # 12
+      9,
+      10,
+      11,
+      12
     )
   )
 
