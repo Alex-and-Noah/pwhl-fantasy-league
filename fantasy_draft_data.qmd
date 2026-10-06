@@ -20,7 +20,7 @@ For the 2026-2027 season, we are making two changes to changes to the fantasy le
 
 | Skaters        | Goalies |
 | ------------- |-------------|
-| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win\*<br>😖 0 pts/loss<br>🥇 1 pt/OT loss |
+| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss |
 
 Second, all PWHL players will be assigned a **Fantasy Draft Value (FDV)**, and a **Value Cap** will be imposed to the fantasy teams that will be drafted this year. The FDV will be computed based on the new fantasy point structure applied retroactively to the 2025-2026 season.
 
@@ -67,7 +67,11 @@ fantasy_draft_values_season_8 |>
     rookie %in% c(0, 1)
   ) |>
   left_join(
-    fantasy_points_season_8,
+    fantasy_points_season_8 |>
+      select(
+        name,
+        fantasy_points
+      ),
     by = "name"
   ) |>
   select(
@@ -79,8 +83,7 @@ fantasy_draft_values_season_8 |>
   mutate(
     across(
       where(is.numeric),
-      round,
-      digits = 2
+      \(x) round(x, digits = 2)
     )
   ) |>
   arrange(
@@ -99,47 +102,257 @@ fantasy_draft_values_season_8 |>
 
 ### Rookie
 
-Assigning FDVs to rookies is done by comparing the draft position of the upcoming rookie cohort with the performance of the rookies last season. Each rookie's FDV is computed as follows:
+After last season, all of the rookies of that season have accumulated fantasy points from their performance (duh). We will look at two plots. First, a scatter plot of PFPs earned by overall draft position:
+
+::: {.panel-tabset}
+
+##### Plot
+
+```{r "rookie PFP by overall draft position - 2025/2026 (scatter plot)"}
+fantasy_points_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position
+      ),
+      by = "name"
+  ) |>
+  filter(
+    !is.na(overall_draft_position)
+  ) |>
+  arrange(
+    overall_draft_position
+  ) %>%
+  ggplot(
+    aes(
+      x = overall_draft_position,
+      y = projected_fantasy_points
+    )
+  ) +
+  geom_point()
+```
+
+##### Table
+
+```{r "rookie PFP by overall draft position - 2025/2026 (table)"}
+fantasy_points_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position
+      ),
+      by = "name"
+  ) |>
+  mutate(
+    projected_fantasy_points = round(
+      projected_fantasy_points,
+      digits = 2
+    )
+  ) |>
+  filter(
+    !is.na(overall_draft_position)
+  ) |>
+  arrange(
+    overall_draft_position,
+    name
+  ) |>
+  select(
+    name,
+    overall_draft_position,
+    projected_fantasy_points
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "Draft No." = "overall_draft_position",
+      "PFP" = "projected_fantasy_points"
+    )
+  )
+```
+
+:::
+
+There is clearly not a perfect correlation between PFP and overall draft position, but this is expected. However, there is a general trend of higher PFPs as overall draft position is lowered.
+
+```{r "Fit linear model to PFPs descending"}
+model <- fantasy_draft_values_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
+  ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+theoretical_line <- function(x) {
+ exp(
+   coef(model)[[1]] +
+     coef(model)[[2]] * x
+ )
+}
+```
+
+On the other hand, when looking at PFPs earned sorted in descending order, we get somewhat of an exponential distribution:
+
+#### PFPs earned, sorted in descending order
+
+::: {.panel-tabset}
+
+##### Plot
+
+```{r "rookie PFP descending with exponential curve - 2025/2026 (scatter plot)"}
+fantasy_draft_values_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  arrange(
+    desc(projected_fantasy_points)
+  ) %>%
+  ggplot(
+    aes(
+      x = seq_len(
+        nrow(
+          .
+        )
+      ),
+      y = projected_fantasy_points
+    )
+  ) +
+  geom_point() +
+  geom_function(fun = theoretical_line)
+```
+
+##### Table
+
+```{r "rookie PFP descending - 2025/2026 (table)"}
+fantasy_points_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position
+      ),
+      by = "name"
+  ) |>
+  mutate(
+    projected_fantasy_points = round(
+      projected_fantasy_points,
+      digits = 2
+    )
+  ) |>
+  arrange(
+    desc(projected_fantasy_points),
+    name
+  ) |>
+  select(
+    name,
+    overall_draft_position,
+    projected_fantasy_points
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "Draft No." = "overall_draft_position",
+      "PFP" = "projected_fantasy_points"
+    )
+  )
+```
+
+:::
+
+::: {.callout-note}
+We secretly replaced all PFPs less than $\mathrm{e}$ with $\mathrm{e}$, just so that the exponential fit would never yield negative values. You'll see why soon...
+:::
+
+Rather than using PFPs by overall draft position for the last season, we are going to use the exponential curve approximating the PFPs descending in order to inform how the FDVs get assigned to the rookies in the upcoming season. The formula for the FDV for new rookies will be as follows:
 
 $$
-\text{FDV} = \text{round}\left(0.6 * \text{PFP}_{\text{max,rookie}} * \frac{\text{N}_\text{rookie} - \text{pos}_\text{draft} + 1}{\text{N}_\text{rookie}}\right),
+\text{FDV} = \max\left( \text{round}\left(\exp \left( b + m\cdot\left(1+(\text{pos}_\text{draft} - 1)\cdot\frac{\text{N}_\text{rookies,t-1}-1}{\text{N}_\text{rookies,t}}\right)\right)\right), 1\right),
 $$
 
 where:
 
-- $\text{PFP}_{\text{max,rookie}}:=$ maximum PFP amongst all rookies last year
-- $\text{N}_\text{rookie}:=$ number of new rookies this year
-- $\text{pos}_\text{draft}:=$ position of rookie in draft order (integer from $\{1,\ldots,\text{N}_\text{rookie}\}$)
+- $\text{pos}_\text{draft}\in\{1,\ldots,\text{N}_\text{rookie,t}\}:=$ draft order position of new rookie
+- $\text{N}_\text{rookies,t}:=$ number of new rookies in year $t$ (this year)
+- $\text{N}_\text{rookies,t-1}:=$ number of new rookies in year $t-1$ (last year)
+- $b:=$ intercept of the line fit to the $\log$ of the descending PFPs ($b=$ `{r} coef(model)[[1]]`)
+- $m:=$ slope of the line fit to the $\log$ of the descending PFPs ($m=$ `{r} coef(model)[[2]]`)
 
-The factor of 0.6 accounts for the risk of drafting a new rookie to a fantasy team.
+The idea behind this formula is that we map $\text{N}_\text{rookies,t}$ equal points to the support of the fit exponential curve, which is $\{1,\ldots,\text{N}_\text{rookie,t-1}\}$. Under this mapping, the first overall draft pick (K.K. Harvey for the 2026-2027 season) should be mapped to the PFP estimate corresponding to the first overall draft pick of the 2025-2026 season (Kristýna Kaltounková), the last overall draft pick for the 2026-2027 season should be mapped to the PFP estimate corresponding to the last overall draft pick of the 2025-2026 season, and each draft pick in between for the 2026-2027 season should be evenly spaced out between $1$ and $\text{N}_\text{rookie,t-1}$; this yields a spacing of $\frac{\text{N}_\text{rookies,t-1}-1}{\text{N}_\text{rookies,t}}$
 
-During the 2025-2025 season, the $\text{PFP}_{\text{max,rookie}}$ was 46.43 obtained by Kristýna Kaltounková, which yields the following FDVs for the new rookies of the 2026-2027 season:
+The FDVs for the new rookies of the 2026-2027 season are therefore:
 
 ```{r "fdv for rookies"}
 fantasy_draft_values_season_8 |>
   filter(
-    !(rookie %in% c(0, 1))
+    rookie == -1
+  ) |>
+  arrange(
+    overall_draft_position,
+    name
   ) |>
   select(
     name,
+    overall_draft_position,
     fantasy_draft_value
   ) |>
   datatable(
     colnames = c(
       "Name" = "name",
+      "Draft No." = "overall_draft_position",
       "FDV" = "fantasy_draft_value"
     )
   )
 ```
 
+
+Recalling that there is not a good correlation between PFPs earned and overall draft position, I feel this approach will be intersting because:
+
+1. The overall distribution of FDVs assigned to new rookies agrees with the performance of the rookie class last year
+2. It' still a risk drafting a rookie as seen in the PFPs earned over draft order chart, but the early draft picks are probably going to pay off in some capacity.
+
 ## Value Cap
 
-TBD
-
-Preliminary value cap: Find the 75th percentile of FDVs by position and multiply these by the number of alloted slots per position, respectively. The percentiles are as follows:
+Preliminary value cap: Find the 75th percentile of FDVs by position and multiply these by the number of allotted slots per position, respectively. The percentiles are as follows:
 
 ```{r "fdv percentiles"}
 fantasy_draft_values_season_8 |>
+  drop_na(position) |>
   group_by(
     position
   ) |>
@@ -160,10 +373,11 @@ fantasy_draft_values_season_8 |>
       position,
       levels = c("F", "D", "G")
     )
-  )
+  ) |>
+  datatable()
 ```
 
-Therefore, the salary cap is computed as `6*(25) + 4*(21.5) + 2*(22.2) = 280.4`, which we will round to `280`.
+Therefore, the salary cap is computed as `6*(26) + 4*(22) + 2*(22.25) = 288.5`, which we will round up to a nice clean `300`.
 
 # 2025-2026 Season
 
@@ -177,32 +391,35 @@ We can check how this process for assigning FDVs compares against actual FP earn
 
 ```{r "fp/pfp vs fdv - non-rookies"}
 fantasy_draft_values_season_5 |>
-  inner_join(
-    fantasy_points_season_8,
+  left_join(
+    fantasy_points_season_8 |>
+      select(
+        name,
+        position,
+        fantasy_points
+      ),
     by = c(
       "name",
       "position"
     )
-  ) |>
-  mutate(
-    rookie = rookie.y
   ) |>
   filter(
     rookie == 0
   ) |>
   select(
     name,
-    fantasy_points,
-    projected_fantasy_points,
-    fantasy_draft_value
+    fantasy_draft_value,
+    fantasy_points
   ) |>
   mutate(
     payoff_net = fantasy_points - fantasy_draft_value,
     payoff_factor = fantasy_points / fantasy_draft_value,
     across(
       where(is.numeric),
-      round,
-      digits = 2
+      \(x) round(
+        x,
+        digits = 2
+      )
     )
   ) |>
   arrange(
@@ -212,9 +429,8 @@ fantasy_draft_values_season_5 |>
   datatable(
     colnames = c(
       "Name" = "name",
-      "FP" = "fantasy_points",
-      "PFP" = "projected_fantasy_points",
       "FDV" = "fantasy_draft_value",
+      "FP" = "fantasy_points",
       "FP-FDV" = "payoff_net",
       "FP/FDV" = "payoff_factor"
     )
@@ -225,32 +441,36 @@ fantasy_draft_values_season_5 |>
 
 ```{r "fp/pfp vs fdv - rookies"}
 fantasy_draft_values_season_5 |>
-  inner_join(
-    fantasy_points_season_8,
+  filter(
+    rookie == -1
+  ) |>
+  left_join(
+    fantasy_points_season_8 |>
+      select(
+        name,
+        position,
+        fantasy_points
+      ),
     by = c(
       "name",
       "position"
     )
   ) |>
-  mutate(
-    rookie = rookie.y
-  ) |>
-  filter(
-    rookie == 1
-  ) |>
   select(
     name,
-    fantasy_points,
-    projected_fantasy_points,
-    fantasy_draft_value
+    overall_draft_position,
+    fantasy_draft_value,
+    fantasy_points
   ) |>
   mutate(
     payoff_net = fantasy_points - fantasy_draft_value,
     payoff_factor = fantasy_points / fantasy_draft_value,
     across(
       where(is.numeric),
-      round,
-      digits = 2
+      \(x) round(
+        x,
+        digits = 2
+      )
     )
   ) |>
   arrange(
@@ -260,9 +480,9 @@ fantasy_draft_values_season_5 |>
   datatable(
     colnames = c(
       "Name" = "name",
-      "FP" = "fantasy_points",
-      "PFP" = "projected_fantasy_points",
+      "Draft No." = "overall_draft_position",
       "FDV" = "fantasy_draft_value",
+      "FP" = "fantasy_points",
       "FP-FDV" = "payoff_net",
       "FP/FDV" = "payoff_factor"
     )
@@ -270,7 +490,7 @@ fantasy_draft_values_season_5 |>
 ```
 
 :::
-
+<!--
 ## PFP over FDV - Scatter plot and Line of Best Fit
 
 ::: {.panel-tabset}
@@ -281,14 +501,16 @@ fantasy_draft_values_season_5 |>
 
 data <- fantasy_draft_values_season_5 |>
   inner_join(
-    fantasy_points_season_8,
+    fantasy_points_season_8 |>
+      select(
+        name,
+        position,
+        fantasy_points
+      ),
     by = c(
       "name",
       "position"
     )
-  ) |>
-  mutate(
-    rookie = rookie.y
   ) |>
   select(
     name,
@@ -387,7 +609,7 @@ ggplot(
   )
 ```
 
-:::
+::: -->
 
 ## Fantasy teams
 
@@ -397,6 +619,7 @@ Suppose the teams that were drafted during the 2025-2026 fantasy season included
 lapply(
   names(fantasy_teams_season_8),
   function(fantasy_team_name) {
+
     bind_rows(
       fantasy_teams_season_8[[fantasy_team_name]]$roster$skaters |>
         select(

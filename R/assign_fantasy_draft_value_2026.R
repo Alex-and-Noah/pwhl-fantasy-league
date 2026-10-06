@@ -28,7 +28,7 @@ current_date <- as.Date("2026-04-25")
 
 draft_order <- list(
   "1" = list(
-    "1" = "Caroline Harvey (D)",
+    "1" = "KK Harvey (D)",
     "2" = "Abbey Murphy (F)",
     "3" = "Tessa Janecke (F)",
     "4" = "Laila Edwards (D)",
@@ -64,13 +64,13 @@ draft_order <- list(
     "6" = "Elyssa Biederman (F)",
     "7" = "Carina DiAntonio (F)",
     "8" = "Brooke Disher (D)",
-    "9" = "Madelyn Christian (F)",
+    "9" = "Maddy Christian (F)",
     "10" = "MK O'Brien (F)",
     "11" = "Tereza Pištěková (F)",
     "12" = "Zoe Uens (F)"
   ),
   "4" = list(
-    "1" = "Katie DeSa (G)",
+    "1" = "Katie Desa (G)",
     "2" = "Grace Elliott (F)",
     "3" = "Kyla Josifovic (F)",
     "4" = "Lily Shannon (F)",
@@ -87,12 +87,12 @@ draft_order <- list(
     "1" = "Kendall Butze (D)",
     "2" = "Gracie Gilkyson (D)",
     "3" = "Sena Catterall (F)",
-    "4" = "McKenna Van Gelder (F)",
+    "4" = "Mckenna Van Gelder (F)",
     "5" = "Alexis Petford (F)",
-    "6" = "Emma-Sofie Nordstrøm (G)",
+    "6" = "Emma-Sofie Nordström (G)",
     "7" = "Grace Wolfe (D)",
     "8" = "Emerson O'Leary (F)",
-    "9" = "Darya Gredzen (G)",
+    "9" = "Daria Gredzen (G)",
     "10" = "Jenna Goodwin (F)",
     "11" = "Neena Brick (F)",
     "12" = "Erica Rieder (D)"
@@ -152,14 +152,14 @@ team_info <- get_team_info(
   season_id
 )
 
-player_boxes_per_game <- get_player_boxes_per_game(
+player_boxes_per_game_season_8 <- get_player_boxes_per_game(
   current_schedule
 )
 
 team_stats_season_8 <- get_team_stats(
   season_id,
   team_info,
-  player_boxes_per_game
+  player_boxes_per_game_season_8
 )
 
 saveRDS(
@@ -167,7 +167,7 @@ saveRDS(
   file = glue("data/team_stats_season_{season_id}.rds")
 )
 
-all_skaters <- bind_rows(
+all_skaters_season_8 <- bind_rows(
   lapply(
     team_stats_season_8,
     `[[`,
@@ -200,7 +200,7 @@ all_skaters <- bind_rows(
     projected_fantasy_points
   )
 
-all_goalies <- bind_rows(
+all_goalies_season_8 <- bind_rows(
   lapply(
     team_stats_season_8,
     `[[`,
@@ -226,7 +226,7 @@ all_goalies <- bind_rows(
   )
 
 fantasy_draft_values_season_8 <- bind_rows(
-  all_skaters |>
+  all_skaters_season_8 |>
     select(
       name,
       team_code,
@@ -236,7 +236,7 @@ fantasy_draft_values_season_8 <- bind_rows(
       fantasy_points_per_game,
       projected_fantasy_points
     ),
-  all_goalies |>
+  all_goalies_season_8 |>
     select(
       name,
       team_code,
@@ -271,24 +271,119 @@ fantasy_draft_values_season_8 <- bind_rows(
       fantasy_points_per_game = 0,
       projected_fantasy_points = 0
     )
+  )
+
+model <- fantasy_draft_values_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
   ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+# fantasy_draft_values_season_8 |>
+#   filter(
+#     rookie == 1
+#   ) |>
+#   mutate(
+#     projected_fantasy_points = if_else(
+#       projected_fantasy_points < exp(1),
+#       exp(1),
+#       projected_fantasy_points
+#     ),
+#     log_projected_fantasy_points = log(projected_fantasy_points)
+#   ) |>
+#   arrange(
+#     desc(log_projected_fantasy_points)
+#   ) %>%
+#   ggplot(
+#     aes(
+#       x = seq_len(
+#         nrow(
+#           .
+#         )
+#       ),
+#       y = log_projected_fantasy_points
+#     )
+#   ) +
+#   geom_point() +
+#   geom_smooth(
+#     data = \(df) filter(df, rookie == 1),
+#     aes(
+#       y = log_projected_fantasy_points
+#     ),
+#     method = "lm",
+#     se = TRUE,
+#     col = "blue"
+#   )
+
+# theoretical_line <- function(x) {
+#   exp(
+#     coef(model)[[1]] +
+#       coef(model)[[2]] * x
+#   )
+# }
+
+# fantasy_draft_values_season_8 |>
+#   filter(
+#     rookie == 1
+#   ) |>
+#   arrange(
+#     desc(projected_fantasy_points)
+#   ) %>%
+#   ggplot(
+#     aes(
+#       x = seq_len(
+#         nrow(
+#           .
+#         )
+#       ),
+#       y = projected_fantasy_points
+#     )
+#   ) +
+#   geom_point() +
+#   geom_function(fun = theoretical_line)
+
+n_rookies_last_year <- fantasy_draft_values_season_8 |>
+  filter(
+    rookie == 1
+  ) |>
+  nrow()
+
+fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
   mutate(
     fantasy_draft_value = case_when(
       rookie == 0 | rookie == 1 ~ round(
         projected_fantasy_points
       ),
-      rookie == -1 & overall_draft_position != 0 ~ round(
-        . |>
-          filter(
-            rookie == 1
-          ) |>
-          summarise(
-            max = max(projected_fantasy_points)
-          ) |>
-          pull() *
-          0.6 *
-          (max(overall_draft_position) - overall_draft_position + 1) /
-          max(overall_draft_position)
+      rookie == -1 & overall_draft_position != 0 ~ pmax(
+        round(
+          exp(
+            coef(model)[[1]] +
+              coef(model)[[2]] *
+                (1 +
+                  (overall_draft_position - 1) *
+                    (n_rookies_last_year - 1) /
+                    (max(overall_draft_position)))
+          )
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
       .default = round(
@@ -301,8 +396,115 @@ fantasy_draft_values_season_8 <- bind_rows(
     team_code,
     rookie,
     position,
+    overall_draft_position,
+    projected_fantasy_points,
     fantasy_draft_value
   )
+
+current_date <- today(
+  tzone = "EST"
+)
+
+season_id <- get_season_id_of_current_date(
+  current_date,
+  season_schedules_by_id
+)
+
+current_schedule <- season_schedules_by_id[[
+  season_id
+]]$schedule
+
+team_info <- get_team_info(
+  season_id
+)
+
+fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
+  select(
+    -team_code
+  ) |>
+  right_join(
+    bind_rows(
+      lapply(
+        team_info$team_id,
+        function(team_id_val) {
+          pwhl_team_roster(
+            season_id,
+            team_info,
+            team_id = team_id_val
+          ) |>
+            select(
+              name,
+              team_id
+            ) |>
+            mutate(
+              team_code = team_info |>
+                filter(
+                  team_id == team_id_val
+                ) |>
+                select(
+                  team_code
+                ) |>
+                pull()
+            )
+        }
+      )
+    ),
+    by = join_by(name)
+  )
+
+# for (team_code_val in unique(fantasy_draft_values_season_8$team_code)) {
+#   roster <- fantasy_draft_values_season_8 |>
+#     filter(
+#       team_code == team_code_val
+#     ) |>
+#     arrange(
+#       factor(
+#         position,
+#         c(
+#           "F",
+#           "D",
+#           "G"
+#         )
+#       ),
+#       name
+#     )
+
+#   write.csv(
+#     roster |>
+#       select(
+#         name
+#       ) |>
+#       data.frame(),
+#     glue(
+#       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_name.csv"
+#     ),
+#     row.names = FALSE
+#   )
+
+#   write.csv(
+#     roster |>
+#       select(
+#         position
+#       ) |>
+#       data.frame(),
+#     glue(
+#       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_position.csv"
+#     ),
+#     row.names = FALSE
+#   )
+
+#   write.csv(
+#     roster |>
+#       select(
+#         fantasy_draft_value
+#       ) |>
+#       data.frame(),
+#     glue(
+#       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_fdv.csv"
+#     ),
+#     row.names = FALSE
+#   )
+# }
 
 saveRDS(
   fantasy_draft_values_season_8,
@@ -312,11 +514,12 @@ saveRDS(
 # #%% Some analysis
 
 # fantasy_draft_values_season_8 |>
+#   drop_na(position) |>
 #   group_by(
 #     position
 #   ) |>
 #   summarise(
-#     q725= quantile(
+#     q725 = quantile(
 #       fantasy_draft_value,
 #       probs = 0.25
 #     ),
@@ -330,15 +533,16 @@ saveRDS(
 #   arrange(
 #     factor(
 #       position,
-#       levels = c("F","D","G")
+#       levels = c("F", "D", "G")
 #     )
 #   )
 
 # fantasy_draft_values_season_8 |>
-# arrange(
-#   position,
-#   desc(fantasy_draft_value)
-# )|>View()
+#   arrange(
+#     position,
+#     desc(fantasy_draft_value)
+#   ) |>
+#   View()
 
 # fantasy_teams_2025 <- readRDS(
 #   "fantasy_teams.rds"
@@ -347,7 +551,6 @@ saveRDS(
 # data <- lapply(
 #   names(fantasy_teams_2025),
 #   function(fantasy_team_name) {
-
 #     bind_rows(
 #       fantasy_teams_2025[[fantasy_team_name]]$roster$skaters |>
 #         select(
@@ -375,15 +578,15 @@ saveRDS(
 #       )
 #   }
 # ) |>
-# bind_rows()
+#   bind_rows()
 
 # data |>
 #   group_by(
 #     fantasy_team_name
 #   ) |>
 #   summarise(
-#     fantasy_draft_value = sum(fantasy_draft_value),
-#     fantasy_points = sum(fantasy_points)
+#     fantasy_draft_value = sum(fantasy_draft_value, na.rm = TRUE),
+#     fantasy_points = sum(fantasy_points, na.rm = TRUE)
 #   ) |>
 #   mutate(
 #     point_gain = fantasy_points - fantasy_draft_value

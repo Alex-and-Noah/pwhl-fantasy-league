@@ -129,14 +129,14 @@ team_info <- get_team_info(
   season_id
 )
 
-player_boxes_per_game <- get_player_boxes_per_game(
+player_boxes_per_game_season_5 <- get_player_boxes_per_game(
   current_schedule
 )
 
 team_stats_season_5 <- get_team_stats(
   season_id,
   team_info,
-  player_boxes_per_game
+  player_boxes_per_game_season_5
 )
 
 saveRDS(
@@ -144,7 +144,7 @@ saveRDS(
   file = glue("data/team_stats_season_{season_id}.rds")
 )
 
-all_skaters <- bind_rows(
+all_skaters_season_5 <- bind_rows(
   lapply(
     team_stats_season_5,
     `[[`,
@@ -178,7 +178,7 @@ all_skaters <- bind_rows(
     projected_fantasy_points
   )
 
-all_goalies <- bind_rows(
+all_goalies_season_5 <- bind_rows(
   lapply(
     team_stats_season_5,
     `[[`,
@@ -204,8 +204,8 @@ all_goalies <- bind_rows(
     projected_fantasy_points
   )
 
-fantasy_draft_values_2025 <- bind_rows(
-  all_skaters |>
+fantasy_draft_values_season_5 <- bind_rows(
+  all_skaters_season_5 |>
     select(
       name,
       team_code,
@@ -215,7 +215,7 @@ fantasy_draft_values_2025 <- bind_rows(
       fantasy_points_per_game,
       projected_fantasy_points
     ),
-  all_goalies |>
+  all_goalies_season_5 |>
     select(
       name,
       team_code,
@@ -250,24 +250,119 @@ fantasy_draft_values_2025 <- bind_rows(
       fantasy_points_per_game = 0,
       projected_fantasy_points = 0
     )
+  )
+
+model <- fantasy_draft_values_season_5 |>
+  filter(
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
   ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+# fantasy_draft_values_season_5 |>
+#   filter(
+#     rookie == 1
+#   ) |>
+#   mutate(
+#     projected_fantasy_points = if_else(
+#       projected_fantasy_points < exp(1),
+#       exp(1),
+#       projected_fantasy_points
+#     ),
+#     log_projected_fantasy_points = log(projected_fantasy_points)
+#   ) |>
+#   arrange(
+#     desc(log_projected_fantasy_points)
+#   ) %>%
+#   ggplot(
+#     aes(
+#       x = seq_len(
+#         nrow(
+#           .
+#         )
+#       ),
+#       y = log_projected_fantasy_points
+#     )
+#   ) +
+#   geom_point() +
+#   geom_smooth(
+#     data = \(df) filter(df, rookie == 1),
+#     aes(
+#       y = log_projected_fantasy_points
+#     ),
+#     method = "lm",
+#     se = TRUE,
+#     col = "blue"
+#   )
+
+# theoretical_line <- function(x) {
+#   exp(
+#     coef(model)[[1]] +
+#       coef(model)[[2]] * x
+#   )
+# }
+
+# fantasy_draft_values_season_5 |>
+#   filter(
+#     rookie == 1
+#   ) |>
+#   arrange(
+#     desc(projected_fantasy_points)
+#   ) %>%
+#   ggplot(
+#     aes(
+#       x = seq_len(
+#         nrow(
+#           .
+#         )
+#       ),
+#       y = projected_fantasy_points
+#     )
+#   ) +
+#   geom_point() +
+#   geom_function(fun = theoretical_line)
+
+n_rookies_last_year <- fantasy_draft_values_season_5 |>
+  filter(
+    rookie == 1
+  ) |>
+  nrow()
+
+fantasy_draft_values_season_5 <- fantasy_draft_values_season_5 |>
   mutate(
     fantasy_draft_value = case_when(
       rookie == 0 | rookie == 1 ~ round(
         projected_fantasy_points
       ),
-      rookie == -1 & overall_draft_position != 0 ~ round(
-        . |>
-          filter(
-            rookie == 1
-          ) |>
-          summarise(
-            max = max(projected_fantasy_points)
-          ) |>
-          pull() *
-          0.6 *
-          (max(overall_draft_position) - overall_draft_position + 1) /
-          max(overall_draft_position)
+      rookie == -1 & overall_draft_position != 0 ~ pmax(
+        round(
+          exp(
+            coef(model)[[1]] +
+              coef(model)[[2]] *
+                (1 +
+                  (overall_draft_position - 1) *
+                    (n_rookies_last_year - 1) /
+                    (max(overall_draft_position)))
+          )
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
       .default = round(
@@ -277,13 +372,16 @@ fantasy_draft_values_2025 <- bind_rows(
   ) |>
   select(
     name,
+    team_code,
     rookie,
     position,
+    overall_draft_position,
+    projected_fantasy_points,
     fantasy_draft_value
   )
 
 saveRDS(
-  fantasy_draft_values_2025,
+  fantasy_draft_values_season_5,
   file = glue("data/fantasy_draft_values_season_{season_id}.rds")
 )
 
@@ -291,7 +389,7 @@ team_stats_season_8 <- readRDS(
   "data/team_stats_season_8.rds"
 )
 
-all_skaters <- bind_rows(
+all_skaters_season_8 <- bind_rows(
   lapply(
     team_stats_season_8,
     `[[`,
@@ -324,7 +422,7 @@ all_skaters <- bind_rows(
     projected_fantasy_points
   )
 
-all_goalies <- bind_rows(
+all_goalies_season_8 <- bind_rows(
   lapply(
     team_stats_season_8,
     `[[`,
@@ -350,7 +448,7 @@ all_goalies <- bind_rows(
   )
 
 fantasy_points_season_8 <- bind_rows(
-  all_skaters |>
+  all_skaters_season_8 |>
     select(
       name,
       team_code,
@@ -360,7 +458,7 @@ fantasy_points_season_8 <- bind_rows(
       fantasy_points_per_game,
       projected_fantasy_points
     ),
-  all_goalies |>
+  all_goalies_season_8 |>
     select(
       name,
       team_code,
@@ -397,7 +495,7 @@ saveRDS(
   file = "data/fantasy_points_season_8.rds"
 )
 
-# data <- fantasy_draft_values_2025 |>
+# data <- fantasy_draft_values_season_5 |>
 #   inner_join(
 #     fantasy_points_2025,
 #     by = c(

@@ -29,6 +29,30 @@
         "#4B4F54",
         "#FFFFFF"
     ],
+    "DET":[
+        "#000000",
+        "#FFFFFF",
+        "#C0C0C0",
+        "#C02B2D"
+    ],
+    "HAM":[
+        "#F1A40E",
+        "#FFFFFF",
+        "#64111D",
+        "#E2D2B8"
+    ],
+    "VEG":[
+        "#717237",
+        "#FFFFFF",
+        "#FAAC2E",
+        "#FFFFFF"
+    ],
+    "SJ":[
+        "#F69245",
+        "#FFFFFF",
+        "#0774CE",
+        "#FFFFFF"
+    ],
     "SEA":[
         "#0C5256",
         "#FFFFFF",
