@@ -340,6 +340,12 @@ fantasy_draft_values_season_8 |>
   )
 ```
 
+
+Recalling that there is not a good correlation between PFPs earned and overall draft position, I feel this approach will be intersting because:
+
+1. The overall distribution of FDVs assigned to new rookies agrees with the performance of the rookie class last year
+2. It' still a risk drafting a rookie as seen in the PFPs earned over draft order chart, but the early draft picks are probably going to pay off in some capacity.
+
 ## Value Cap
 
 Preliminary value cap: Find the 75th percentile of FDVs by position and multiply these by the number of allotted slots per position, respectively. The percentiles are as follows:
