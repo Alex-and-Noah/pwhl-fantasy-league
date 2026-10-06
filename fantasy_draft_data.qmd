@@ -221,7 +221,7 @@ theoretical_line <- function(x) {
 }
 ```
 
-On the other hand, when looking at PFPs earned sorted in descending order, we get a beautiful exponential distribution:
+On the other hand, when looking at PFPs earned sorted in descending order, we get somewhat of an exponential distribution:
 
 #### PFPs earned, sorted in descending order
 
