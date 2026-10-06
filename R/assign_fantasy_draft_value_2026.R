@@ -452,59 +452,59 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
     by = join_by(name)
   )
 
-for (team_code_val in unique(fantasy_draft_values_season_8$team_code)) {
-  roster <- fantasy_draft_values_season_8 |>
-    filter(
-      team_code == team_code_val
-    ) |>
-    arrange(
-      factor(
-        position,
-        c(
-          "F",
-          "D",
-          "G"
-        )
-      ),
-      name
-    )
+# for (team_code_val in unique(fantasy_draft_values_season_8$team_code)) {
+#   roster <- fantasy_draft_values_season_8 |>
+#     filter(
+#       team_code == team_code_val
+#     ) |>
+#     arrange(
+#       factor(
+#         position,
+#         c(
+#           "F",
+#           "D",
+#           "G"
+#         )
+#       ),
+#       name
+#     )
 
-  write.csv(
-    roster |>
-      select(
-        name
-      ) |>
-      data.frame(),
-    glue(
-      "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_name.csv"
-    ),
-    row.names = FALSE
-  )
+#   write.csv(
+#     roster |>
+#       select(
+#         name
+#       ) |>
+#       data.frame(),
+#     glue(
+#       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_name.csv"
+#     ),
+#     row.names = FALSE
+#   )
 
-  write.csv(
-    roster |>
-      select(
-        position
-      ) |>
-      data.frame(),
-    glue(
-      "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_position.csv"
-    ),
-    row.names = FALSE
-  )
+#   write.csv(
+#     roster |>
+#       select(
+#         position
+#       ) |>
+#       data.frame(),
+#     glue(
+#       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_position.csv"
+#     ),
+#     row.names = FALSE
+#   )
 
-  write.csv(
-    roster |>
-      select(
-        fantasy_draft_value
-      ) |>
-      data.frame(),
-    glue(
-      "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_fdv.csv"
-    ),
-    row.names = FALSE
-  )
-}
+#   write.csv(
+#     roster |>
+#       select(
+#         fantasy_draft_value
+#       ) |>
+#       data.frame(),
+#     glue(
+#       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_fdv.csv"
+#     ),
+#     row.names = FALSE
+#   )
+# }
 
 saveRDS(
   fantasy_draft_values_season_8,
