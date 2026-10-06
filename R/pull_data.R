@@ -56,10 +56,10 @@ saveRDS(
 #   last() |>
 #   pull()
 
-# saveRDS(
-#   current_date,
-#   file = glue("data/current_date_season_{season_id}.rds")
-# )
+saveRDS(
+  current_date,
+  file = glue("data/current_date_season_{season_id}.rds")
+)
 
 next_game_day <- current_schedule |>
   filter(
