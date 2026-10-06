@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 
 team_stats <- readRDS(
-  "team_stats.rds"
+  "data/team_stats.rds"
 )
 
 all_skaters <- bind_rows(
@@ -13,16 +13,13 @@ all_skaters <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 2*(
-      goals - short_handed_goals
-    ) +
-    3*short_handed_goals +
-    1*(
-      assists - short_handed_assists
-    ) +
-    2*short_handed_assists +
-    0.1*shots + 
-    0.1*shots_blocked_by_player
+    fantasy_points = 2 *
+      (goals - short_handed_goals) +
+      3 * short_handed_goals +
+      1 * (assists - short_handed_assists) +
+      2 * short_handed_assists +
+      0.1 * shots +
+      0.1 * shots_blocked_by_player
     # 0.05*faceoff_wins
   ) |>
   select(
@@ -42,12 +39,9 @@ all_goalies <- bind_rows(
     `[[`,
     2
   )
-) |> 
+) |>
   mutate(
-    fantasy_points = 1*shutouts +
-    0.05*(
-      shots - goals_against
-    )
+    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against)
   ) |>
   select(
     name,
@@ -92,7 +86,6 @@ all_fantasy_points <- bind_rows(
     draft_round = 0,
     draft_position = 0
   )
-
 
 
 bind_rows(
@@ -280,8 +273,7 @@ ggplot(
     colour = position
   )
 ) +
-  geom_freqpoly(
-  ) +
+  geom_freqpoly() +
   labs(
     title = "Fantasy points",
     x = "Values",

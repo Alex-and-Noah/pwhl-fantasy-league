@@ -164,7 +164,7 @@ team_stats_season_8 <- get_team_stats(
 
 saveRDS(
   team_stats_season_8,
-  file = glue("team_stats_season_{season_id}.rds")
+  file = glue("data/team_stats_season_{season_id}.rds")
 )
 
 all_skaters_season_8 <- bind_rows(
@@ -508,7 +508,7 @@ for (team_code_val in unique(fantasy_draft_values_season_8$team_code)) {
 
 saveRDS(
   fantasy_draft_values_season_8,
-  file = glue("fantasy_draft_values_season_8.rds")
+  file = glue("data/fantasy_draft_values_season_8.rds")
 )
 
 # #%% Some analysis

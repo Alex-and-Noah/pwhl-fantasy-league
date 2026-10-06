@@ -13,15 +13,15 @@ library(dplyr)
 library(glue)
 
 season_id <- readRDS(
-  "season_id.rds"
+  "data/season_id.rds"
 )
 
 current_schedule <- readRDS(
-  glue("current_schedule_season_{season_id}.rds")
+  glue("data/current_schedule_season_{season_id}.rds")
 )
 
 team_info <- readRDS(
-  glue("team_info_season_{season_id}.rds")
+  glue("data/team_info_season_{season_id}.rds")
 )
 ```
 
@@ -30,7 +30,7 @@ current_schedule |>
   left_join(
     team_info |>
       rename_with(
-        ~paste0(
+        ~ paste0(
           "home_",
           .
         )
@@ -40,10 +40,11 @@ current_schedule |>
         home_team_logo
       ),
     by = "home_team_id"
-  ) |> left_join(
+  ) |>
+  left_join(
     team_info |>
       rename_with(
-        ~paste0(
+        ~ paste0(
           "away_",
           .
         )

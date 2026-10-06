@@ -141,7 +141,7 @@ team_stats_season_5 <- get_team_stats(
 
 saveRDS(
   team_stats_season_5,
-  file = glue("team_stats_season_{season_id}.rds")
+  file = glue("data/team_stats_season_{season_id}.rds")
 )
 
 all_skaters_season_5 <- bind_rows(
@@ -381,12 +381,12 @@ fantasy_draft_values_season_5 <- fantasy_draft_values_season_5 |>
   )
 
 saveRDS(
-  fantasy_draft_values_season_5,
-  file = glue("fantasy_draft_values_season_{season_id}.rds")
+  fantasy_draft_values_2025,
+  file = glue("data/fantasy_draft_values_season_{season_id}.rds")
 )
 
 team_stats_season_8 <- readRDS(
-  "team_stats_season_8.rds"
+  "data/team_stats_season_8.rds"
 )
 
 all_skaters_season_8 <- bind_rows(
@@ -492,7 +492,7 @@ fantasy_points_season_8 <- bind_rows(
 
 saveRDS(
   fantasy_points_season_8,
-  file = "fantasy_points_season_8.rds"
+  file = "data/fantasy_points_season_8.rds"
 )
 
 # data <- fantasy_draft_values_season_5 |>
