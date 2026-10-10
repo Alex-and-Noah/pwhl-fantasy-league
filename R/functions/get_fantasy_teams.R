@@ -123,8 +123,11 @@ get_fantasy_teams <- function(
       )
 
     days_seq <- seq(
-      current_schedule$game_date |>
-        first(),
+      max(
+        current_schedule$game_date |>
+          first(),
+        current_date
+      ),
       min(
         current_schedule$game_date |>
           last(),
