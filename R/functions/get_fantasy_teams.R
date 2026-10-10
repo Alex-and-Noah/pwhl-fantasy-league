@@ -58,8 +58,6 @@ get_fantasy_teams <- function(
   fantasy_team_boxes_per_date <- list()
 
   for (i in seq_len(nrow(df))) {
-    browser()
-
     fantasy_teams[[
       df$team_name[[i]]
     ]] <- list()
@@ -221,7 +219,7 @@ get_fantasy_teams <- function(
 
   saveRDS(
     fantasy_team_boxes_per_date,
-    file = glue("fantasy_team_boxes_per_date_season_{season_id}.rds")
+    file = glue("data/fantasy_team_boxes_per_date_season_{season_id}.rds")
   )
 
   return(

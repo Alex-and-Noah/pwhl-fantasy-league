@@ -1,6 +1,7 @@
 library(dplyr)
 library(purrr)
 library(jsonlite)
+library(stringr)
 
 #' @title  **Get all PWHL team's info'**
 #' @description Get all PWHL player team's info'
@@ -49,7 +50,25 @@ get_team_info <- function(
       team_label = team_label |>
         recode(
           "Montreal" = "Montréal"
-        )
+        ),
+      team_label = if_else(
+        team_nickname == "PWHL",
+        str_split_i(
+          team_name,
+          "PWHL ",
+          i = 2
+        ),
+        team_label
+      ),
+      team_label = if_else(
+        is.na(team_label),
+        str_split_i(
+          team_name,
+          " ",
+          i = 1
+        ),
+        team_label
+      )
     )
 
   return(
