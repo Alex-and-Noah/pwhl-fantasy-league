@@ -60,4 +60,5 @@ dashboard.html
 
 /_freeze/
 
+static/data/*
 /draft_tool_data/
