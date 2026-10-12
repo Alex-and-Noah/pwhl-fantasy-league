@@ -17,6 +17,8 @@ invisible(
   )
 )
 
+dir.create("data")
+
 environment(custom_gt_split) <- asNamespace('gt')
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
@@ -49,12 +51,12 @@ saveRDS(
   file = glue("data/current_schedule_season_{season_id}.rds")
 )
 
-current_date <- current_schedule |>
-  select(
-    game_date
-  ) |>
-  last() |>
-  pull()
+# current_date <- current_schedule |>
+#   select(
+#     game_date
+#   ) |>
+#   last() |>
+#   pull()
 
 saveRDS(
   current_date,
