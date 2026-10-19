@@ -659,6 +659,12 @@ WeeklyUpdate <- R6::R6Class(
             Role
           )
         ) |>
+        fmt_markdown(
+          columns = c(
+            Headshot,
+            Logo
+          )
+        ) |>
         cols_align(
           align = "center",
           columns = c(
