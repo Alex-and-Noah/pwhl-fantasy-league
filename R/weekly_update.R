@@ -47,6 +47,7 @@ weekly_standings <- readRDS(
 ) |>
   select(
     1:4,
+    fantasy_points_change_since_last_week,
     glue("standings_{current_date}"),
     glue("standings_{last_week}")
   ) |>
@@ -64,6 +65,7 @@ weekly_standings <- readRDS(
     team_image,
     fantasy_team_name,
     fantasy_points,
+    fantasy_points_change_since_last_week,
     position_change
   ) |>
   mutate(
@@ -210,7 +212,7 @@ WeeklyUpdate <- R6::R6Class(
     },
 
     make_weekly_table = function() {
-      self$weekly_standings_table <- self$weekly_standings |>
+      self$weekly_standings_table <- weekly_standings |>
         arrange(desc(fantasy_points)) |>
         mutate(
           fantasy_points = paste0(
@@ -220,7 +222,7 @@ WeeklyUpdate <- R6::R6Class(
             ),
             " (+",
             round(
-              value,
+              fantasy_points_change_since_last_week,
               2
             ),
             ")"
@@ -256,7 +258,7 @@ WeeklyUpdate <- R6::R6Class(
         cols_hide(
           c(
             team_colour,
-            value
+            fantasy_points_change_since_last_week
           )
         ) |>
         cols_move(
@@ -270,7 +272,7 @@ WeeklyUpdate <- R6::R6Class(
         cols_label(
           team_image = "",
           fantasy_team_name = "Team Name",
-          value = "",
+          fantasy_points_change_since_last_week = "",
           position_change = "",
           fantasy_points = "Points"
         ) |>
@@ -895,3 +897,5 @@ WeeklyUpdate$new("The Cry Babies (Alex)", current_date)$make_email()
 # noah <- make_email("Nog's Bologs (Noah)")
 # karl <- make_email("Hintonburg Sphynxes (Karl)")
 # reiko <- make_email("Zillenial Zingers (Reiko)")
+
+wu <- WeeklyUpdate$new("The Cry Babies (Alex)", current_date)

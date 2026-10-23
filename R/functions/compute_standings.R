@@ -70,11 +70,49 @@ compute_standings <- function(
       fantasy_points_yesterday
     )
 
+  standings_one_week_ago <- fantasy_teams %>%
+    map(`[[`, 1) %>%
+    bind_rows() |>
+    mutate(
+      fantasy_team_name = names(fantasy_teams),
+      fantasy_points_one_week_ago = !!sym(
+        paste0(
+          "fantasy_points_",
+          current_date - days(7)
+        )
+      )
+    ) |>
+    replace_na(
+      list(
+        fantasy_points_one_week_ago = 0
+      )
+    ) |>
+    arrange(
+      -fantasy_points_one_week_ago,
+      fantasy_team_name
+    ) |>
+    select(
+      team_colour,
+      team_image,
+      fantasy_team_name,
+      fantasy_points_one_week_ago
+    )
+
   standings <- standings |>
     mutate(
       position_change_since_yesterday = (match(
         standings$fantasy_team_name,
         standings_yesterday$fantasy_team_name
+      ) -
+        seq_len(
+          nrow(
+            standings
+          )
+        )) |>
+        sign(),
+      position_change_since_last_weeek = (match(
+        standings$fantasy_team_name,
+        standings_one_week_ago$fantasy_team_name
       ) -
         seq_len(
           nrow(
@@ -87,12 +125,19 @@ compute_standings <- function(
       standings_yesterday,
       sort = FALSE
     ) |>
+    merge(
+      standings_one_week_ago,
+      sort = FALSE
+    ) |>
     mutate(
       fantasy_points_change_since_yesterday = fantasy_points -
-        fantasy_points_yesterday
+        fantasy_points_yesterday,
+      fantasy_points_change_since_last_week = fantasy_points -
+        fantasy_points_one_week_ago
     ) |>
     select(
-      -fantasy_points_yesterday
+      -fantasy_points_yesterday,
+      -fantasy_points_one_week_ago,
     ) |>
     arrange(
       -fantasy_points
