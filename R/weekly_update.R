@@ -19,6 +19,10 @@ fantasy_teams <- readRDS(glue(
   "data/fantasy_teams_season_{season_id}.rds"
 ))
 
+team_info <- readRDS(glue(
+  "data/team_info_season_{season_id}.rds"
+))
+
 # current_date <- Sys.Date()
 current_date <- as.Date("2026-01-25")
 last_week <- current_date - 7
@@ -545,14 +549,53 @@ WeeklyUpdate <- R6::R6Class(
 
     make_three_stars_table = function() {
       browser()
-      self$three_stars |>
-        merge(
-          fantasy_teams[[self$team]]$roster$skaters,
-          all.x = TRUE
+      bind_rows(
+        self$three_stars |>
+          mutate(
+            player_id = as.numeric(player_id)
+          ) |>
+          inner_join(
+            fantasy_teams[[self$team]]$roster$skaters |>
+              mutate(
+                player_id = as.numeric(player_id)
+              ) |>
+              select(
+                player_id,
+                player_headshot
+              ),
+            by = join_by(
+              player_id
+            )
+          ),
+        self$three_stars |>
+          mutate(
+            player_id = as.numeric(player_id)
+          ) |>
+          inner_join(
+            fantasy_teams[[self$team]]$roster$goalies |>
+              mutate(
+                player_id = as.numeric(player_id)
+              ) |>
+              select(
+                player_id,
+                player_headshot
+              ),
+            by = join_by(
+              player_id
+            )
+          )
+      ) |>
+        left_join(
+          team_info |>
+            mutate(
+              team_id = as.numeric(team_id)
+            ),
+          by = join_by(
+            team_id
+          )
         ) |>
-        merge(
-          fantasy_teams[[self$team]]$roster$goalies,
-          all.x = TRUE
+        arrange(
+          desc(fantasy_points)
         ) |>
         mutate(
           position = replace_values(
@@ -571,7 +614,7 @@ WeeklyUpdate <- R6::R6Class(
           )
         ) |>
         select(
-          tp_jersey_number,
+          team_id,
           player_headshot,
           name,
           position,
@@ -583,16 +626,25 @@ WeeklyUpdate <- R6::R6Class(
           shutout,
           win,
           ot_loss,
-          fantasy_points
+          fantasy_points,
+          team_logo,
+          colours_1
         ) |>
         mutate(
           role = position,
-          team_logo = fantasy_teams[[self$team]]$info$team_image,
-          colours_1 = fantasy_teams[[self$team]]$info$team_colour
+          weekly_rank_icon = c(
+            "fas fa-star",
+            "fas fa-star",
+            "fas fa-star"
+          ),
+          weekly_rank_icon_colour = c(
+            "#c7ad1b",
+            "silver",
+            "#CD7F32"
+          )
         ) |>
         rename(
           c(
-            "#" = "tp_jersey_number",
             Headshot = "player_headshot",
             Name = "name",
             Pos = "position",
@@ -625,7 +677,8 @@ WeeklyUpdate <- R6::R6Class(
           )
         ) |>
         select(
-          "#",
+          weekly_rank_icon,
+          weekly_rank_icon_colour,
           Headshot,
           Name,
           Pos,
@@ -653,6 +706,10 @@ WeeklyUpdate <- R6::R6Class(
           Pts = as.numeric(Pts)
         ) |>
         gt() |>
+        sub_missing(
+          everything(),
+          missing_text = "-"
+        ) |>
         cols_hide(
           c(
             Pos,
@@ -665,10 +722,19 @@ WeeklyUpdate <- R6::R6Class(
             Logo
           )
         ) |>
+        fmt_icon(
+          weekly_rank_icon,
+          height = "1em",
+          # stroke_color = "black",
+          # stroke_width = "15px",
+          fill_color = from_column(
+            "weekly_rank_icon_colour"
+          )
+        ) |>
         cols_align(
           align = "center",
           columns = c(
-            `#`,
+            weekly_rank_icon,
             Headshot,
             G,
             A,
@@ -697,8 +763,13 @@ WeeklyUpdate <- R6::R6Class(
           column_labels.border.top.color = 'transparent'
         ) |>
         cols_label(
-          `#` = "",
+          weekly_rank_icon = "",
           Headshot = ""
+        ) |>
+        cols_hide(
+          c(
+            weekly_rank_icon_colour
+          )
         ) |>
         opt_css(
           css = '
@@ -713,7 +784,7 @@ WeeklyUpdate <- R6::R6Class(
       '
         ) |>
         cols_width(
-          "#" ~ px(40),
+          weekly_rank_icon ~ px(40),
           Headshot ~ px(50),
           Name ~ px(160),
           G ~ px(40),
