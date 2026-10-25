@@ -46,7 +46,7 @@ jobs:
           cache-version: 2
 
       - name: Run R data script
-        run: Rscript R/pull_data.R --no-save
+        run: Rscript R/pull_data.R
 
       - name: Run R weekly update
         run: Rscript R/weekly_update.R
