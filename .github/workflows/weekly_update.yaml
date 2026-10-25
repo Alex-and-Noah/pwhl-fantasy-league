@@ -45,8 +45,19 @@ jobs:
         with:
           cache-version: 2
 
+      - name: Ensure data directories exist
+        run: mkdir -p data/emails
+
       - name: Run R data script
         run: Rscript R/pull_data.R
+
+      # INSERT THIS DEBUG STEP HERE:
+      - name: List files in data folder
+        run: |
+          echo "=== Files in project root ==="
+          ls -F
+          echo "=== Files in data/ folder ==="
+          ls -R data/ || echo "The data/ folder does not exist!"
 
       - name: Run R weekly update
         run: Rscript R/weekly_update.R
