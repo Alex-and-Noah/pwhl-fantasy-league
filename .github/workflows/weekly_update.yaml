@@ -63,5 +63,5 @@ jobs:
           git commit -m "Automated data snapshot: $(date -u +'%Y-%m-%d %H:%M:%S') UTC" || echo "No changes to commit"
           
           # Force push updates cleanly to the isolated remote branch
-          git push origin data-updates --force
+          git push origin data --force
 
