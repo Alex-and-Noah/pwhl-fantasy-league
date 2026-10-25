@@ -16,13 +16,29 @@ name: Weekly Update
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    container:
-      image: rocker/geospatial:latest # Already contains Quarto, R, Pandoc, Cairo, Magick, Curl, etc.
     permissions:
       contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install libcurl4-openssl-dev libnode-dev libx11-dev pandoc libfontconfig1-dev libfreetype6-dev gsfonts libcairo2-dev libmagick++-dev cmake libsecret-1-dev
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/R/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
 
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
