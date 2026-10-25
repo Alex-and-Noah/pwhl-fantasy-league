@@ -34,22 +34,22 @@ WeeklyUpdate <- R6::R6Class(
       self$season_id <- readRDS("data/season_id.RDS")
 
       player_boxes_per_game <- readRDS(glue(
-        "data/player_boxes_per_game_season_{self$season_id}.rds"
+        "data/player_boxes_per_game_season_{self$season_id}.RDS"
       ))
 
       self$fantasy_teams <- readRDS(glue(
-        "data/fantasy_teams_season_{self$season_id}.rds"
+        "data/fantasy_teams_season_{self$season_id}.RDS"
       ))
 
       self$team_info <- readRDS(glue(
-        "data/team_info_season_{self$season_id}.rds"
+        "data/team_info_season_{self$season_id}.RDS"
       ))
 
       self$current_date <- current_date
       self$last_week <- self$current_date - 7
 
       current_schedule <- readRDS(glue(
-        "data/current_schedule_season_{self$season_id}.rds"
+        "data/current_schedule_season_{self$season_id}.RDS"
       )) |>
         dplyr::filter(
           game_date < self$current_date,
@@ -67,7 +67,7 @@ WeeklyUpdate <- R6::R6Class(
         purrr::list_rbind()
 
       self$weekly_standings <- readRDS(
-        glue("data/standings_season_{self$season_id}.rds")
+        glue("data/standings_season_{self$season_id}.RDS")
       ) |>
         select(
           1:4,
@@ -948,7 +948,7 @@ Your three stars of the week (3 top performing players) are
       ) |>
         saveRDS(
           file = glue::glue(
-            "data/emails/{name}.rds"
+            "data/emails/{name}.RDS"
           )
         )
 
@@ -957,9 +957,9 @@ Your three stars of the week (3 top performing players) are
   )
 )
 
-season_id <- readRDS("data/season_id.rds")
+season_id <- readRDS("data/season_id.RDS")
 
-for (team in readRDS(glue::glue("data/fantasy_teams_season_{season_id}.rds")) |>
+for (team in readRDS(glue::glue("data/fantasy_teams_season_{season_id}.RDS")) |>
   names()) {
   WeeklyUpdate$new(
     team,
@@ -969,7 +969,7 @@ for (team in readRDS(glue::glue("data/fantasy_teams_season_{season_id}.rds")) |>
 
 
 read_and_send_email <- function(team) {
-  readRDS("my_composed_email.rds") |>
+  readRDS("my_composed_email.RDS") |>
     smtp_send(
       from = "alexmcsw@gmail.com",
       to = "alexmcsw@gmail.com",
