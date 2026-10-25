@@ -9,76 +9,10 @@ library(htmltools)
 library(keyring)
 library(R6)
 
-season_id <- readRDS("data/season_id.RDS")
-
-player_boxes_per_game <- readRDS(glue(
-  "data/player_boxes_per_game_season_{season_id}.rds"
-))
-
-fantasy_teams <- readRDS(glue(
-  "data/fantasy_teams_season_{season_id}.rds"
-))
-
-team_info <- readRDS(glue(
-  "data/team_info_season_{season_id}.rds"
-))
-
-# current_date <- Sys.Date()
-current_date <- as.Date("2026-01-25")
-last_week <- current_date - 7
-
-current_schedule <- readRDS(glue(
-  "data/current_schedule_season_{season_id}.rds"
-)) |>
-  dplyr::filter(game_date < current_date, game_date >= last_week)
-
-this_weeks_games <- current_schedule$game_id |> c()
-
-this_weeks_skaters <- player_boxes_per_game[this_weeks_games] |>
-  purrr::map(1) |>
-  purrr::list_rbind()
-
-this_weeks_goalies <- player_boxes_per_game[this_weeks_games] |>
-  purrr::map(2) |>
-  purrr::list_rbind()
-
-weekly_standings <- readRDS(
-  glue("data/standings_season_{season_id}.rds")
-) |>
-  select(
-    1:4,
-    fantasy_points_change_since_last_week,
-    glue("standings_{current_date}"),
-    glue("standings_{last_week}")
-  ) |>
-  mutate(
-    position_change = (.data[[glue("standings_{current_date}")]] -
-      .data[[glue("standings_{last_week}")]]),
-    position_change = case_when(
-      position_change > 0 ~ "arrow-down",
-      position_change == 0 ~ NA,
-      position_change < 0 ~ "arrow-up"
-    )
-  ) |>
-  select(
-    team_colour,
-    team_image,
-    fantasy_team_name,
-    fantasy_points,
-    fantasy_points_change_since_last_week,
-    position_change
-  ) |>
-  mutate(
-    team_image = paste0(
-      "<img src=\"",
-      team_image,
-      "\" style=\"width:5vh;\">"
-    )
-  )
-
 WeeklyUpdate <- R6::R6Class(
   classname = "WeeklyUpdate",
   public = list(
+    season_id = NULL,
     team = NULL,
     roster_skaters = NULL,
     roster_goalies = NULL,
@@ -87,31 +21,111 @@ WeeklyUpdate <- R6::R6Class(
     all_data = NULL,
     summary_stats = NULL,
     current_date = NULL,
+    last_week = NULL,
+    fantasy_teams = NULL,
+    team_info = NULL,
+    this_weeks_skaters = NULL,
+    this_weeks_goalies = NULL,
     game_outcomes = NULL,
     weekly_points = NULL,
     weekly_standings = NULL,
     weekly_standings_table = NULL,
     initialize = function(team = NA, current_date = Sys.Date()) {
-      self$team <- team
+      self$season_id <- readRDS("data/season_id.RDS")
+
+      player_boxes_per_game <- readRDS(glue(
+        "data/player_boxes_per_game_season_{self$season_id}.rds"
+      ))
+
+      self$fantasy_teams <- readRDS(glue(
+        "data/fantasy_teams_season_{self$season_id}.rds"
+      ))
+
+      self$team_info <- readRDS(glue(
+        "data/team_info_season_{self$season_id}.rds"
+      ))
+
       self$current_date <- current_date
+      self$last_week <- self$current_date - 7
+
+      current_schedule <- readRDS(glue(
+        "data/current_schedule_season_{self$season_id}.rds"
+      )) |>
+        dplyr::filter(
+          game_date < self$current_date,
+          game_date >= self$last_week
+        )
+
+      this_weeks_games <- current_schedule$game_id |> c()
+
+      self$this_weeks_skaters <- player_boxes_per_game[this_weeks_games] |>
+        purrr::map(1) |>
+        purrr::list_rbind()
+
+      self$this_weeks_goalies <- player_boxes_per_game[this_weeks_games] |>
+        purrr::map(2) |>
+        purrr::list_rbind()
+
+      self$weekly_standings <- readRDS(
+        glue("data/standings_season_{self$season_id}.rds")
+      ) |>
+        select(
+          1:4,
+          fantasy_points_change_since_last_week,
+          glue("standings_{self$current_date}"),
+          glue("standings_{self$last_week}")
+        ) |>
+        mutate(
+          position_change = (.data[[glue("standings_{self$current_date}")]] -
+            .data[[glue("standings_{self$last_week}")]]),
+          position_change = case_when(
+            position_change > 0 ~ "arrow-down",
+            position_change == 0 ~ NA,
+            position_change < 0 ~ "arrow-up"
+          )
+        ) |>
+        select(
+          team_colour,
+          team_image,
+          fantasy_team_name,
+          fantasy_points,
+          fantasy_points_change_since_last_week,
+          position_change,
+          glue("standings_{self$current_date}"),
+          glue("standings_{self$last_week}")
+        ) |>
+        mutate(
+          team_image = paste0(
+            "<img src=\"",
+            team_image,
+            "\" style=\"width:5vh;\">"
+          )
+        )
+
+      self$team <- team
       self$get_personalized_stats()
       self$get_all_data()
+      self$make_email()
     },
 
     get_personalized_stats = function() {
-      self$roster_skaters <- this_weeks_skaters |>
+      self$roster_skaters <- self$this_weeks_skaters |>
         dplyr::filter(
           player_id %in%
-            fantasy_teams[[self$team]][["roster"]][["skaters"]]$player_id,
-          !(name %in% c(fantasy_teams[[self$team]][["info"]]$old_player))
+            self$fantasy_teams[[self$team]][["roster"]][[
+              "skaters"
+            ]]$player_id,
+          !(name %in% c(self$fantasy_teams[[self$team]][["info"]]$old_player))
         ) |>
         dplyr::mutate(starting = as.numeric(starting))
 
-      self$roster_goalies <- this_weeks_goalies |>
+      self$roster_goalies <- self$this_weeks_goalies |>
         filter(
           player_id %in%
-            fantasy_teams[[self$team]][["roster"]][["goalies"]]$player_id,
-          !(name %in% c(fantasy_teams[[self$team]][["info"]]$old_player))
+            self$fantasy_teams[[self$team]][["roster"]][[
+              "goalies"
+            ]]$player_id,
+          !(name %in% c(self$fantasy_teams[[self$team]][["info"]]$old_player))
         )
 
       self$this_week_roster <- bind_rows(
@@ -160,22 +174,27 @@ WeeklyUpdate <- R6::R6Class(
             nrow()
         )
       )
+
+      invisible(self)
     },
     get_all_data = function() {
       get_team_data <- function(team) {
-        roster_skaters <- this_weeks_skaters |>
+        roster_skaters <- self$this_weeks_skaters |>
           dplyr::filter(
             player_id %in%
-              fantasy_teams[[team]][["roster"]][["skaters"]]$player_id,
-            !(name %in% c(fantasy_teams[[self$team]][["info"]]$old_player))
+              self$fantasy_teams[[team]][["roster"]][["skaters"]]$player_id,
+            !(name %in%
+              c(self$fantasy_teams[[self$team]][["info"]]$old_player))
           ) |>
           dplyr::mutate(starting = as.numeric(starting))
 
-        roster_goalies <- this_weeks_goalies |>
+        roster_goalies <- self$this_weeks_goalies |>
           filter(
             player_id %in%
-              fantasy_teams[[self$team]][["roster"]][["goalies"]]$player_id,
-            !(name %in% c(fantasy_teams[[team]][["info"]]$old_player))
+              self$fantasy_teams[[self$team]][["roster"]][[
+                "goalies"
+              ]]$player_id,
+            !(name %in% c(self$fantasy_teams[[team]][["info"]]$old_player))
           )
 
         this_week_roster <- bind_rows(
@@ -197,10 +216,10 @@ WeeklyUpdate <- R6::R6Class(
           )
       }
 
-      self$all_data <- fantasy_teams |>
+      self$all_data <- self$fantasy_teams |>
         names() |>
         map(get_team_data) |>
-        set_names(fantasy_teams |> names())
+        set_names(self$fantasy_teams |> names())
 
       self$weekly_points <- self$all_data |>
         bind_rows(.id = "fantasy_team_name") |>
@@ -209,11 +228,19 @@ WeeklyUpdate <- R6::R6Class(
 
       self$weekly_standings <- self$weekly_standings |>
         merge(self$weekly_points)
+
+      invisible(self)
     },
 
     make_weekly_table = function() {
-      self$weekly_standings_table <- weekly_standings |>
+      self$weekly_standings |>
         arrange(desc(fantasy_points)) |>
+        select(
+          -c(
+            glue("standings_{self$current_date}"),
+            glue("standings_{self$last_week}")
+          )
+        ) |>
         mutate(
           fantasy_points = paste0(
             round(
@@ -368,7 +395,7 @@ WeeklyUpdate <- R6::R6Class(
           title = div(
             HTML(
               web_image(
-                fantasy_teams[[team]]$info$team_image
+                self$fantasy_teams[[team]]$info$team_image
               )
             ),
             div(
@@ -376,7 +403,7 @@ WeeklyUpdate <- R6::R6Class(
             ),
             HTML(
               web_image(
-                fantasy_teams[[team]]$info$team_image
+                self$fantasy_teams[[team]]$info$team_image
               )
             ),
             style = css(
@@ -388,7 +415,9 @@ WeeklyUpdate <- R6::R6Class(
         ) |>
         tab_options(
           table.background.color = '#F5F5F5',
-          heading.background.color = fantasy_teams[[team]]$info$team_colour,
+          heading.background.color = self$fantasy_teams[[
+            team
+          ]]$info$team_colour,
           table.font.size = px(16),
           table.border.top.color = 'transparent',
           table.border.bottom.color = 'transparent',
@@ -422,7 +451,7 @@ WeeklyUpdate <- R6::R6Class(
           title = div(
             HTML(
               web_image(
-                fantasy_teams[[self$team]]$info$team_image
+                self$fantasy_teams[[self$team]]$info$team_image
               )
             ),
             div(
@@ -430,7 +459,7 @@ WeeklyUpdate <- R6::R6Class(
             ),
             HTML(
               web_image(
-                fantasy_teams[[self$team]]$info$team_image
+                self$fantasy_teams[[self$team]]$info$team_image
               )
             ),
             style = css(
@@ -443,7 +472,7 @@ WeeklyUpdate <- R6::R6Class(
         tab_options(
           table.background.color = '#F5F5F5',
           column_labels.hidden = TRUE,
-          heading.background.color = fantasy_teams[[
+          heading.background.color = self$fantasy_teams[[
             self$team
           ]]$info$team_colour,
           table.font.size = px(16),
@@ -509,7 +538,7 @@ WeeklyUpdate <- R6::R6Class(
           title = div(
             HTML(
               web_image(
-                fantasy_teams[[self$team]]$info$team_image
+                self$fantasy_teams[[self$team]]$info$team_image
               )
             ),
             div(
@@ -517,7 +546,7 @@ WeeklyUpdate <- R6::R6Class(
             ),
             HTML(
               web_image(
-                fantasy_teams[[self$team]]$info$team_image
+                self$fantasy_teams[[self$team]]$info$team_image
               )
             ),
             style = css(
@@ -529,7 +558,7 @@ WeeklyUpdate <- R6::R6Class(
         ) |>
         tab_options(
           table.background.color = '#F5F5F5',
-          heading.background.color = fantasy_teams[[
+          heading.background.color = self$fantasy_teams[[
             self$team
           ]]$info$team_colour,
           table.font.size = px(16),
@@ -550,14 +579,13 @@ WeeklyUpdate <- R6::R6Class(
     },
 
     make_three_stars_table = function() {
-      browser()
       bind_rows(
         self$three_stars |>
           mutate(
             player_id = as.numeric(player_id)
           ) |>
           inner_join(
-            fantasy_teams[[self$team]]$roster$skaters |>
+            self$fantasy_teams[[self$team]]$roster$skaters |>
               mutate(
                 player_id = as.numeric(player_id)
               ) |>
@@ -574,7 +602,7 @@ WeeklyUpdate <- R6::R6Class(
             player_id = as.numeric(player_id)
           ) |>
           inner_join(
-            fantasy_teams[[self$team]]$roster$goalies |>
+            self$fantasy_teams[[self$team]]$roster$goalies |>
               mutate(
                 player_id = as.numeric(player_id)
               ) |>
@@ -588,7 +616,7 @@ WeeklyUpdate <- R6::R6Class(
           )
       ) |>
         left_join(
-          team_info |>
+          self$team_info |>
             mutate(
               team_id = as.numeric(team_id)
             ),
@@ -803,7 +831,7 @@ WeeklyUpdate <- R6::R6Class(
           title = div(
             HTML(
               web_image(
-                fantasy_teams[[self$team]]$info$team_image
+                self$fantasy_teams[[self$team]]$info$team_image
               )
             ),
             div(
@@ -811,7 +839,7 @@ WeeklyUpdate <- R6::R6Class(
             ),
             HTML(
               web_image(
-                fantasy_teams[[self$team]]$info$team_image
+                self$fantasy_teams[[self$team]]$info$team_image
               )
             ),
             style = css(
@@ -823,7 +851,7 @@ WeeklyUpdate <- R6::R6Class(
         ) |>
         tab_options(
           table.background.color = '#F5F5F5',
-          heading.background.color = fantasy_teams[[
+          heading.background.color = self$fantasy_teams[[
             self$team
           ]]$info$team_colour,
           table.font.size = px(16),
@@ -854,11 +882,32 @@ WeeklyUpdate <- R6::R6Class(
         select(value) |>
         as.numeric()
 
+      standing_change <- self$weekly_standings |>
+        filter(fantasy_team_name == self$team) |>
+        mutate(
+          delta = .data[[glue("standings_{self$current_date}")]] -
+            .data[[glue("standings_{self$last_week}")]],
+          expression = case_when(
+            delta == 0 ~ "Over the past week your position did not change.",
+            delta < 0 ~ glue::glue(
+              'Over the past week your position increased by {delta}.'
+            ),
+            delta > 0 ~ glue::glue(
+              'Over the past week your position decreased by {delta}.'
+            ),
+            .default = ""
+          )
+        )
+
       game_table <- self$make_game_table()
 
       fantasy_point_table <- self$make_point_table()
 
       three_stars_table <- self$make_three_stars_table()
+
+      weekly_standings_table <- self$make_weekly_table()
+
+      name <- stringr::str_extract(self$team, '(?<=\\()[^\\)]+(?=\\))')
 
       compose_email(
         body = md(
@@ -870,7 +919,7 @@ Here is your weekly PWHL Fantasy League Update! This week's email is sponsored b
 
 ## Games
 
-During the week between {format(current_date-7, '%A, %B %d')} and {format(current_date, '%A, %B %d')} {self$team} had {unique_players} out of 12 players playing across {unique_games} game(s).
+During the week between {format(self$current_date-7, '%A, %B %d')} and {format(self$current_date, '%A, %B %d')} {self$team} had {unique_players} out of 12 players playing across {unique_games} game(s).
 
 {stringr::str_squish(as_raw_html(game_table))}
 
@@ -878,24 +927,57 @@ During the week between {format(current_date-7, '%A, %B %d')} and {format(curren
 
 {stringr::str_squish(as_raw_html(fantasy_point_table))}
 
+## Three stars
+
+Your three stars of the week (3 top performing players) are
+
+{stringr::str_squish(as_raw_html(three_stars_table))}
+
 # Overall
 
-Over the past week 
+{standing_change$expression |> as.character()}
 
 {stringr::str_squish(as_raw_html(weekly_standings_table))}
 
 "
           )
+        ),
+        footer = md(
+          "<https://alex-and-noah.github.io/pwhl-fantasy-league/>"
         )
-      )
+      ) |>
+        saveRDS(
+          file = glue::glue(
+            "data/emails/{name}.rds"
+          )
+        )
+
+      invisible(self)
     }
   )
 )
 
+season_id <- readRDS("data/season_id.rds")
 
-WeeklyUpdate$new("The Cry Babies (Alex)", current_date)$make_email()
-# noah <- make_email("Nog's Bologs (Noah)")
-# karl <- make_email("Hintonburg Sphynxes (Karl)")
-# reiko <- make_email("Zillenial Zingers (Reiko)")
+for (team in readRDS(glue::glue("data/fantasy_teams_season_{season_id}.rds")) |>
+  names()) {
+  WeeklyUpdate$new(
+    team,
+    current_date = as.Date("2026-01-25")
+  )
+}
 
-wu <- WeeklyUpdate$new("The Cry Babies (Alex)", current_date)
+
+read_and_send_email <- function(team) {
+  readRDS("my_composed_email.rds") |>
+    smtp_send(
+      from = "alexmcsw@gmail.com",
+      to = "alexmcsw@gmail.com",
+      subject = "PWHL fantasy league weekly update",
+      credentials = creds_key(id = "gmail")
+    )
+}
+
+# profvis::profvis({
+#   read_and_send_email("The Cry Babies (Alex)")
+# })
