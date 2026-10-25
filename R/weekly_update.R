@@ -977,7 +977,3 @@ read_and_send_email <- function(team) {
       credentials = creds_key(id = "gmail")
     )
 }
-
-# profvis::profvis({
-#   read_and_send_email("The Cry Babies (Alex)")
-# })
