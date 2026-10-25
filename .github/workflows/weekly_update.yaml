@@ -25,7 +25,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt install libcurl4-openssl-dev libnode-dev libx11-dev pandoc libfontconfig1-dev libfreetype6-dev gsfonts libcairo2-dev libmagick++-dev
+          sudo apt install libcurl4-openssl-dev libnode-dev libx11-dev pandoc libfontconfig1-dev libfreetype6-dev gsfonts libcairo2-dev libmagick++-dev cmake libsecret-1-dev
 
       - name: Install R
         uses: r-lib/actions/setup-r@v2
