@@ -51,10 +51,17 @@ jobs:
       - name: Run R weekly update
         run: Rscript R/weekly_update.R
 
-      - name: Commit rds email files
+      - name: Commit data files to isolated branch
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add -f data/emails/
-          git commit -m "Update rds files" || echo "No changes to commit"
-          git push origin HEAD:${{ github.head_ref }}
+          
+          # Switch to a clean, isolated branch for data tracking
+          git checkout -B data
+          
+          git add -f data/
+          git commit -m "Automated data snapshot: $(date -u +'%Y-%m-%d %H:%M:%S') UTC" || echo "No changes to commit"
+          
+          # Force push updates cleanly to the isolated remote branch
+          git push origin data-updates --force
+
