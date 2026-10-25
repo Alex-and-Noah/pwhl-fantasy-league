@@ -966,14 +966,3 @@ for (team in readRDS(glue::glue("data/fantasy_teams_season_{season_id}.RDS")) |>
     current_date = as.Date("2026-01-25")
   )
 }
-
-
-read_and_send_email <- function(team) {
-  readRDS("my_composed_email.RDS") |>
-    smtp_send(
-      from = "alexmcsw@gmail.com",
-      to = "alexmcsw@gmail.com",
-      subject = "PWHL fantasy league weekly update",
-      credentials = creds_key(id = "gmail")
-    )
-}
