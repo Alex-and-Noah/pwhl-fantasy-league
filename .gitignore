@@ -57,6 +57,7 @@ rsconnect/
 dashboard.html
 
 **/*.rds
+**/*.RDS
 
 /_freeze/
 

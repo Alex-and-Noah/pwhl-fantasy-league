@@ -85,7 +85,7 @@ draft_order_2025 <- list(
   )
 
 team_stats <- readRDS(
-  "data/team_stats.rds"
+  "data/team_stats.RDS"
 )
 
 all_skaters <- bind_rows(

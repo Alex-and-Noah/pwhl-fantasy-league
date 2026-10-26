@@ -29,19 +29,19 @@ Second, all PWHL players will be assigned a **Fantasy Draft Value (FDV)**, and a
 ```{r "2025 - variables"}
 
 fantasy_draft_values_season_5 <- readRDS(
-  "data/fantasy_draft_values_season_5.rds"
+  "data/fantasy_draft_values_season_5.RDS"
 )
 
 fantasy_points_season_8 <- readRDS(
-  "data/fantasy_points_season_8.rds"
+  "data/fantasy_points_season_8.RDS"
 )
 
 fantasy_teams_season_8 <- readRDS(
-  "data/fantasy_teams_season_8.rds"
+  "data/fantasy_teams_season_8.RDS"
 )
 
 fantasy_draft_values_season_8 <- readRDS(
-  "data/fantasy_draft_values_season_8.rds"
+  "data/fantasy_draft_values_season_8.RDS"
 )
 ```
 

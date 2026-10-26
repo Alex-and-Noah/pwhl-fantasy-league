@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: R-generated-data
-          path: ./*.rds
+          path: ./*.RDS
           
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
@@ -63,13 +63,13 @@ jobs:
       #   run: |
       #     git config --global user.name 'github-actions'
       #     git config --global user.email 'github-actions@github.com'
-      #     git add -f data/current_date.rds
-      #     git add -f data/current_schedule.rds
-      #     git add -f data/fantasy_teams.rds
-      #     git add -f data/next_game_day.rds
-      #     git add -f data/player_boxes_per_game.rds
-      #     git add -f data/standings.rds
-      #     git add -f data/team_info.rds
-      #     git add -f data/team_stats.rds
+      #     git add -f data/current_date.RDS
+      #     git add -f data/current_schedule.RDS
+      #     git add -f data/fantasy_teams.RDS
+      #     git add -f data/next_game_day.RDS
+      #     git add -f data/player_boxes_per_game.RDS
+      #     git add -f data/standings.RDS
+      #     git add -f data/team_info.RDS
+      #     git add -f data/team_stats.RDS
       #     git commit -m "Update rds files" || echo "No changes to commit"
       #     git push
