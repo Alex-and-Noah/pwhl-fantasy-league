@@ -50,6 +50,12 @@ jobs:
       - name: Run R data script
         run: Rscript R/pull_data.R
 
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pull_data files
+          path: ./data
+
       # 2. Official Quarto Render Action
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
