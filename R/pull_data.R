@@ -26,8 +26,8 @@ current_date <- today(
   tzone = "EST"
 )
 
-# current_date <- as.Date("2026-04-25")
-current_date <- as.Date("2026-01-25")
+current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2026-01-25")
 # current_date <- as.Date("2026-05-20")
 
 season_schedules_by_id <- get_season_schedules_by_id()
