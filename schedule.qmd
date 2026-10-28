@@ -13,15 +13,15 @@ library(dplyr)
 library(glue)
 
 season_id <- readRDS(
-  "data/season_id.rds"
+  "data/season_id.RDS"
 )
 
 current_schedule <- readRDS(
-  glue("data/current_schedule_season_{season_id}.rds")
+  glue("data/current_schedule_season_{season_id}.RDS")
 )
 
 team_info <- readRDS(
-  glue("data/team_info_season_{season_id}.rds")
+  glue("data/team_info_season_{season_id}.RDS")
 )
 ```
 

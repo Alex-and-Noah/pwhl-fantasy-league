@@ -216,7 +216,7 @@ get_fantasy_teams <- function(
 
   saveRDS(
     fantasy_team_boxes_per_date,
-    file = glue("data/fantasy_team_boxes_per_date_season_{season_id}.rds")
+    file = glue("data/fantasy_team_boxes_per_date_season_{season_id}.RDS")
   )
 
   return(

@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 
 team_stats <- readRDS(
-  "data/team_stats.rds"
+  "data/team_stats.RDS"
 )
 
 all_skaters <- bind_rows(

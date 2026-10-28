@@ -28,19 +28,19 @@ environment(custom_gt_split) <- asNamespace("gt")
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
 season_id <- readRDS(
-  "data/season_id.rds"
+  "data/season_id.RDS"
 )
 
 fantasy_teams <- readRDS(
-  glue("data/fantasy_teams_season_{season_id}.rds")
+  glue("data/fantasy_teams_season_{season_id}.RDS")
 )
 
 team_info <- readRDS(
-  glue("data/team_info_season_{season_id}.rds")
+  glue("data/team_info_season_{season_id}.RDS")
 )
 
 standings <- readRDS(
-  glue("data/standings_season_{season_id}.rds")
+  glue("data/standings_season_{season_id}.RDS")
 )
 ```
 

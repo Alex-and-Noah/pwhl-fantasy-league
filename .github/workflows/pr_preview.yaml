@@ -24,7 +24,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt install libcurl4-openssl-dev libnode-dev libx11-dev pandoc libfontconfig1-dev libfreetype6-dev gsfonts libcairo2-dev libmagick++-dev
+          sudo apt install libcurl4-openssl-dev libnode-dev libx11-dev pandoc libfontconfig1-dev libfreetype6-dev gsfonts libcairo2-dev libmagick++-dev cmake libsecret-1-dev
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -49,6 +49,12 @@ jobs:
 
       - name: Run R data script
         run: Rscript R/pull_data.R
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pull_data files
+          path: ./data
 
       # 2. Official Quarto Render Action
       - name: Render Quarto Project
