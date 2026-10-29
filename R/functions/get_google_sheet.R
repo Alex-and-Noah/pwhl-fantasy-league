@@ -68,6 +68,11 @@ get_google_sheet <- function(
   ) |>
     transpose(
       make.names = 1
+    ) %>%
+    select(
+      which(
+        !is.na(names(.))
+      )
     )
 
   is_valid_hex_color <- function(color) {

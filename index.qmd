@@ -186,7 +186,7 @@ standings <- readRDS(
   glue("data/standings_season_{season_id}.RDS")
 )
 
-standings |>
+data <- standings |>
   mutate(
     fantasy_points = paste0(
       round(
@@ -225,7 +225,10 @@ standings |>
     desc(
       fantasy_points
     )
-  ) |>
+  )
+  
+  
+data |>
   gt() |>
   fmt_icon(
     columns = position_change_since_yesterday,

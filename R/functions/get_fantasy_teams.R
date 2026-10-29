@@ -6,6 +6,7 @@ library(glue)
 #' @title  **Get PWHL Fantasy Teams and Points**
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
 #'
+#' @param season_id Google Sheet ID for the current Fantasy roster
 #' @param season_id Current season ID
 #' @param current_schedule Entire schedule for current season
 #' @param current_date Current date
@@ -15,13 +16,16 @@ library(glue)
 #' @export
 
 get_fantasy_teams <- function(
+  sheet_id,
   season_id,
   current_schedule,
   current_date,
   team_stats,
   player_boxes_per_game
 ) {
-  df <- get_google_sheet()
+  df <- get_google_sheet(
+    sheet_id = sheet_id
+  )
 
   df <- left_join(
     df,
@@ -35,15 +39,20 @@ get_fantasy_teams <- function(
       )
     )
   ) |>
-    group_by(
-      by = team_name
-    ) |>
-    summarise(
-      across(
-        everything(),
-        last
+    filter(
+      !is.na(
+        team_name
       )
     ) |>
+    # group_by(
+    #   by = team_name
+    # ) |>
+    # summarise(
+    #   across(
+    #     everything(),
+    #     last
+    #   )
+    # ) |>
     select(
       c(
         names(
