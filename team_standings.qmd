@@ -19,19 +19,19 @@ library(DT)
 library(glue)
 
 season_id <- readRDS(
-  "data/season_id.rds"
+  "data/season_id.RDS"
 )
 
 current_schedule <- readRDS(
-  glue("data/current_schedule_season_{season_id}.rds")
+  glue("data/current_schedule_season_{season_id}.RDS")
 )
 
 standings <- readRDS(
-  glue("data/standings_season_{season_id}.rds")
+  glue("data/standings_season_{season_id}.RDS")
 )
 
 fantasy_teams <- readRDS(
-  glue("data/fantasy_teams_season_{season_id}.rds")
+  glue("data/fantasy_teams_season_{season_id}.RDS")
 )
 ```
 
@@ -67,7 +67,9 @@ if (
       -c(
         fantasy_points,
         position_change_since_yesterday,
-        fantasy_points_change_since_yesterday
+        fantasy_points_change_since_yesterday,
+        position_change_since_last_week,
+        fantasy_points_change_since_last_week
       )
     ) |>
     pivot_longer(

@@ -1,0 +1,67 @@
+# # on:
+# #   workflow_dispatch:
+# #   push:
+# #     branches:
+# #       - main
+# #   schedule:
+# #     - cron: '37 4 * * 0'
+
+# on:
+#   pull_request:
+#     types: [opened, synchronize, reopened, closed]
+#     branches: [ main, master ]
+
+# name: Weekly Update
+
+# jobs:
+#   build-deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v4
+
+#       - name: Install system dependencies
+#         run: |
+#           sudo apt-get update
+#           sudo apt install libcurl4-openssl-dev libnode-dev libx11-dev pandoc libfontconfig1-dev libfreetype6-dev gsfonts libcairo2-dev libmagick++-dev cmake libsecret-1-dev
+
+#       - name: Install R
+#         uses: r-lib/actions/setup-r@v2
+#         with:
+#           r-version: '4.5.0'
+
+#       - name: Cache R packages
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.cache/R/renv
+#           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-renv-
+
+#       - name: Install R Dependencies
+#         uses: r-lib/actions/setup-renv@v2
+#         with:
+#           cache-version: 2
+
+#       - name: Run R data script
+#         run: Rscript R/pull_data.R
+
+#       - name: Run R weekly update
+#         run: Rscript R/weekly_update.R
+
+#       - name: Commit data files to isolated branch
+#         run: |
+#           git config --global user.name 'github-actions'
+#           git config --global user.email 'github-actions@github.com'
+          
+#           # Switch to a clean, isolated branch for data tracking
+#           git checkout -B data
+          
+#           git add -f data/
+#           git commit -m "Automated data snapshot: $(date -u +'%Y-%m-%d %H:%M:%S') UTC" || echo "No changes to commit"
+          
+#           # Force push updates cleanly to the isolated remote branch
+#           git push origin data --force
+
