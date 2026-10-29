@@ -67,7 +67,9 @@ if (
       -c(
         fantasy_points,
         position_change_since_yesterday,
-        fantasy_points_change_since_yesterday
+        fantasy_points_change_since_yesterday,
+        position_change_since_last_week,
+        fantasy_points_change_since_last_week
       )
     ) |>
     pivot_longer(

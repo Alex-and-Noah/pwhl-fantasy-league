@@ -110,7 +110,7 @@ compute_standings <- function(
           )
         )) |>
         sign(),
-      position_change_since_last_weeek = (match(
+      position_change_since_last_week = (match(
         standings$fantasy_team_name,
         standings_one_week_ago$fantasy_team_name
       ) -
