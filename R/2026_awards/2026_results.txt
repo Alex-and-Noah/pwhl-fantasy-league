@@ -103,6 +103,7 @@ next_game_day <- schedules["next_game_day"][[1]]
 
 ```{r "Get Fantasy teams and standings"}
 fantasy_teams_and_standings <- get_fantasy_teams_and_standings(
+  0,
   all_teams,
   schedule_to_date,
   schedule,

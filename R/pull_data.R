@@ -108,6 +108,7 @@ saveRDS(
 )
 
 fantasy_teams <- get_fantasy_teams(
+  0,
   season_id,
   current_schedule,
   current_date,
