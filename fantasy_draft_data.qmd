@@ -12,8 +12,8 @@ library(DT)
 ```
 
 ```{r "source"}
-source("./R/assign_fantasy_draft_value_2025.R")
-source("./R/assign_fantasy_draft_value_2026.R")
+# source("./R/assign_fantasy_draft_value_2025.R")
+# source("./R/assign_fantasy_draft_value_2026.R")
 ```
 
 For the 2026-2027 season, we are making two changes to changes to the fantasy league regarding fantasy points and fantasy team drafting. First, the new structure for scoring fantasy points is as follows:
@@ -106,11 +106,12 @@ After last season, all of the rookies of that season have accumulated fantasy po
 
 ::: {.panel-tabset}
 
-##### Plot
+##### Plot (F)
 
-```{r "rookie PFP by overall draft position - 2025/2026 (scatter plot)"}
+```{r "rookie forwards PFP by squished overall draft position - 2025/2026 (scatter plot)"}
 fantasy_points_season_8 |>
   filter(
+    position == "F",
     rookie == 1
   ) |>
   left_join(
@@ -120,30 +121,31 @@ fantasy_points_season_8 |>
       ) |>
       select(
         name,
-        overall_draft_position
+        overall_draft_position_squished
       ),
       by = "name"
   ) |>
   filter(
-    !is.na(overall_draft_position)
+    !is.na(overall_draft_position_squished)
   ) |>
   arrange(
-    overall_draft_position
+    overall_draft_position_squished
   ) %>%
   ggplot(
     aes(
-      x = overall_draft_position,
+      x = overall_draft_position_squished,
       y = projected_fantasy_points
     )
   ) +
   geom_point()
 ```
 
-##### Table
+##### Table (F)
 
-```{r "rookie PFP by overall draft position - 2025/2026 (table)"}
+```{r "rookie forwards PFP by squished overall draft position - 2025/2026 (table)"}
 fantasy_points_season_8 |>
   filter(
+    position == "F",
     rookie == 1
   ) |>
   left_join(
@@ -153,7 +155,7 @@ fantasy_points_season_8 |>
       ) |>
       select(
         name,
-        overall_draft_position
+        overall_draft_position_squished
       ),
       by = "name"
   ) |>
@@ -164,21 +166,181 @@ fantasy_points_season_8 |>
     )
   ) |>
   filter(
-    !is.na(overall_draft_position)
+    !is.na(overall_draft_position_squished)
   ) |>
   arrange(
-    overall_draft_position,
+    overall_draft_position_squished,
     name
   ) |>
   select(
     name,
-    overall_draft_position,
+    overall_draft_position_squished,
     projected_fantasy_points
   ) |>
   datatable(
     colnames = c(
       "Name" = "name",
-      "Draft No." = "overall_draft_position",
+      "Draft No.*" = "overall_draft_position_squished",
+      "PFP" = "projected_fantasy_points"
+    )
+  )
+```
+
+##### Plot (D)
+
+```{r "rookie defenders PFP by squished overall draft position - 2025/2026 (scatter plot)"}
+fantasy_points_season_8 |>
+  filter(
+    position == "D",
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position_squished
+      ),
+      by = "name"
+  ) |>
+  filter(
+    !is.na(overall_draft_position_squished)
+  ) |>
+  arrange(
+    overall_draft_position_squished
+  ) %>%
+  ggplot(
+    aes(
+      x = overall_draft_position_squished,
+      y = projected_fantasy_points
+    )
+  ) +
+  geom_point()
+```
+
+##### Table (D)
+
+```{r "rookie defenders PFP by squished overall draft position - 2025/2026 (table)"}
+fantasy_points_season_8 |>
+  filter(
+    position == "D",
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position_squished
+      ),
+      by = "name"
+  ) |>
+  mutate(
+    projected_fantasy_points = round(
+      projected_fantasy_points,
+      digits = 2
+    )
+  ) |>
+  filter(
+    !is.na(overall_draft_position_squished)
+  ) |>
+  arrange(
+    overall_draft_position_squished,
+    name
+  ) |>
+  select(
+    name,
+    overall_draft_position_squished,
+    projected_fantasy_points
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "Draft No.*" = "overall_draft_position_squished",
+      "PFP" = "projected_fantasy_points"
+    )
+  )
+```
+
+##### Plot (G)
+
+```{r "rookie goalies PFP by squished overall draft position - 2025/2026 (scatter plot)"}
+fantasy_points_season_8 |>
+  filter(
+    position == "G",
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position_squished
+      ),
+      by = "name"
+  ) |>
+  filter(
+    !is.na(overall_draft_position_squished)
+  ) |>
+  arrange(
+    overall_draft_position_squished
+  ) %>%
+  ggplot(
+    aes(
+      x = overall_draft_position_squished,
+      y = projected_fantasy_points
+    )
+  ) +
+  geom_point()
+```
+
+##### Table (G)
+
+```{r "rookie goalies PFP by squished overall draft position - 2025/2026 (table)"}
+fantasy_points_season_8 |>
+  filter(
+    position == "G",
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position_squished
+      ),
+      by = "name"
+  ) |>
+  mutate(
+    projected_fantasy_points = round(
+      projected_fantasy_points,
+      digits = 2
+    )
+  ) |>
+  filter(
+    !is.na(overall_draft_position_squished)
+  ) |>
+  arrange(
+    overall_draft_position_squished,
+    name
+  ) |>
+  select(
+    name,
+    overall_draft_position_squished,
+    projected_fantasy_points
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "Draft No.*" = "overall_draft_position_squished",
       "PFP" = "projected_fantasy_points"
     )
   )
@@ -189,8 +351,9 @@ fantasy_points_season_8 |>
 There is clearly not a perfect correlation between PFP and overall draft position, but this is expected. However, there is a general trend of higher PFPs as overall draft position is lowered.
 
 ```{r "Fit linear model to PFPs descending"}
-model <- fantasy_draft_values_season_8 |>
+model_f <- fantasy_draft_values_season_8 |>
   filter(
+    position == "F",
     rookie == 1
   ) |>
   mutate(
@@ -213,10 +376,74 @@ model <- fantasy_draft_values_season_8 |>
     data = .
   )
 
-theoretical_line <- function(x) {
+theoretical_line_f <- function(x) {
  exp(
-   coef(model)[[1]] +
-     coef(model)[[2]] * x
+   coef(model_f)[[1]] +
+     coef(model_f)[[2]] * x
+ )
+}
+
+model_d <- fantasy_draft_values_season_8 |>
+  filter(
+    position == "D",
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
+  ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+theoretical_line_d <- function(x) {
+ exp(
+   coef(model_d)[[1]] +
+     coef(model_d)[[2]] * x
+ )
+}
+
+model_g <- fantasy_draft_values_season_8 |>
+  filter(
+    position == "G",
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
+  ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+theoretical_line_g <- function(x) {
+ exp(
+   coef(model_g)[[1]] +
+     coef(model_g)[[2]] * x
  )
 }
 ```
@@ -227,11 +454,12 @@ On the other hand, when looking at PFPs earned sorted in descending order, we ge
 
 ::: {.panel-tabset}
 
-##### Plot
+##### Plot (F)
 
-```{r "rookie PFP descending with exponential curve - 2025/2026 (scatter plot)"}
+```{r "rookie forwards PFP descending with exponential curve - 2025/2026 (scatter plot)"}
 fantasy_draft_values_season_8 |>
   filter(
+    position == "F",
     rookie == 1
   ) |>
   arrange(
@@ -248,14 +476,15 @@ fantasy_draft_values_season_8 |>
     )
   ) +
   geom_point() +
-  geom_function(fun = theoretical_line)
+  geom_function(fun = theoretical_line_f)
 ```
 
-##### Table
+##### Table (F)
 
-```{r "rookie PFP descending - 2025/2026 (table)"}
+```{r "rookie forwards PFP descending - 2025/2026 (table)"}
 fantasy_points_season_8 |>
   filter(
+    position == "F",
     rookie == 1
   ) |>
   left_join(
@@ -265,7 +494,7 @@ fantasy_points_season_8 |>
       ) |>
       select(
         name,
-        overall_draft_position
+        overall_draft_position_squished
       ),
       by = "name"
   ) |>
@@ -281,13 +510,149 @@ fantasy_points_season_8 |>
   ) |>
   select(
     name,
-    overall_draft_position,
+    overall_draft_position_squished,
     projected_fantasy_points
   ) |>
   datatable(
     colnames = c(
       "Name" = "name",
-      "Draft No." = "overall_draft_position",
+      "Draft No.*" = "overall_draft_position_squished",
+      "PFP" = "projected_fantasy_points"
+    )
+  )
+```
+
+##### Plot (D)
+
+```{r "rookie defenders PFP descending with exponential curve - 2025/2026 (scatter plot)"}
+fantasy_draft_values_season_8 |>
+  filter(
+    position == "D",
+    rookie == 1
+  ) |>
+  arrange(
+    desc(projected_fantasy_points)
+  ) %>%
+  ggplot(
+    aes(
+      x = seq_len(
+        nrow(
+          .
+        )
+      ),
+      y = projected_fantasy_points
+    )
+  ) +
+  geom_point() +
+  geom_function(fun = theoretical_line_d)
+```
+
+##### Table (D)
+
+```{r "rookie defenders PFP descending - 2025/2026 (table)"}
+fantasy_points_season_8 |>
+  filter(
+    position == "D",
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position_squished
+      ),
+      by = "name"
+  ) |>
+  mutate(
+    projected_fantasy_points = round(
+      projected_fantasy_points,
+      digits = 2
+    )
+  ) |>
+  arrange(
+    desc(projected_fantasy_points),
+    name
+  ) |>
+  select(
+    name,
+    overall_draft_position_squished,
+    projected_fantasy_points
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "Draft No.*" = "overall_draft_position_squished",
+      "PFP" = "projected_fantasy_points"
+    )
+  )
+```
+
+##### Plot (G)
+
+```{r "rookie goalies PFP descending with exponential curve - 2025/2026 (scatter plot)"}
+fantasy_draft_values_season_8 |>
+  filter(
+    position == "G",
+    rookie == 1
+  ) |>
+  arrange(
+    desc(projected_fantasy_points)
+  ) %>%
+  ggplot(
+    aes(
+      x = seq_len(
+        nrow(
+          .
+        )
+      ),
+      y = projected_fantasy_points
+    )
+  ) +
+  geom_point() +
+  geom_function(fun = theoretical_line_g)
+```
+
+##### Table (F)
+
+```{r "rookie goalies PFP descending - 2025/2026 (table)"}
+fantasy_points_season_8 |>
+  filter(
+    position == "G",
+    rookie == 1
+  ) |>
+  left_join(
+    fantasy_draft_values_season_5 |>
+      filter(
+        rookie == -1
+      ) |>
+      select(
+        name,
+        overall_draft_position_squished
+      ),
+      by = "name"
+  ) |>
+  mutate(
+    projected_fantasy_points = round(
+      projected_fantasy_points,
+      digits = 2
+    )
+  ) |>
+  arrange(
+    desc(projected_fantasy_points),
+    name
+  ) |>
+  select(
+    name,
+    overall_draft_position_squished,
+    projected_fantasy_points
+  ) |>
+  datatable(
+    colnames = c(
+      "Name" = "name",
+      "Draft No.*" = "overall_draft_position_squished",
       "PFP" = "projected_fantasy_points"
     )
   )
@@ -302,16 +667,16 @@ We secretly replaced all PFPs less than $\mathrm{e}$ with $\mathrm{e}$, just so 
 Rather than using PFPs by overall draft position for the last season, we are going to use the exponential curve approximating the PFPs descending in order to inform how the FDVs get assigned to the rookies in the upcoming season. The formula for the FDV for new rookies will be as follows:
 
 $$
-\text{FDV} = \max\left( \text{round}\left(\exp \left( b + m\cdot\left(1+(\text{pos}_\text{draft} - 1)\cdot\frac{\text{N}_\text{rookies,t-1}-1}{\text{N}_\text{rookies,t}}\right)\right)\right), 1\right),
+\text{FDV} = \max\left( \text{round}\left(\exp \left( b_\text{p} + m_\text{p}\cdot\left(1+(\text{n}_\text{draft}^\text{p} - 1)\cdot\frac{\text{N}_\text{rookies,t-1}^\text{p}-1}{\text{N}_\text{rookies,t}^\text{p}}\right)\right)\right), 1\right),
 $$
 
 where:
 
-- $\text{pos}_\text{draft}\in\{1,\ldots,\text{N}_\text{rookie,t}\}:=$ draft order position of new rookie
-- $\text{N}_\text{rookies,t}:=$ number of new rookies in year $t$ (this year)
-- $\text{N}_\text{rookies,t-1}:=$ number of new rookies in year $t-1$ (last year)
-- $b:=$ intercept of the line fit to the $\log$ of the descending PFPs ($b=$ `{r} coef(model)[[1]]`)
-- $m:=$ slope of the line fit to the $\log$ of the descending PFPs ($m=$ `{r} coef(model)[[2]]`)
+- $\text{n}_\text{draft}^\text{p}\in\{1,\ldots,\text{N}_\text{rookie,t}^\text{p}\}:=$ sequential draft order position of new rookie, relative to other rookies of the same position $\text{p}$
+- $\text{N}_\text{rookies,t}^\text{p}:=$ number of new rookies of position $\text{p}$ in year $t$ (this year)
+- $\text{N}_\text{rookies,t-1}^\text{p}:=$ number of new rookies of position $\text{p}$ in year $t-1$ (last year)
+- $b_\text{p}:=$ intercept of the line fit to the $\log$ of the descending PFPs for position $\text{p}$ ($b_\text{p}=$ `{r} coef(model_f)[[1]]`)
+- $m_\text{p}:=$ slope of the line fit to the $\log$ of the descending PFPs for position $\text{p}$($m_\text{p}=$ `{r} coef(model_f)[[2]]`)
 
 The idea behind this formula is that we map $\text{N}_\text{rookies,t}$ equal points to the support of the fit exponential curve, which is $\{1,\ldots,\text{N}_\text{rookie,t-1}\}$. Under this mapping, the first overall draft pick (K.K. Harvey for the 2026-2027 season) should be mapped to the PFP estimate corresponding to the first overall draft pick of the 2025-2026 season (Kristýna Kaltounková), the last overall draft pick for the 2026-2027 season should be mapped to the PFP estimate corresponding to the last overall draft pick of the 2025-2026 season, and each draft pick in between for the 2026-2027 season should be evenly spaced out between $1$ and $\text{N}_\text{rookie,t-1}$; this yields a spacing of $\frac{\text{N}_\text{rookies,t-1}-1}{\text{N}_\text{rookies,t}}$
 

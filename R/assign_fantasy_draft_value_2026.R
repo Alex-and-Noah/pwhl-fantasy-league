@@ -259,7 +259,8 @@ fantasy_draft_values_season_8 <- bind_rows(
       "RD" ~ "D",
       "D" ~ "D",
       "G" ~ "G"
-    )
+    ),
+    overall_draft_position_squished = 0
   ) |>
   replace_na(
     list(
@@ -273,7 +274,98 @@ fantasy_draft_values_season_8 <- bind_rows(
     )
   )
 
-model <- fantasy_draft_values_season_8 |>
+
+fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8 |>
+  filter(
+    position == "F"
+  ) |>
+  mutate(
+    overall_draft_position_squished = if_else(
+      overall_draft_position != 0,
+      cumsum(
+        overall_draft_position != 0
+      ),
+      0L
+    )
+  )
+
+fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8 |>
+  filter(
+    position == "D"
+  ) |>
+  mutate(
+    overall_draft_position_squished = if_else(
+      overall_draft_position != 0,
+      cumsum(
+        overall_draft_position != 0
+      ),
+      0L
+    )
+  )
+
+fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8 |>
+  filter(
+    position == "G"
+  ) |>
+  mutate(
+    overall_draft_position_squished = if_else(
+      overall_draft_position != 0,
+      cumsum(
+        overall_draft_position != 0
+      ),
+      0L
+    )
+  )
+
+model_f <- fantasy_draft_values_season_8_forwards |>
+  filter(
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
+  ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+model_d <- fantasy_draft_values_season_8_defenders |>
+  filter(
+    rookie == 1
+  ) |>
+  mutate(
+    projected_fantasy_points = if_else(
+      projected_fantasy_points < exp(1),
+      exp(1),
+      projected_fantasy_points
+    ),
+    log_projected_fantasy_points = log(projected_fantasy_points)
+  ) |>
+  arrange(
+    desc(log_projected_fantasy_points)
+  ) %>%
+  lm(
+    log_projected_fantasy_points ~ seq_len(
+      nrow(
+        .
+      )
+    ),
+    data = .
+  )
+
+model_g <- fantasy_draft_values_season_8_goalies |>
   filter(
     rookie == 1
   ) |>
@@ -360,27 +452,39 @@ model <- fantasy_draft_values_season_8 |>
 #   geom_point() +
 #   geom_function(fun = theoretical_line)
 
-n_rookies_last_year <- fantasy_draft_values_season_8 |>
+n_rookies_last_year_f <- fantasy_draft_values_season_8_forwards |>
   filter(
     rookie == 1
   ) |>
   nrow()
 
-fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
+n_rookies_last_year_g <- fantasy_draft_values_season_8_defenders |>
+  filter(
+    rookie == 1
+  ) |>
+  nrow()
+
+n_rookies_last_year_d <- fantasy_draft_values_season_8_goalies |>
+  filter(
+    rookie == 1
+  ) |>
+  nrow()
+
+fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8_forwards |>
   mutate(
     fantasy_draft_value = case_when(
       rookie == 0 | rookie == 1 ~ round(
         projected_fantasy_points
       ),
-      rookie == -1 & overall_draft_position != 0 ~ pmax(
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
           exp(
-            coef(model)[[1]] +
-              coef(model)[[2]] *
+            coef(model_f)[[1]] +
+              coef(model_f)[[2]] *
                 (1 +
-                  (overall_draft_position - 1) *
-                    (n_rookies_last_year - 1) /
-                    (max(overall_draft_position)))
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_f - 1) /
+                    (max(overall_draft_position_squished)))
           )
         ),
         1
@@ -400,6 +504,82 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
     projected_fantasy_points,
     fantasy_draft_value
   )
+
+fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defenders |>
+  mutate(
+    fantasy_draft_value = case_when(
+      rookie == 0 | rookie == 1 ~ round(
+        projected_fantasy_points
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
+        round(
+          exp(
+            coef(model_d)[[1]] +
+              coef(model_d)[[2]] *
+                (1 +
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_d - 1) /
+                    (max(overall_draft_position_squished)))
+          )
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position != 0 ~ 1,
+      .default = round(
+        projected_fantasy_points
+      )
+    )
+  ) |>
+  select(
+    name,
+    team_code,
+    rookie,
+    position,
+    overall_draft_position,
+    projected_fantasy_points,
+    fantasy_draft_value
+  )
+
+fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8_goalies |>
+  mutate(
+    fantasy_draft_value = case_when(
+      rookie == 0 | rookie == 1 ~ round(
+        projected_fantasy_points
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
+        round(
+          exp(
+            coef(model_g)[[1]] +
+              coef(model_g)[[2]] *
+                (1 +
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_g - 1) /
+                    (max(overall_draft_position_squished)))
+          )
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position != 0 ~ 1,
+      .default = round(
+        projected_fantasy_points
+      )
+    )
+  ) |>
+  select(
+    name,
+    team_code,
+    rookie,
+    position,
+    overall_draft_position,
+    projected_fantasy_points,
+    fantasy_draft_value
+  )
+
+fantasy_draft_values_season_8 <- bind_rows(
+  fantasy_draft_values_season_8_forwards,
+  fantasy_draft_values_season_8_defenders,
+  fantasy_draft_values_season_8_goalies
+)
 
 current_date <- today(
   tzone = "EST"
