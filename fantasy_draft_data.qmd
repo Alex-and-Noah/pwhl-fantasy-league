@@ -694,12 +694,14 @@ fantasy_draft_values_season_8 |>
   select(
     name,
     overall_draft_position,
+    position,
     fantasy_draft_value
   ) |>
   datatable(
     colnames = c(
       "Name" = "name",
       "Draft No." = "overall_draft_position",
+      "Pos." = "position",
       "FDV" = "fantasy_draft_value"
     )
   )
@@ -722,7 +724,7 @@ fantasy_draft_values_season_8 |>
     position
   ) |>
   summarise(
-    q725 = quantile(
+    q25 = quantile(
       fantasy_draft_value,
       probs = 0.25
     ),
@@ -742,7 +744,7 @@ fantasy_draft_values_season_8 |>
   datatable()
 ```
 
-Therefore, the salary cap is computed as `6*(26) + 4*(22) + 2*(22.25) = 288.5`, which we will round up to a nice clean `300`.
+Therefore, the salary cap is computed as `6*(27.5) + 4*(22) + 2*(20.75) = 294.5`, which we will round up to a nice clean `300`.
 
 # 2025-2026 Season
 
@@ -756,6 +758,9 @@ We can check how this process for assigning FDVs compares against actual FP earn
 
 ```{r "fp/pfp vs fdv - non-rookies"}
 fantasy_draft_values_season_5 |>
+  select(
+    -fantasy_points
+  ) |>
   left_join(
     fantasy_points_season_8 |>
       select(
