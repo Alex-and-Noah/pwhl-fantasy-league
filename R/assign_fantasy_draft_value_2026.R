@@ -6,6 +6,7 @@ library(bslib)
 library(ggimage)
 library(here)
 library(htmltools)
+library(readr)
 
 invisible(
   lapply(
@@ -656,9 +657,12 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
 #         )
 #       ),
 #       name
+#     ) |>
+#     filter(
+#       !is.na(fantasy_draft_value)
 #     )
 
-#   write.csv(
+#   write_csv(
 #     roster |>
 #       select(
 #         name
@@ -667,10 +671,10 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
 #     glue(
 #       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_name.csv"
 #     ),
-#     row.names = FALSE
+#     col_names = FALSE
 #   )
 
-#   write.csv(
+#   write_csv(
 #     roster |>
 #       select(
 #         position
@@ -679,10 +683,10 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
 #     glue(
 #       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_position.csv"
 #     ),
-#     row.names = FALSE
+#     col_names = FALSE
 #   )
 
-#   write.csv(
+#   write_csv(
 #     roster |>
 #       select(
 #         fantasy_draft_value
@@ -691,7 +695,7 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
 #     glue(
 #       "./draft_tool_data/fantasy_draft_values_season_8_{team_code_val}_fdv.csv"
 #     ),
-#     row.names = FALSE
+#     col_names = FALSE
 #   )
 # }
 
