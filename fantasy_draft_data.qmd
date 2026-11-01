@@ -12,8 +12,8 @@ library(DT)
 ```
 
 ```{r "source"}
-source("./R/assign_fantasy_draft_value_2025.R")
-source("./R/assign_fantasy_draft_value_2026.R")
+# source("./R/assign_fantasy_draft_value_2025.R")
+# source("./R/assign_fantasy_draft_value_2026.R")
 ```
 
 For the 2026-2027 season, we are making two changes to changes to the fantasy league regarding fantasy points and fantasy team drafting. First, the new structure for scoring fantasy points is as follows:
@@ -29,19 +29,19 @@ Second, all PWHL players will be assigned a **Fantasy Draft Value (FDV)**, and a
 ```{r "2025 - variables"}
 
 fantasy_draft_values_season_5 <- readRDS(
-  "data/fantasy_draft_values_season_5.RDS"
+  "static/season_8/fantasy_draft_values_season_5.RDS"
 )
 
 fantasy_points_season_8 <- readRDS(
-  "data/fantasy_points_season_8.RDS"
+  "static/season_8/fantasy_points_season_8.RDS"
 )
 
 fantasy_teams_season_8 <- readRDS(
-  "data/fantasy_teams_season_8.RDS"
+  "static/season_8/fantasy_teams_season_8.RDS"
 )
 
 fantasy_draft_values_season_8 <- readRDS(
-  "data/fantasy_draft_values_season_8.RDS"
+  "static/season_8/fantasy_draft_values_season_8.RDS"
 )
 ```
 
@@ -661,8 +661,7 @@ lapply(
     point_gain = fantasy_points - fantasy_draft_value,
     across(
       where(is.numeric),
-      round,
-      digits = 2
+      \(x) round(x, digits=2)
     )
   ) |>
   arrange(
