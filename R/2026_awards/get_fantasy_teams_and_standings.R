@@ -105,6 +105,7 @@ get_expanded_roster_stats_per_game <- function(
 #' @title  **Get PWHL Fantasy Teams and Points**
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
 #'
+#' @param all_teams Google sheet ID for current Fantasy roster
 #' @param all_teams All PWHL player info and stats
 #' @param schedule_to_date Current season schedule up to current_date
 #' @param schedule Entire schedule for current season
@@ -113,6 +114,7 @@ get_expanded_roster_stats_per_game <- function(
 #' @export
 
 get_fantasy_teams_and_standings <- function(
+  sheet_id,
   all_teams,
   schedule_to_date,
   schedule,
@@ -134,7 +136,7 @@ get_fantasy_teams_and_standings <- function(
   v <- Vectorize(is_valid_hex_color)
 
   rosters_names_gsheet <- get_google_sheet(
-    sheet_id = 0
+    sheet_id = sheet_id
   ) |>
     mutate(
       team_colour = v(team_colour)
