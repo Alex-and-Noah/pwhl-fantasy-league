@@ -6,19 +6,32 @@ execute:
   error: false
 ---
 
-# Rules
+Welcome to the 2026-2027 PWHL Fantasy League hosted by Alex & Noah!
 
-Choose your fantasy team name, colour, logo and roster in the [Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?usp=sharing).<br>
-&nbsp;&nbsp;&nbsp;&nbsp;🔴🟡🔵**Team Colour:** Valid hexadecimal colour code<br>
-&nbsp;&nbsp;&nbsp;&nbsp;👩‍👩‍👧📷🖥️**Team Image:** Valid link to any image on the web<br><br>
+To confirm your registration in the League, please follow these steps:
+
+1. Draft your Fantasy team in the [PWHL Fantasy League Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?gid=352060853#gid=352060853). The rules for drafting are found below as well as in the Sheet.
+
+2. Once your Fantasy team is drafted, complete your registration in the [PWHL Fantasy League Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdLuJngQUMY0km7S_Yoe5BkwwL0EfbxKcW5VNdztRjFvk0X6A/viewform?usp=preview). Note that this form is editable after you've submitted your initial responses.
+
+🕐 **Deadline:** You can use all of November's pre-season games to scout your roster and aim to lock it in by **December 1st, 2026**! After this date, the Google Sheet will be 👁️**View Only**👁️<br>
+
+🏆 **Prize pool:** We are introducing an optional 50/50 prize pool for the Fantasy League this year. For all of the money included in the prize pool, 50% of that amount will go to the winner of the Fantasy League and 50% will go to the [Ottawa Humane Society](https://www.ottawahumane.ca/). The prize pool is optional however if you don't contribute you are not eligible to win the 50/50. If you wish to participate, e-transfer $10 to Noah at **noah.bolohan@gmail.com** before you complete your response to the Google Form.
+
+🤔 **Questions:** Text or email Alex or Noah (noah.bolohan@gmail.com) if you need any help making a team or have any questions.
+
+# Drafting rules
+
 Your team should have exactly the following (the Google Sheet dropdowns force this structure, don't worry!):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**🏒 6 forwards**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**🛡️ 4 defenders**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**🥅 2 goalies**<br><br>
-😮‍💨 Players/goalies aren't restricted to a single fantasy team so if someone took a player you like, you can take them too!<br><br>
-↔️ **Trades:** Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!<br><br>
-🕐 **Deadline:** You can use all of November's pre-season and regular season games to scout your roster and aim to lock it in by **November 30th, 2025**! After this date, the Google Sheet will be 👁️**View Only**👁️<br><br>
-💰💵💸 **Prize pool (Optional):** E-transfer $10 to Alex or Noah to enter in the fantasy prize pool! More information TBD but you could **WIN BIGGGG! (Send an e-transfer or intent to e-transfer by the roster deadline to enter the prize pool)**
+&nbsp;&nbsp;&nbsp;&nbsp;**🥅 2 goalies**<br>
+
+💰 Each draftable PWHL player has been assigned a **Fantasy Draft Value (FDV)**. The sum of all of your drafted players' FDVs cannot exceed the value cap of 300 (the Google Sheet will track this for you). You can read about how the FDVs are assigned [here](https://alex-and-noah.github.io/pwhl-fantasy-league/fantasy_draft_data.html) and you can explore all the draftable players and their FDVs [here](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?gid=1969641849#gid=1969641849).
+
+😮‍💨 Players/goalies aren't restricted to a single fantasy team so if someone took a player you like, you can take them too!
+
+↔️ **Trades:** Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure and salaray cap). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!<br><br>
 
 # Scoring
 Your fantasy team's score is updated daily with data from the previous day's games. Each day, each member of your fantasy roster will contribute a number of points to your team's overall score, following the scheme below:
