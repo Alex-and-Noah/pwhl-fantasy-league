@@ -10,9 +10,9 @@ Welcome to the 2026-2027 PWHL Fantasy League hosted by Alex & Noah!
 
 To confirm your registration in the League, please follow these steps:
 
-1. Draft your Fantasy team in the [PWHL Fantasy League Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?gid=352060853#gid=352060853). The rules for drafting are found below as well as in the Sheet.
+1. Draft your Fantasy team in the [PWHL Fantasy League Google Sheet](https://docs.google.com/spreadsheets/d/1sywjZ6quCmbLBq_wEEXZEDzcW0NeBpCtRaT3W1hDkhI/edit?gid=352060853#gid=352060853). The rules for drafting are [found below](#drafting-rules) as well as in the Sheet.
 
-2. Once your Fantasy team is drafted, complete your registration in the [PWHL Fantasy League Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdLuJngQUMY0km7S_Yoe5BkwwL0EfbxKcW5VNdztRjFvk0X6A/viewform?usp=preview). Note that this form is editable after you've submitted your initial responses.
+2. Once your Fantasy team is drafted, complete your registration in the [PWHL Fantasy League Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdLuJngQUMY0km7S_Yoe5BkwwL0EfbxKcW5VNdztRjFvk0X6A/viewform?usp=preview).
 
 🕐 **Deadline:** You can use all of November's pre-season games to scout your roster and aim to lock it in by **December 1st, 2026**! After this date, the Google Sheet will be 👁️**View Only**👁️<br>
 
@@ -31,7 +31,7 @@ Your team should have exactly the following (the Google Sheet dropdowns force th
 
 😮‍💨 Players/goalies aren't restricted to a single fantasy team so if someone took a player you like, you can take them too!
 
-↔️ **Trades:** Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure and salaray cap). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!<br><br>
+↔️ **Trades:** Throughout the season, you are allowed **exactly 1 trade** (respecting the team structure and salary cap). Your new player only contributes points to your fantasy score starting the day after the trade. Please **let Alex or Noah know directly** if/when you make a trade!<br><br>
 
 # Scoring
 Your fantasy team's score is updated daily with data from the previous day's games. Each day, each member of your fantasy roster will contribute a number of points to your team's overall score, following the scheme below:
@@ -40,6 +40,6 @@ Your fantasy team's score is updated daily with data from the previous day's gam
 | ------------- |-------------|
 | 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\*      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\* |
 
-You can check how your and everyone else's teams are doing [here](./team_standings.qmd). Note that eventually, only **regular season games** will contribute to your fantasy teams score.
-
 \*Note that if your play did not play in a game in which their team won, they will *not* contribute points to your score (this includes dressed goalies that did not get subbed in).
+
+You can check how your and everyone else's teams are doing [here](./team_standings.qmd). Note that eventually, only **regular season games** will contribute to your fantasy teams score.
