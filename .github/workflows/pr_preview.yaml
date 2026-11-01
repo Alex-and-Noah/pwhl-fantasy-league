@@ -50,6 +50,12 @@ jobs:
       - name: Run R data script
         run: Rscript R/pull_data.R
 
+      - name: Run R FDV script 1
+        run: Rscript R/assign_fantasy_draft_value_2025.R --no-save
+
+      - name: Run R FDV script 2
+        run: Rscript R/assign_fantasy_draft_value_2026.R --no-save
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
