@@ -44,15 +44,6 @@ get_fantasy_teams <- function(
         team_name
       )
     ) |>
-    # group_by(
-    #   by = team_name
-    # ) |>
-    # summarise(
-    #   across(
-    #     everything(),
-    #     last
-    #   )
-    # ) |>
     select(
       c(
         names(
