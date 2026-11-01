@@ -579,7 +579,16 @@ fantasy_draft_values_season_8 <- bind_rows(
   fantasy_draft_values_season_8_forwards,
   fantasy_draft_values_season_8_defenders,
   fantasy_draft_values_season_8_goalies
-)
+) |>
+  replace_na(
+    list(
+      rookie = -1,
+      overall_draft_position = 0,
+      overall_draft_position_squished = 0,
+      projected_fantasy_points = 0,
+      fantasy_draft_value = 0
+    )
+  )
 
 current_date <- today(
   tzone = "EST"

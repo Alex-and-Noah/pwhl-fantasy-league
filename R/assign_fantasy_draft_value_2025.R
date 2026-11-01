@@ -520,6 +520,42 @@ fantasy_draft_values_season_5_defenders <- fantasy_draft_values_season_5_defende
     fantasy_draft_value
   )
 
+fantasy_draft_values_season_5_goalies <- fantasy_draft_values_season_5_goalies |>
+  mutate(
+    fantasy_draft_value = case_when(
+      rookie == 0 | rookie == 1 ~ round(
+        projected_fantasy_points
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
+        round(
+          exp(
+            coef(model_g)[[1]] +
+              coef(model_g)[[2]] *
+                (1 +
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_g - 1) /
+                    (max(overall_draft_position_squished)))
+          )
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ 1,
+      .default = round(
+        projected_fantasy_points
+      )
+    )
+  ) |>
+  select(
+    name,
+    team_code,
+    rookie,
+    position,
+    overall_draft_position,
+    overall_draft_position_squished,
+    projected_fantasy_points,
+    fantasy_draft_value
+  )
+
 fantasy_draft_values_season_5 <- bind_rows(
   fantasy_draft_values_season_5_forwards,
   fantasy_draft_values_season_5_defenders,
@@ -527,13 +563,11 @@ fantasy_draft_values_season_5 <- bind_rows(
 ) |>
   replace_na(
     list(
-      draft_round = 0,
-      draft_position = 0,
-      overall_draft_position = 0,
       rookie = -1,
-      fantasy_points = 0,
-      fantasy_points_per_game = 0,
-      projected_fantasy_points = 0
+      overall_draft_position = 0,
+      overall_draft_position_squished = 0,
+      projected_fantasy_points = 0,
+      fantasy_draft_value = 0
     )
   )
 
