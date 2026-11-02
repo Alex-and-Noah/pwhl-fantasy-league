@@ -680,6 +680,12 @@ where:
 
 The idea behind this formula is that we map $\text{N}_\text{rookies,t}^\text{p}$ equal points to the support of the fit exponential curve, which is $\{1,\ldots,\text{N}_\text{rookie,t-1}^\text{p}\}$. Under this mapping, the first overall draft pick of a given position (e.g. K.K. Harvey, Defender for the 2026-2027 season) should be mapped to the PFP estimate corresponding to the first overall draft pick of that same position of the 2025-2026 season (Haley Winn), the last overall draft pick of a given position for the 2026-2027 season should be mapped to the PFP estimate corresponding to the last overall draft pick if the same position of the 2025-2026 season, and each draft pick in between for the 2026-2027 season should be evenly spaced out between $1$ and $\text{N}_\text{rookie,t-1}^\text{p}$; this yields a spacing of $\frac{\text{N}_\text{rookies,t-1}^\text{p}-1}{\text{N}_\text{rookies,t}^\text{p}}$
 
+Note that this whole process only works for rookies who were drafted during the officvial 2026 PWHL Draft. For players who were not in the PWHL last year or did not get drafted during the official draft (e.g. player agreements in the off-season), we have no way to programatically infer their skill from either their past performance or their draft order. In this case, we assign draft values based on age:
+
+- For the 2026-2027 season, the youngest player in the league was born in 2005.
+- All players who were not present in the PWHL last year or selected in the 2026 PWHL Draft are assigned a FDV of 1 if they are born in 2005, 2 if they are born in 2004, etc.
+- In the absence of any other information, we will assume older players have more experience and therefore are worth more.
+
 The FDVs for the new rookies of the 2026-2027 season are therefore:
 
 ```{r "fdv for rookies"}
@@ -688,6 +694,7 @@ fantasy_draft_values_season_8 |>
     rookie == -1
   ) |>
   arrange(
+    overall_draft_position == 0,
     overall_draft_position,
     name
   ) |>
