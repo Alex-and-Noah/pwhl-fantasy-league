@@ -610,7 +610,8 @@ team_info <- get_team_info(
 
 fantasy_draft_values_with_points_season_8 <- fantasy_draft_values_season_8 |>
   select(
-    -team_code
+    -team_code,
+    -position
   ) |>
   right_join(
     bind_rows(
@@ -625,7 +626,8 @@ fantasy_draft_values_with_points_season_8 <- fantasy_draft_values_season_8 |>
             select(
               name,
               team_id,
-              birthdate
+              birthdate,
+              position
             ) |>
             mutate(
               team_code = team_info |>
@@ -641,15 +643,26 @@ fantasy_draft_values_with_points_season_8 <- fantasy_draft_values_season_8 |>
       )
     ),
     by = join_by(name)
-  ) |>
+  ) %>%
   mutate(
+    position = replace_values(
+      .$position,
+      "C" ~ "F",
+      "LW" ~ "F",
+      "RW" ~ "F",
+      "F" ~ "F",
+      "LD" ~ "D",
+      "RD" ~ "D",
+      "D" ~ "D",
+      "G" ~ "G"
+    ),
     birth_year = year(birthdate),
     fantasy_draft_value = if_else(
       is.na(
         rookie
       ),
       max(birth_year) - birth_year + 1,
-      0
+      fantasy_draft_value
     )
   ) |>
   replace_na(
