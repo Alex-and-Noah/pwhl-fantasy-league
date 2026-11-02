@@ -607,7 +607,7 @@ team_info <- get_team_info(
   season_id
 )
 
-fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
+fantasy_draft_values_with_points_season_8 <- fantasy_draft_values_season_8 |>
   select(
     -team_code
   ) |>
@@ -623,7 +623,8 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
           ) |>
             select(
               name,
-              team_id
+              team_id,
+              birthdate
             ) |>
             mutate(
               team_code = team_info |>
@@ -639,10 +640,37 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
       )
     ),
     by = join_by(name)
+  ) |>
+  mutate(
+    birth_year = year(birthdate),
+    fantasy_draft_value = if_else(
+      is.na(
+        rookie
+      ),
+      max(birth_year) - birth_year + 1,
+      0
+    )
+  ) |>
+  replace_na(
+    list(
+      rookie = -1,
+      overall_draft_position = 0,
+      overall_draft_position_squished = 0,
+      projected_fantasy_points = 0,
+      fantasy_draft_value = 1
+    )
+  ) |>
+  select(
+    -c(
+      birthdate,
+      birth_year
+    )
   )
 
-# for (team_code_val in unique(fantasy_draft_values_season_8$team_code)) {
-#   roster <- fantasy_draft_values_season_8 |>
+# for (team_code_val in unique(
+#   fantasy_draft_values_with_points_season_8$team_code
+# )) {
+#   roster <- fantasy_draft_values_with_points_season_8 |>
 #     filter(
 #       team_code == team_code_val
 #     ) |>
@@ -696,7 +724,7 @@ fantasy_draft_values_season_8 <- fantasy_draft_values_season_8 |>
 # }
 
 saveRDS(
-  fantasy_draft_values_season_8,
+  fantasy_draft_values_with_points_season_8,
   file = glue("data/fantasy_draft_values_season_8.RDS")
 )
 
