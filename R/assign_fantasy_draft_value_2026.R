@@ -474,8 +474,11 @@ n_rookies_last_year_d <- fantasy_draft_values_season_8_goalies |>
 fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8_forwards |>
   mutate(
     fantasy_draft_value = case_when(
-      rookie == 0 | rookie == 1 ~ round(
-        projected_fantasy_points
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
@@ -491,8 +494,11 @@ fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8_forwards
         1
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
-      .default = round(
-        projected_fantasy_points
+      .default = pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       )
     )
   ) |>
@@ -509,8 +515,11 @@ fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8_forwards
 fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defenders |>
   mutate(
     fantasy_draft_value = case_when(
-      rookie == 0 | rookie == 1 ~ round(
-        projected_fantasy_points
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
@@ -526,8 +535,11 @@ fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defende
         1
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
-      .default = round(
-        projected_fantasy_points
+      .default = pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       )
     )
   ) |>
@@ -544,8 +556,11 @@ fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defende
 fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8_goalies |>
   mutate(
     fantasy_draft_value = case_when(
-      rookie == 0 | rookie == 1 ~ round(
-        projected_fantasy_points
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
@@ -561,8 +576,11 @@ fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8_goalies |
         1
       ),
       rookie == -1 & overall_draft_position != 0 ~ 1,
-      .default = round(
-        projected_fantasy_points
+      .default = pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       )
     )
   ) |>
@@ -680,6 +698,8 @@ fantasy_draft_values_with_points_season_8 <- fantasy_draft_values_season_8 |>
       birth_year
     )
   )
+
+# dir.create("draft_tool_data")
 
 # for (team_code_val in unique(
 #   fantasy_draft_values_with_points_season_8$team_code
