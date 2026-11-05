@@ -727,7 +727,7 @@ Recalling that there is not a good correlation between PFPs earned and overall d
 To determine the value cap for the Fantasy League draft, we find the 75th percentile of FDVs by position and multiply these by the number of allotted slots per position, respectively. The percentiles are as follows:
 
 ```{r "fdv percentiles"}
-fantasy_draft_values_season_8 |>
+percentiles <- fantasy_draft_values_season_8 |>
   drop_na(position) |>
   group_by(
     position
@@ -749,11 +749,37 @@ fantasy_draft_values_season_8 |>
       position,
       levels = c("F", "D", "G")
     )
+  )
+
+q75_F <- percentiles |>
+  filter(
+    position == "F"
+  ) |> select(
+    q75
   ) |>
+  pull()
+
+q75_D <- percentiles |>
+  filter(
+    position == "D"
+  ) |> select(
+    q75
+  ) |>
+  pull()
+
+q75_G <- percentiles |>
+  filter(
+    position == "G"
+  ) |> select(
+    q75
+  ) |>
+  pull()
+  
+percentiles |>
   datatable()
 ```
 
-Therefore, the salary cap is computed as `6*(27.5) + 4*(22) + 2*(20.75) = 294.5`, which we will round up to a nice clean `300`.
+Therefore, the salary cap is computed as 6\*`r q75_F` + 4\*`r q75_D` + 2\*`r q75_G` = `r 6*q75_F + 4*q75_D + 2*q75_G`, which we will round up to `300` for a treat.
 
 # 2025-2026 Season
 
