@@ -12,6 +12,7 @@ library(DT)
 ```
 
 ```{r "source"}
+# source("./R/pull_data.R")
 # source("./R/assign_fantasy_draft_value_2025.R")
 # source("./R/assign_fantasy_draft_value_2026.R")
 ```
