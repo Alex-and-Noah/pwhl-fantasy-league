@@ -1,10 +1,12 @@
 ---
-title: "UNDER DEVELOPMENT"
+title: "UNDER DEVELOPMENT UNTIL PRESEASON STARTS"
 execute:
   echo: false
   warning: false
   error: false
 ---
+
+Due to how we acquire and clean the PWHL API data, this website currently includes the newly-drafted fantasy teams for the 2026-2027 PWHL Fantasy League season with player stats taken from the 2025-2026 PWHL regular season. Once the first day of the 2026-2027 PWHL Pre-season is over, this website will (or should) reflect the actual live stats of the drafted players.
 
 ```{r "Pull data"}
 # source("R/pull_data.R")
