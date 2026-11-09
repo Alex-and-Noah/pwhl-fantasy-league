@@ -60,7 +60,7 @@
     "href": "fantasy_draft_data.html#value-cap",
     "title": "Fantasy Draft Data",
     "section": "Value Cap",
-    "text": "Value Cap\nTo determine the value cap for the Fantasy League draft, we find the 75th percentile of FDVs by position and multiply these by the number of allotted slots per position, respectively. The percentiles are as follows:\n\n\n\n\n\n\nTherefore, the salary cap is computed as 6*62 + 4*60 + 2*15.75 = 643.5, which we will round up to 300 for a treat."
+    "text": "Value Cap\nTo determine the value cap for the Fantasy League draft, we find the 75th percentile of FDVs by position and multiply these by the number of allotted slots per position, respectively. The percentiles are as follows:\n\n\n\n\n\n\nTherefore, the salary cap is computed as 6*62 + 4*60 + 2*4 = 620, which we will round up to 300 for a treat."
   },
   {
     "objectID": "fantasy_draft_data.html#fppfp-vs.-fdv",
@@ -68,6 +68,13 @@
     "title": "Fantasy Draft Data",
     "section": "FP/PFP vs. FDV",
     "text": "FP/PFP vs. FDV\n\nNon-rookiesRookies"
+  },
+  {
+    "objectID": "fantasy_draft_data.html#plots",
+    "href": "fantasy_draft_data.html#plots",
+    "title": "Fantasy Draft Data",
+    "section": "Plots",
+    "text": "Plots"
   },
   {
     "objectID": "fantasy_draft_data.html#fantasy-teams",
@@ -81,6 +88,6 @@
     "href": "index.html",
     "title": "UNDER DEVELOPMENT UNTIL PRESEASON STARTS",
     "section": "",
-    "text": "Due to how we acquire and clean the PWHL API data, this website currently includes the newly-drafted fantasy teams for the 2026-2027 PWHL Fantasy League season with player stats taken from the 2025-2026 PWHL regular season. Once the first day of the 2026-2027 PWHL Pre-season is over, this website will (or should) reflect the actual live stats of the drafted players.\n\n\n\n\n\n  \n    \n      Today's games (April 25, 2026)\n    \n    \n    \n      \n      Away\n      \n      \n      \n      Home\n      \n    \n  \n  \n    NY\n\n0\nFinal\n4\n\nBOS\n    TOR\n\n0\nFinal\n3\n\nOTT\n    MIN\n\n3\nFinal OT\n4\n\nVAN\n    MTL\n\n2\nFinal SO\n1\n\nSEA\n  \n  \n\n\n\n\n\nStandings\n\n\n\n\n\n  \n    \n      \n      Team Name\n      \n      Points\n    \n  \n  \n    \n2-Body Check Problem\n\n649.5 (+25.65)\n    \nDire Straights\n\n562.2 (+14.25)\n    \nSHOOTERS SHOOT\n\n556.35 (+18.2)\n    \nNog's Bologs\n\n546.9 (+17.55)\n    \nIn Her Prime\n\n536.55 (+18.5)\n    \nI Support Women's Wrongs\n\n436.3 (+15)\n  \n  \n\n\n\n\n\n\n\n\n\n\n\nTrades\nNo trades yet\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNext game day\nApr 25, 2026\nBOS @ NY, Final\nOTT @ TOR, Final\nVAN @ MIN, Final OT\nSEA @ MTL, Final SO\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLast update\nNov. 09, '26, 15:39\n\n\n\n\n\n\n\n\n\n\n\n Back to top"
+    "text": "Due to how we acquire and clean the PWHL API data, this website currently includes the newly-drafted fantasy teams for the 2026-2027 PWHL Fantasy League season with player stats taken from the 2025-2026 PWHL regular season. Once the first day of the 2026-2027 PWHL Pre-season is over, this website will (or should) reflect the actual live stats of the drafted players.\n\n\n\n\n\n  \n    \n      Today's games (April 25, 2026)\n    \n    \n    \n      \n      Away\n      \n      \n      \n      Home\n      \n    \n  \n  \n    NY\n\n0\nFinal\n4\n\nBOS\n    TOR\n\n0\nFinal\n3\n\nOTT\n    MIN\n\n3\nFinal OT\n4\n\nVAN\n    MTL\n\n2\nFinal SO\n1\n\nSEA\n  \n  \n\n\n\n\n\nStandings\n\n\n\n\n\n  \n    \n      \n      Team Name\n      \n      Points\n    \n  \n  \n    \n2-Body Check Problem\n\n649.5 (+25.65)\n    \nDire Straights\n\n562.2 (+14.25)\n    \nSHOOTERS SHOOT\n\n556.35 (+18.2)\n    \nNog's Bologs\n\n546.9 (+17.55)\n    \nIn Her Prime\n\n536.55 (+18.5)\n    \nI Support Women's Wrongs\n\n436.3 (+15)\n  \n  \n\n\n\n\n\n\n\n\n\n\n\nTrades\nNo trades yet\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNext game day\nApr 25, 2026\nBOS @ NY, Final\nOTT @ TOR, Final\nVAN @ MIN, Final OT\nSEA @ MTL, Final SO\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLast update\nNov. 09, '26, 18:59\n\n\n\n\n\n\n\n\n\n\n\n Back to top"
   }
 ]
