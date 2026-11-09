@@ -182,10 +182,22 @@ all_skaters_season_8 <- bind_rows(
       1 * (assists - short_handed_assists) +
       2 * short_handed_assists +
       0.1 * shots +
-      0.1 * shots_blocked_by_player,
+      0.1 * shots_blocked_by_player +
+      2 * wins +
+      1 * ot_losses,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
-    projected_fantasy_points = 30 * fantasy_points_per_game
+    projected_fantasy_points = 30 * fantasy_points_per_game,
+    old_fantasy_points = 2 *
+      (goals - short_handed_goals) +
+      3 * short_handed_goals +
+      1 * (assists - short_handed_assists) +
+      2 * short_handed_assists +
+      0.1 * shots +
+      0.1 * shots_blocked_by_player,
+    # 0.05*faceoff_wins,
+    old_fantasy_points_per_game = old_fantasy_points / games_played,
+    old_projected_fantasy_points = 30 * old_fantasy_points_per_game
   ) |>
   select(
     name,
@@ -193,12 +205,20 @@ all_skaters_season_8 <- bind_rows(
     rookie,
     position,
     goals,
+    short_handed_goals,
     assists,
+    short_handed_assists,
     shots,
-    fantasy_points,
+    shots_blocked_by_player,
+    wins,
+    ot_losses,
     games_played,
+    fantasy_points,
     fantasy_points_per_game,
-    projected_fantasy_points
+    projected_fantasy_points,
+    old_fantasy_points,
+    old_fantasy_points_per_game,
+    old_projected_fantasy_points
   )
 
 all_goalies_season_8 <- bind_rows(
@@ -209,21 +229,36 @@ all_goalies_season_8 <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
+    fantasy_points = 1 *
+      shutouts +
+      0.05 * (shots - goals_against) +
+      2 * wins +
+      1 * ot_losses,
     fantasy_points_per_game = fantasy_points / games_played,
-    projected_fantasy_points = fantasy_points
+    projected_fantasy_points = fantasy_points_per_game,
+    old_fantasy_points = 1 *
+      shutouts +
+      0.05 * (shots - goals_against),
+    old_fantasy_points_per_game = old_fantasy_points / games_played,
+    old_projected_fantasy_points = old_fantasy_points_per_game
   ) |>
   select(
     name,
     team_code,
     rookie,
     position,
+    shutouts,
     shots,
     goals_against,
-    fantasy_points,
+    wins,
+    ot_losses,
     games_played,
+    fantasy_points,
     fantasy_points_per_game,
-    projected_fantasy_points
+    projected_fantasy_points,
+    old_fantasy_points,
+    old_fantasy_points_per_game,
+    old_projected_fantasy_points
   )
 
 fantasy_draft_values_season_8 <- bind_rows(
@@ -235,7 +270,10 @@ fantasy_draft_values_season_8 <- bind_rows(
       position,
       fantasy_points,
       fantasy_points_per_game,
-      projected_fantasy_points
+      projected_fantasy_points,
+      old_fantasy_points,
+      old_fantasy_points_per_game,
+      old_projected_fantasy_points
     ),
   all_goalies_season_8 |>
     select(
@@ -245,7 +283,10 @@ fantasy_draft_values_season_8 <- bind_rows(
       position,
       fantasy_points,
       fantasy_points_per_game,
-      projected_fantasy_points
+      projected_fantasy_points,
+      old_fantasy_points,
+      old_fantasy_points_per_game,
+      old_projected_fantasy_points
     ),
   draft_order
 ) %>%
@@ -271,7 +312,10 @@ fantasy_draft_values_season_8 <- bind_rows(
       rookie = -1,
       fantasy_points = 0,
       fantasy_points_per_game = 0,
-      projected_fantasy_points = 0
+      projected_fantasy_points = 0,
+      old_fantasy_points = 0,
+      old_fantasy_points_per_game = 0,
+      old_projected_fantasy_points = 0
     )
   )
 
@@ -500,6 +544,34 @@ fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8_forwards
         ),
         1
       )
+    ),
+    old_fantasy_draft_value = case_when(
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          old_projected_fantasy_points
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
+        round(
+          exp(
+            coef(model_f)[[1]] +
+              coef(model_f)[[2]] *
+                (1 +
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_f - 1) /
+                    (max(overall_draft_position_squished)))
+          )
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position != 0 ~ 1,
+      .default = pmax(
+        round(
+          old_projected_fantasy_points
+        ),
+        1
+      )
     )
   ) |>
   select(
@@ -509,7 +581,9 @@ fantasy_draft_values_season_8_forwards <- fantasy_draft_values_season_8_forwards
     position,
     overall_draft_position,
     projected_fantasy_points,
-    fantasy_draft_value
+    fantasy_draft_value,
+    old_projected_fantasy_points,
+    old_fantasy_draft_value
   )
 
 fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defenders |>
@@ -541,6 +615,34 @@ fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defende
         ),
         1
       )
+    ),
+    old_fantasy_draft_value = case_when(
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          old_projected_fantasy_points
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
+        round(
+          exp(
+            coef(model_d)[[1]] +
+              coef(model_d)[[2]] *
+                (1 +
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_d - 1) /
+                    (max(overall_draft_position_squished)))
+          )
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position != 0 ~ 1,
+      .default = pmax(
+        round(
+          old_projected_fantasy_points
+        ),
+        1
+      )
     )
   ) |>
   select(
@@ -550,7 +652,9 @@ fantasy_draft_values_season_8_defenders <- fantasy_draft_values_season_8_defende
     position,
     overall_draft_position,
     projected_fantasy_points,
-    fantasy_draft_value
+    fantasy_draft_value,
+    old_projected_fantasy_points,
+    old_fantasy_draft_value
   )
 
 fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8_goalies |>
@@ -582,6 +686,34 @@ fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8_goalies |
         ),
         1
       )
+    ),
+    old_fantasy_draft_value = case_when(
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          old_projected_fantasy_points
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
+        round(
+          exp(
+            coef(model_g)[[1]] +
+              coef(model_g)[[2]] *
+                (1 +
+                  (overall_draft_position_squished - 1) *
+                    (n_rookies_last_year_g - 1) /
+                    (max(overall_draft_position_squished)))
+          )
+        ),
+        1
+      ),
+      rookie == -1 & overall_draft_position != 0 ~ 1,
+      .default = pmax(
+        round(
+          old_projected_fantasy_points
+        ),
+        1
+      )
     )
   ) |>
   select(
@@ -591,7 +723,9 @@ fantasy_draft_values_season_8_goalies <- fantasy_draft_values_season_8_goalies |
     position,
     overall_draft_position,
     projected_fantasy_points,
-    fantasy_draft_value
+    fantasy_draft_value,
+    old_projected_fantasy_points,
+    old_fantasy_draft_value
   )
 
 fantasy_draft_values_season_8 <- bind_rows(
@@ -605,7 +739,9 @@ fantasy_draft_values_season_8 <- bind_rows(
       overall_draft_position = 0,
       overall_draft_position_squished = 0,
       projected_fantasy_points = 0,
-      fantasy_draft_value = 0
+      fantasy_draft_value = 0,
+      old_projected_fantasy_points = 0,
+      old_fantasy_draft_value = 0
     )
   )
 
@@ -689,7 +825,9 @@ fantasy_draft_values_with_points_season_8 <- fantasy_draft_values_season_8 |>
       overall_draft_position = 0,
       overall_draft_position_squished = 0,
       projected_fantasy_points = 0,
-      fantasy_draft_value = 1
+      fantasy_draft_value = 1,
+      old_projected_fantasy_points = 0,
+      old_fantasy_draft_value = 1
     )
   ) |>
   select(

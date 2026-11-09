@@ -158,10 +158,11 @@ all_skaters_season_5 <- bind_rows(
       1 * (assists - short_handed_assists) +
       2 * short_handed_assists +
       0.1 * shots +
-      0.1 * shots_blocked_by_player,
+      0.1 * shots_blocked_by_player +
+      2 * wins +
+      1 * ot_losses,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
-    fantasy_points_per_game = fantasy_points / max(5, games_played),
     projected_fantasy_points = 30 * fantasy_points_per_game
   ) |>
   select(
@@ -170,8 +171,13 @@ all_skaters_season_5 <- bind_rows(
     rookie,
     position,
     goals,
+    short_handed_goals,
     assists,
+    short_handed_assists,
     shots,
+    shots_blocked_by_player,
+    wins,
+    ot_losses,
     fantasy_points,
     games_played,
     fantasy_points_per_game,
@@ -186,9 +192,12 @@ all_goalies_season_5 <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
+    fantasy_points = 1 *
+      shutouts +
+      0.05 * (shots - goals_against) +
+      2 * wins +
+      1 * ot_losses,
     fantasy_points_per_game = fantasy_points / games_played,
-    fantasy_points_per_game = fantasy_points / max(5, games_played),
     projected_fantasy_points = fantasy_points
   ) |>
   select(
@@ -196,8 +205,11 @@ all_goalies_season_5 <- bind_rows(
     team_code,
     rookie,
     position,
+    shutouts,
     shots,
     goals_against,
+    wins,
+    ot_losses,
     fantasy_points,
     games_played,
     fantasy_points_per_game,
@@ -612,7 +624,9 @@ all_skaters_season_8 <- bind_rows(
       1 * (assists - short_handed_assists) +
       2 * short_handed_assists +
       0.1 * shots +
-      0.1 * shots_blocked_by_player,
+      0.1 * shots_blocked_by_player +
+      2 * wins +
+      1 * ot_losses,
     # 0.05*faceoff_wins,
     fantasy_points_per_game = fantasy_points / games_played,
     projected_fantasy_points = 30 * fantasy_points_per_game
@@ -623,8 +637,13 @@ all_skaters_season_8 <- bind_rows(
     rookie,
     position,
     goals,
+    short_handed_goals,
     assists,
+    short_handed_assists,
     shots,
+    shots_blocked_by_player,
+    wins,
+    ot_losses,
     fantasy_points,
     games_played,
     fantasy_points_per_game,
@@ -639,7 +658,11 @@ all_goalies_season_8 <- bind_rows(
   )
 ) |>
   mutate(
-    fantasy_points = 1 * shutouts + 0.05 * (shots - goals_against),
+    fantasy_points = 1 *
+      shutouts +
+      0.05 * (shots - goals_against) +
+      2 * wins +
+      1 * ot_losses,
     fantasy_points_per_game = fantasy_points / games_played,
     projected_fantasy_points = fantasy_points
   ) |>
@@ -648,8 +671,11 @@ all_goalies_season_8 <- bind_rows(
     team_code,
     rookie,
     position,
+    shutouts,
     shots,
     goals_against,
+    wins,
+    ot_losses,
     fantasy_points,
     games_played,
     fantasy_points_per_game,
