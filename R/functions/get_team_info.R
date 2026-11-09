@@ -192,6 +192,7 @@ get_team_stats <- function(
             name
           ) |>
           select(
+            name,
             win,
             ot_loss
           ) |>
@@ -284,6 +285,7 @@ get_team_stats <- function(
             toi != "0"
           ) |>
           select(
+            name,
             win,
             ot_loss
           ) |>
