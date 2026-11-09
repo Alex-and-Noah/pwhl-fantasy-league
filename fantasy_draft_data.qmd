@@ -1027,6 +1027,28 @@ ggplot(
 
 ::: -->
 
+## Plots
+
+```{r}
+fantasy_draft_values_season_8 |>
+  mutate(
+    fdv_new_minus_old = fantasy_draft_value - old_fantasy_draft_value
+  ) |>
+  select(
+    position,
+    team_code,
+    fdv_new_minus_old
+  ) |>
+  ggplot(
+    aes(
+      team_code,
+      position,
+      fill= fdv_new_minus_old
+    )
+  ) + 
+    geom_tile()
+```
+
 ## Fantasy teams
 
 Suppose the teams that were drafted during the 2025-2026 fantasy season included the FDVs for that season. We can compare the sum of these FDVs, representing the 'cost' of the fantasy team, against the FP output of the team throughout the season.
