@@ -17,7 +17,9 @@ invisible(
   )
 )
 
-dir.create("data")
+if (!dir.exists("data")) {
+  dir.create("data")
+}
 
 environment(custom_gt_split) <- asNamespace('gt')
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
