@@ -31,6 +31,10 @@ Due to a mistake in the code (Noah), the retroactive application of the new fant
 For those participating in the league, rest assured that nothing will change for the 2026-2027 season: all assigned FDVs will remain as is and the Fantasy Team Value cap will not change.
 :::
 
+::: {.callout-note}
+If you are interested, you can see how the FDV's would have looked under the full scoring scheme [here](https://alex-and-noah.github.io/pwhl-fantasy-league/pr-preview/pr-77/fantasy_draft_data.html).
+:::
+
 # 2026-2027 Season
 
 ```{r "2025 - variables"}
