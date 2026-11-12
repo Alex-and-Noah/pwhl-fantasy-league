@@ -16,6 +16,10 @@ To confirm your registration in the League, please follow these steps:
 
 🕐 **Deadline:** You can use all of November's pre-season games to scout your roster and aim to lock it in by **December 1st, 2026**! After this date, the Google Sheet will be 👁️**View Only**👁️<br>
 
+::: {.callout-warning}
+The 2026-2027 PWHL Roster in the Google Sheet is not a live roster and has to be updated manually. This means that some of the roster info may be subject to change if any were to occur in the actual PWHL rosters, for example, if a trade or a new signing occurs. The Google Sheet will be updated on November 24th and again on December 1st. If the December 1st refresh causes issues with any of the drafted teams, we will make sure your intentions are still reflected in your drafted team.
+:::
+
 🏆 **Prize pool:** We are introducing an optional 50/50 prize pool for the Fantasy League this year. For all of the money included in the prize pool, 50% of that amount will go to the winner of the Fantasy League and 50% will go to the [Ottawa Humane Society](https://www.ottawahumane.ca/). The prize pool is optional however if you don't contribute you are not eligible to win the 50/50. If you wish to participate, e-transfer $10 to Noah at **noah.bolohan@gmail.com** before you complete your response to the Google Form.
 
 🤔 **Questions:** Text or email Alex or Noah (noah.bolohan@gmail.com) if you need any help making a team or have any questions.
@@ -38,7 +42,7 @@ Your fantasy team's score is updated daily with data from the previous day's gam
 
 | Skaters        | Goalies |
 | ------------- |-------------|
-| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\*      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\* |
+| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/any win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\*      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/any win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\* |
 
 \*Note that if your play did not play in a game in which their team won, they will *not* contribute points to your score (this includes dressed goalies that did not get subbed in).
 

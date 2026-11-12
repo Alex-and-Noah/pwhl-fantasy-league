@@ -21,9 +21,19 @@ For the 2026-2027 season, we are making two changes to the fantasy league regard
 
 | Skaters        | Goalies |
 | ------------- |-------------|
-| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss |
+| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/any win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/any win<br>😖 0 pts/loss<br>🥇 1 pt/OT loss |
 
 Second, all PWHL players will be assigned a **Fantasy Draft Value (FDV)**, and a **Value Cap** will be imposed to the fantasy teams that will be drafted this year. The FDV will be computed based on the new fantasy point structure applied retroactively to the 2025-2026 season.
+
+::: {.callout-warning}
+Due to a mistake in the code (Noah), the retroactive application of the new fantasy point structure did not take into consideration wins and overtime losses. Therefore, FDVs below and corresponding comparisons are only assigned based on the individual statistics of a player (everything above that's not wins or overtime losses). However, throughout the season, drafted Fantasy Teams will still accrue points for the wins and overtime losses in which their players participated. When referring to @sec-fantasy_teams, this is why every team exhibits a very large gain in points relative to the cost of their drafted team. This behaviour happen again in the 2026-2027 season but we will discuss this issue further in the next off-season.
+
+For those participating in the league, rest assured that nothing will change for the 2026-2027 season: all assigned FDVs will remain as is and the Fantasy Team Value cap will not change.
+:::
+
+::: {.callout-note}
+If you are interested, you can see how the FDV's would have looked under the full scoring scheme [here](https://alex-and-noah.github.io/pwhl-fantasy-league/pr-preview/pr-77/fantasy_draft_data.html).
+:::
 
 # 2026-2027 Season
 
@@ -1027,7 +1037,7 @@ ggplot(
 
 ::: -->
 
-## Fantasy teams
+## Fantasy teams {#sec-fantasy_teams}
 
 Suppose the teams that were drafted during the 2025-2026 fantasy season included the FDVs for that season. We can compare the sum of these FDVs, representing the 'cost' of the fantasy team, against the FP output of the team throughout the season.
 
