@@ -42,7 +42,7 @@ Your fantasy team's score is updated daily with data from the previous day's gam
 
 | Skaters        | Goalies |
 | ------------- |-------------|
-| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\*      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\* |
+| 🏒 2 pts/goal<br>🤝 1 pt/assist<br>🎯 0.1 pts/shot<br>⛔ 0.1 pts/blocked shot<br>✨ 2 pts/any win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\*      | 🧱 1 pt/shutout<br>⛔ 0.05 pts/save<br>✨ 2 pts/any win\*<br>😖 0 pts/loss\*<br>🥇 1 pt/OT loss\* |
 
 \*Note that if your play did not play in a game in which their team won, they will *not* contribute points to your score (this includes dressed goalies that did not get subbed in).
 
