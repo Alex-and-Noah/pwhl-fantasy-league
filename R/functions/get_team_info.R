@@ -2,6 +2,7 @@ library(dplyr)
 library(purrr)
 library(jsonlite)
 library(stringr)
+library(cli)
 
 #' @title  **Get all PWHL team's info'**
 #' @description Get all PWHL player team's info'
@@ -9,6 +10,10 @@ library(stringr)
 #' @param season_id Current season ID
 #' @return data.frames of PWHL team's info
 #' @import dplyr
+#' @import purrr
+#' @import jsonlite
+#' @import stringr
+#' @import cli
 #' @export
 #' #' #' @examples
 #' \donttest{
@@ -18,6 +23,8 @@ library(stringr)
 get_team_info <- function(
   season_id
 ) {
+  cli_alert_info("Getting PWHL team info for season {season_id}...")
+
   team_info <- pwhl_teams(
     season_id = season_id
   )

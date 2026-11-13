@@ -1,5 +1,6 @@
 library(dplyr)
 library(magrittr)
+library(cli)
 
 #' @title  **Get PWHL player boxes per game**
 #' @description Get PWHL player boxes per game
@@ -9,6 +10,7 @@ library(magrittr)
 #' @return Player boxes per game appended with fantasy points earned
 #' @import dplyr
 #' @import magrittr
+#' @import cli
 #' @export
 
 get_player_boxes_per_game <- function(
@@ -17,6 +19,9 @@ get_player_boxes_per_game <- function(
   player_boxes_per_game <- list()
 
   for (game_id_iterator in current_schedule$game_id) {
+    cli_alert_info(
+      "Getting PWHL player box info for game {game_id_iterator} ({first(current_schedule$game_id)} to {last(current_schedule$game_id)})..."
+    )
     player_boxes_per_game[[game_id_iterator]] <- pwhl_player_box(
       game_id = game_id_iterator
     )
