@@ -87,6 +87,7 @@ get_team_info <- function(
 library(dplyr)
 library(magrittr)
 library(purrr)
+library(cli)
 
 #' @title  **Get PWHL Team Stats**
 #' @description Get stats of all players in the PWHL
@@ -97,6 +98,8 @@ library(purrr)
 #' @return data.frame of player stats
 #' @import dplyr
 #' @import magrittr
+#' @import purrr
+#' @import cli
 #' @export
 
 get_team_stats <- function(
@@ -120,6 +123,8 @@ get_team_stats <- function(
     team_stats[[
       team_code
     ]] <- list()
+
+    cli_alert_info("Getting {team_code} skaters for season {season_id}...")
 
     # here we use our modified functions
     team_stats[[
@@ -209,6 +214,8 @@ get_team_stats <- function(
           ),
         by = "name"
       )
+
+    cli_alert_info("Getting {team_code} goalies for season {season_id}...")
 
     team_stats[[
       team_code
