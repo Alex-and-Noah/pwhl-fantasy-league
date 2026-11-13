@@ -6,6 +6,7 @@ library(ggimage)
 library(here)
 library(htmltools)
 library(glue)
+library(cli)
 
 invisible(
   lapply(

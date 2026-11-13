@@ -2,6 +2,7 @@ library(dplyr)
 library(tibble)
 library(purrr)
 library(glue)
+library(cli)
 
 #' @title  **Get PWHL Fantasy Teams and Points**
 #' @description Get PWHL Fantasy rosters, points to date and overall standings
@@ -23,6 +24,8 @@ get_fantasy_teams <- function(
   team_stats,
   player_boxes_per_game
 ) {
+  cli_alert_info("Getting PWHL Fantasy League Google Sheet...")
+
   df <- get_google_sheet(
     sheet_id = sheet_id
   )
@@ -61,6 +64,10 @@ get_fantasy_teams <- function(
     fantasy_teams[[
       df$team_name[[i]]
     ]] <- list()
+
+    cli_alert_info(
+      "Getting PWHL Fantasy Team info: {df$team_name[[i]]}..."
+    )
 
     fantasy_teams[[
       df$team_name[[i]]
