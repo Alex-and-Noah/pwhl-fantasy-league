@@ -3,6 +3,7 @@ library(purrr)
 library(stringr)
 library(lubridate)
 library(magrittr)
+library(cli)
 
 #' @title  **Get season schedules by Season ID from PWHL API**
 #' @description Get season schedules, generate season start and end dates, as well as season types,
@@ -14,6 +15,7 @@ library(magrittr)
 #' @import stringr
 #' @import lubridate
 #' @import magrittr
+#' @import cli
 #' @export
 
 get_season_schedules_by_id <- function() {
@@ -24,6 +26,8 @@ get_season_schedules_by_id <- function() {
   for (season_id_var in season_dates_and_types$season_id) {
     tryCatch(
       expr = {
+        cli_alert_info("Getting schedule for season {season_id_var}...")
+
         season_schedules_by_id[[
           as.character(
             season_id_var

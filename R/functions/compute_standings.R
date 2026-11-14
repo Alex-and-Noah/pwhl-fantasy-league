@@ -1,5 +1,6 @@
 library(dplyr)
 library(magrittr)
+library(cli)
 
 #' @title  **Compute PWHL Fantasy Team Standings**
 #' @description Compute PWHL fantasy team standings to date.
@@ -8,12 +9,15 @@ library(magrittr)
 #' @return A data frame with aggregated fantasy team standings
 #' @import dplyr
 #' @import magrittr
+#' @import cli
 #' @export
 
 compute_standings <- function(
   current_date,
   fantasy_teams
 ) {
+  cli_alert_info("Computing PWHL Fantasy League standings...")
+
   standings <- fantasy_teams %>%
     map(`[[`, 1) %>%
     bind_rows() |>

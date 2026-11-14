@@ -2,6 +2,7 @@ library(dplyr)
 library(purrr)
 library(jsonlite)
 library(stringr)
+library(cli)
 
 #' @title  **Get all PWHL team's info'**
 #' @description Get all PWHL player team's info'
@@ -9,6 +10,10 @@ library(stringr)
 #' @param season_id Current season ID
 #' @return data.frames of PWHL team's info
 #' @import dplyr
+#' @import purrr
+#' @import jsonlite
+#' @import stringr
+#' @import cli
 #' @export
 #' #' #' @examples
 #' \donttest{
@@ -18,6 +23,8 @@ library(stringr)
 get_team_info <- function(
   season_id
 ) {
+  cli_alert_info("Getting PWHL team info for season {season_id}...")
+
   team_info <- pwhl_teams(
     season_id = season_id
   )
@@ -80,6 +87,7 @@ get_team_info <- function(
 library(dplyr)
 library(magrittr)
 library(purrr)
+library(cli)
 
 #' @title  **Get PWHL Team Stats**
 #' @description Get stats of all players in the PWHL
@@ -90,6 +98,8 @@ library(purrr)
 #' @return data.frame of player stats
 #' @import dplyr
 #' @import magrittr
+#' @import purrr
+#' @import cli
 #' @export
 
 get_team_stats <- function(
@@ -113,6 +123,8 @@ get_team_stats <- function(
     team_stats[[
       team_code
     ]] <- list()
+
+    cli_alert_info("Getting {team_code} skaters for season {season_id}...")
 
     # here we use our modified functions
     team_stats[[
@@ -202,6 +214,8 @@ get_team_stats <- function(
           ),
         by = "name"
       )
+
+    cli_alert_info("Getting {team_code} goalies for season {season_id}...")
 
     team_stats[[
       team_code
