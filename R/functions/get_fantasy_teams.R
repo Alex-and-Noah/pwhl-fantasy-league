@@ -76,6 +76,7 @@ get_fantasy_teams <- function(
     ]] <- df[
       i,
       c(
+        "participant_name",
         "team_colour",
         "team_image",
         "trade_date",

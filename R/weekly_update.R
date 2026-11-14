@@ -14,6 +14,7 @@ WeeklyUpdate <- R6::R6Class(
   public = list(
     season_id = NULL,
     team = NULL,
+    name = NULL,
     roster_skaters = NULL,
     roster_goalies = NULL,
     this_week_roster = NULL,
@@ -103,6 +104,7 @@ WeeklyUpdate <- R6::R6Class(
         )
 
       self$team <- team
+      self$name <- self$fantasy_teams[[self$team]]$info$participant_name
       self$get_personalized_stats()
       self$get_all_data()
       self$make_email()
@@ -917,13 +919,9 @@ WeeklyUpdate <- R6::R6Class(
 
 Here is your weekly PWHL Fantasy League Update! This week's email is sponsored by Meadow and Rambouillet. Thank you to our sponsors!
 
-## Games
+## Your Overview
 
 During the week between {format(self$current_date-7, '%A, %B %d')} and {format(self$current_date, '%A, %B %d')} {self$team} had {unique_players} out of 12 players playing across {unique_games} game(s).
-
-{stringr::str_squish(as_raw_html(game_table))}
-
-## Points
 
 {stringr::str_squish(as_raw_html(fantasy_point_table))}
 
@@ -948,7 +946,7 @@ Your three stars of the week (3 top performing players) are
       ) |>
         saveRDS(
           file = glue::glue(
-            "data/emails/{name}.RDS"
+            "data/emails/{self$name}.RDS"
           )
         )
 
@@ -957,12 +955,14 @@ Your three stars of the week (3 top performing players) are
   )
 )
 
+
+# TODO change to local lookup table of team names and addresses
 season_id <- readRDS("data/season_id.RDS")
 
 for (team in readRDS(glue::glue("data/fantasy_teams_season_{season_id}.RDS")) |>
   names()) {
   WeeklyUpdate$new(
     team,
-    current_date = as.Date("2026-01-25")
+    current_date = as.Date("2026-04-25")
   )
 }
