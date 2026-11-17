@@ -17,7 +17,9 @@ invisible(
   )
 )
 
-dir.create("data")
+if (!dir.exists("data")) {
+  dir.create("data")
+}
 
 environment(custom_gt_split) <- asNamespace('gt')
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
@@ -107,14 +109,8 @@ saveRDS(
   file = glue("data/team_stats_season_{season_id}.RDS")
 )
 
-if (current_date == as.Date("2026-04-25")) {
-  sheet_id <- 0
-} else {
-  sheet_id <- 1240024666
-}
-
 fantasy_teams <- get_fantasy_teams(
-  sheet_id,
+  1240024666,
   season_id,
   current_schedule,
   current_date,

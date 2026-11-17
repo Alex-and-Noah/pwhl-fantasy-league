@@ -2,6 +2,7 @@ library(readr)
 library(stringr)
 library(data.table)
 library(lubridate)
+library(dplyr)
 
 #' @title  **Import a Google Sheet**
 #' @description Import a Google Sheet
@@ -61,7 +62,7 @@ get_google_sheet <- function(
 
   df <- read_csv(
     address,
-    col_names = c(""),
+    col_names = c("col_name"),
     col_types = cols(
       .default = "c"
     )

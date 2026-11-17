@@ -451,8 +451,11 @@ n_rookies_last_year_g <- fantasy_draft_values_season_5_goalies |>
 fantasy_draft_values_season_5_forwards <- fantasy_draft_values_season_5_forwards |>
   mutate(
     fantasy_draft_value = case_when(
-      rookie == 0 | rookie == 1 ~ round(
-        projected_fantasy_points
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
@@ -468,8 +471,11 @@ fantasy_draft_values_season_5_forwards <- fantasy_draft_values_season_5_forwards
         1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ 1,
-      .default = round(
-        projected_fantasy_points
+      .default = pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       )
     )
   ) |>
@@ -487,8 +493,11 @@ fantasy_draft_values_season_5_forwards <- fantasy_draft_values_season_5_forwards
 fantasy_draft_values_season_5_defenders <- fantasy_draft_values_season_5_defenders |>
   mutate(
     fantasy_draft_value = case_when(
-      rookie == 0 | rookie == 1 ~ round(
-        projected_fantasy_points
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
@@ -504,8 +513,11 @@ fantasy_draft_values_season_5_defenders <- fantasy_draft_values_season_5_defende
         1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ 1,
-      .default = round(
-        projected_fantasy_points
+      .default = pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       )
     )
   ) |>
@@ -523,8 +535,11 @@ fantasy_draft_values_season_5_defenders <- fantasy_draft_values_season_5_defende
 fantasy_draft_values_season_5_goalies <- fantasy_draft_values_season_5_goalies |>
   mutate(
     fantasy_draft_value = case_when(
-      rookie == 0 | rookie == 1 ~ round(
-        projected_fantasy_points
+      rookie == 0 | rookie == 1 ~ pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ pmax(
         round(
@@ -540,8 +555,11 @@ fantasy_draft_values_season_5_goalies <- fantasy_draft_values_season_5_goalies |
         1
       ),
       rookie == -1 & overall_draft_position_squished != 0 ~ 1,
-      .default = round(
-        projected_fantasy_points
+      .default = pmax(
+        round(
+          projected_fantasy_points
+        ),
+        1
       )
     )
   ) |>
