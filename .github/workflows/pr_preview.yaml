@@ -1,8 +1,5 @@
 name: Quarto PR Preview
 
-env:
-  TZ: 'America/Toronto'
-
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -37,6 +34,8 @@ jobs:
         with:
           r-version: '4.5.0'
 
+      - name: Set TZ in .Renviron
+        run: echo "TZ=America/Toronto" >> ~/.Renviron
     
       - name: Run inline R code
         shell: Rscript {0}
