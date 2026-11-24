@@ -17,7 +17,6 @@ compute_standings <- function(
   fantasy_teams
 ) {
   cli_alert_info("Computing PWHL Fantasy League standings...")
-
   standings <- fantasy_teams %>%
     map(`[[`, 1) %>%
     bind_rows() |>
