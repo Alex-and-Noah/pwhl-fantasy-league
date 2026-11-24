@@ -146,10 +146,3 @@ saveRDS(
 # pwhl_stats_fix
 # pwhl_team_roster
 # pwhl_teams
-
-generate_pwhl_roster_gt_table(
-  team_stats,
-  team_code,
-  team_info,
-  fantasy_teams
-)

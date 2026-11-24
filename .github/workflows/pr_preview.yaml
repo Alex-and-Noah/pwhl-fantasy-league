@@ -34,17 +34,6 @@ jobs:
         with:
           r-version: '4.5.0'
 
-      - name: Set TZ dynamically in R
-        shell: Rscript {0}
-        run: |
-          tz <- "America/Toronto" # Or determine dynamically in R
-          cat(paste0("TZ=", tz, "\n"), file = Sys.getenv("GITHUB_ENV"), append = TRUE)
-    
-      - name: Run inline R code
-        shell: Rscript {0}
-        run: |
-          Sys.time()
-
       - name: Cache R packages
         uses: actions/cache@v3
         with:
