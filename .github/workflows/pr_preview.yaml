@@ -38,8 +38,10 @@ jobs:
           r-version: '4.5.0'
 
     
-      - name: time
-        run: Rscript Sys.time()
+      - name: Run inline R code
+        shell: Rscript {0}
+        run: |
+          Sys.time()
 
       - name: Cache R packages
         uses: actions/cache@v3
