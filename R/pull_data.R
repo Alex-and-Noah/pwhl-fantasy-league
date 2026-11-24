@@ -28,9 +28,12 @@ environment(custom_gt_split) <- asNamespace('gt')
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
 current_date <- today(
-  tzone = "EST"
+  tzone = "America/Toronto"
 )
 
+print(now(tzone = "America/Toronto"))
+print(now(tzone = "EST"))
+print(now())
 
 # current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2026-01-25")
