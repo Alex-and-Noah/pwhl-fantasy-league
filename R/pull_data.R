@@ -8,8 +8,6 @@ library(htmltools)
 library(glue)
 library(cli)
 
-Sys.setenv(TZ = "America/Toronto")
-
 invisible(
   lapply(
     list.files(
@@ -30,10 +28,6 @@ assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 current_date <- today(
   tzone = "America/Toronto"
 )
-
-print(now(tzone = "America/Toronto"))
-print(now(tzone = "EST"))
-print(now())
 
 # current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2026-01-25")
