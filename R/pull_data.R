@@ -29,6 +29,7 @@ current_date <- today(
   tzone = "EST"
 )
 
+
 # current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2026-01-25")
 # current_date <- as.Date("2026-05-20")
@@ -43,6 +44,12 @@ season_id <- get_season_id_of_current_date(
 saveRDS(
   season_id,
   file = glue("data/season_id.RDS")
+)
+
+
+saveRDS(
+  current_date,
+  file = glue("data/current_date_season_{season_id}.RDS")
 )
 
 current_schedule <- season_schedules_by_id[[
