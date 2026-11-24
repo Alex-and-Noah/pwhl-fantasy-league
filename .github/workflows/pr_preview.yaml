@@ -1,5 +1,8 @@
 name: Quarto PR Preview
 
+env:
+  TZ: 'America/Toronto'
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
