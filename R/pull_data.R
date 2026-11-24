@@ -8,6 +8,8 @@ library(htmltools)
 library(glue)
 library(cli)
 
+Sys.setenv(TZ = "America/Toronto")
+
 invisible(
   lapply(
     list.files(
