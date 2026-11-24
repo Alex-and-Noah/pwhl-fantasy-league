@@ -18,10 +18,14 @@ get_player_boxes_per_game <- function(
 ) {
   player_boxes_per_game <- list()
 
+  current_schedule <- current_schedule |>
+    filter(game_status %in% c("Final", "Final SO", "Final OT"))
+
   for (game_id_iterator in current_schedule$game_id) {
     cli_alert_info(
       "Getting PWHL player box info for game {game_id_iterator} ({first(current_schedule$game_id)} to {last(current_schedule$game_id)})..."
     )
+    # browser()
     player_boxes_per_game[[game_id_iterator]] <- pwhl_player_box(
       game_id = game_id_iterator
     )

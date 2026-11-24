@@ -6,7 +6,7 @@ execute:
   error: false
 ---
 
-```{r "imports"}
+<!-- ```{r "imports"}
 library(here)
 library(purrr)
 library(knitr)
@@ -42,10 +42,10 @@ team_info <- readRDS(
 fantasy_teams <- readRDS(
   glue("data/fantasy_teams_season_{season_id}.RDS")
 )
-```
+``` -->
 
 ::: {.panel-tabset .nav-pills}
-```{r "team rosters"}
+<!-- ```{r "team rosters"}
 #| output: asis
 res <- purrr::map_chr(
   team_info$team_code,
@@ -91,4 +91,4 @@ res <- purrr::map_chr(
 
 cat(res, sep = "\n")
 ```
-:::
+::: -->

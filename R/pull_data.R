@@ -29,7 +29,7 @@ current_date <- today(
   tzone = "EST"
 )
 
-current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2026-01-25")
 # current_date <- as.Date("2026-05-20")
 
@@ -54,18 +54,6 @@ saveRDS(
   file = glue("data/current_schedule_season_{season_id}.RDS")
 )
 
-# current_date <- current_schedule |>
-#   select(
-#     game_date
-#   ) |>
-#   last() |>
-#   pull()
-
-saveRDS(
-  current_date,
-  file = glue("data/current_date_season_{season_id}.RDS")
-)
-
 next_game_day <- current_schedule |>
   filter(
     current_date <= game_date
@@ -75,6 +63,9 @@ next_game_day <- current_schedule |>
     game_date
   ) |>
   pull()
+
+current_schedule <- current_schedule |>
+  filter(game_status %in% c("Final", "Final SO", "Final OT"))
 
 saveRDS(
   next_game_day,
@@ -124,10 +115,12 @@ saveRDS(
   file = glue("data/fantasy_teams_season_{season_id}.RDS")
 )
 
+
 standings <- compute_standings(
   current_date,
   fantasy_teams
 )
+
 
 saveRDS(
   standings,
@@ -153,3 +146,10 @@ saveRDS(
 # pwhl_stats_fix
 # pwhl_team_roster
 # pwhl_teams
+
+generate_pwhl_roster_gt_table(
+  team_stats,
+  team_code,
+  team_info,
+  fantasy_teams
+)

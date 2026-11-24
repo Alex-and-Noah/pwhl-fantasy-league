@@ -74,6 +74,8 @@ compute_standings <- function(
       fantasy_points_yesterday
     )
 
+  # browser()
+
   standings_one_week_ago <- fantasy_teams %>%
     map(`[[`, 1) %>%
     bind_rows() |>
@@ -82,7 +84,7 @@ compute_standings <- function(
       fantasy_points_one_week_ago = !!sym(
         paste0(
           "fantasy_points_",
-          current_date - days(7)
+          max(current_date - days(7), current_schedule$game_date |> min())
         )
       )
     ) |>
