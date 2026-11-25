@@ -62,7 +62,7 @@ saveRDS(
 
 next_game_day <- current_schedule |>
   filter(
-    current_date <= game_date
+    current_date < game_date
   ) |>
   first() |>
   select(
