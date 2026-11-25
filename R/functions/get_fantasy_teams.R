@@ -64,7 +64,7 @@ get_fantasy_teams <- function(
     fantasy_teams[[
       df$team_name[[i]]
     ]] <- list()
-    # browser()
+
     cli_alert_info(
       "Getting PWHL Fantasy Team info: {df$team_name[[i]]}..."
     )

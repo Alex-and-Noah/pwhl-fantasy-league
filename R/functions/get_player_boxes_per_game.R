@@ -25,7 +25,7 @@ get_player_boxes_per_game <- function(
     cli_alert_info(
       "Getting PWHL player box info for game {game_id_iterator} ({first(current_schedule$game_id)} to {last(current_schedule$game_id)})..."
     )
-    # browser()
+
     player_boxes_per_game[[game_id_iterator]] <- pwhl_player_box(
       game_id = game_id_iterator
     )

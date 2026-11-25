@@ -73,8 +73,6 @@ compute_standings <- function(
       fantasy_points_yesterday
     )
 
-  # browser()
-
   standings_one_week_ago <- fantasy_teams %>%
     map(`[[`, 1) %>%
     bind_rows() |>
