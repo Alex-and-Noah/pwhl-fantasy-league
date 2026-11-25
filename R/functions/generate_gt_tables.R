@@ -200,28 +200,32 @@ generate_fantasy_roster_gt_table <- function(
             filter(
               Role == "F"
             ) |>
-            select(G)
+            select(G),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "F"
             ) |>
-            select(A)
+            select(A),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "F"
             ) |>
-            select(SH)
+            select(SH),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "F"
             ) |>
-            select(BLK)
+            select(BLK),
+          na.rm = TRUE
         ),
         NA,
         NA,
@@ -230,21 +234,24 @@ generate_fantasy_roster_gt_table <- function(
             filter(
               Role == "F"
             ) |>
-            select(W)
+            select(W),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "F"
             ) |>
-            select(OTL)
+            select(OTL),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "F"
             ) |>
-            select(Pts)
+            select(Pts),
+          na.rm = TRUE
         )
       ),
       c(
@@ -259,28 +266,32 @@ generate_fantasy_roster_gt_table <- function(
             filter(
               Role == "D"
             ) |>
-            select(G)
+            select(G),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "D"
             ) |>
-            select(A)
+            select(A),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "D"
             ) |>
-            select(SH)
+            select(SH),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "D"
             ) |>
-            select(BLK)
+            select(BLK),
+          na.rm = TRUE
         ),
         NA,
         NA,
@@ -289,21 +300,24 @@ generate_fantasy_roster_gt_table <- function(
             filter(
               Role == "D"
             ) |>
-            select(W)
+            select(W),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "D"
             ) |>
-            select(OTL)
+            select(OTL),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "D"
             ) |>
-            select(Pts)
+            select(Pts),
+          na.rm = TRUE
         )
       ),
       c(
@@ -322,35 +336,40 @@ generate_fantasy_roster_gt_table <- function(
             filter(
               Role == "G"
             ) |>
-            select(SVS)
+            select(SVS),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "G"
             ) |>
-            select(SO)
+            select(SO),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "G"
             ) |>
-            select(W)
+            select(W),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "G"
             ) |>
-            select(OTL)
+            select(OTL),
+          na.rm = TRUE
         ),
         sum(
           . |>
             filter(
               Role == "G"
             ) |>
-            select(Pts)
+            select(Pts),
+          na.rm = TRUE
         )
       ),
       c(
@@ -381,7 +400,7 @@ generate_fantasy_roster_gt_table <- function(
           na.rm = TRUE
         ),
         sum(
-          .$BLK,
+          .$SO,
           na.rm = TRUE
         ),
         sum(
@@ -413,126 +432,17 @@ generate_fantasy_roster_gt_table <- function(
       )
     )
 
-  # grp_replace(
-  #   grp_pull(
-  #     .,
-  #     which = 1
-  #   ) |> sub_missing(
-  #       everything(),
-  #       missing_text = "-"
-  #     ) |>
-  #     tab_header(
-  #       title = div(
-  #         HTML(
-  #           web_image(
-  #             fantasy_team_info$team_image
-  #           )
-  #         ),
-  #         div(
-  #           fantasy_team_name
-  #         ),
-  #         HTML(
-  #           web_image(
-  #             fantasy_team_info$team_image
-  #           )
-  #         ),
-  #         style = css(
-  #           `display` = "flex",
-  #           `justify-content` = "center",
-  #           `align-items` = "center"
-  #         )
-  #       )
-  #     ) |>
-  #     cols_label(
-  #       Name = "",
-  #       Logo = ""
-  #     ),
-  #   .which = 1
-  # ) %>%
-
-  # data |>
-  #   filter(
-  #     Name == "Overall team stats"
-  #   ) |>
-  #   select(
-  #     G,
-  #     A,
-  #     SH,
-  #     BLK,
-  #     SVS,
-  #     SO,
-  #     Pts
-  #   ) |>
-  #   rename(
-  #     "Goals (G)" = G,
-  #     "Assists (A)" = A,
-  #     "Shots (SH)" = SH,
-  #     "Blocked shots (BLK)" = BLK,
-  #     "Saves (SVS)" = SVS,
-  #     "Shutouts (SO)" = SO,
-  #     "Overall Points (Pts)" = Pts,
-  #   ) |>
-  #   mutate(
-  #     stat = "Value"
-  #   ) |>
-  #   pivot_longer(
-  #     cols = -stat,
-  #     names_to = "Stat",
-  #     values_to = "Value"
-  #   ) %>%
-  #   pivot_wider(
-  #     names_from = stat,
-  #     values_from = Value
-  #   ) |>
-  #   gt() |>
-  #   tab_header(
-  #     title = div(
-  #       HTML(
-  #         web_image(
-  #           fantasy_team_info$team_image
-  #         )
-  #       ),
-  #       div(
-  #         fantasy_team_name
-  #       ),
-  #       HTML(
-  #         web_image(
-  #           fantasy_team_info$team_image
-  #         )
-  #       ),
-  #       style = css(
-  #         `display` = "flex",
-  #         `justify-content` = "center",
-  #         `align-items` = "center"
-  #       )
-  #     )
-  #   ) |>
-  #   # cols_align(
-  #   #   align = "right",
-  #   #   columns = Stat
-  #   # ) |>
-  #   tab_options(
-  #     table.background.color = '#F5F5F5',
-  #     column_labels.background.color = '#2B2D42',
-  #     table.font.size = px(16),
-  #     table.border.top.color = 'transparent',
-  #     table.border.bottom.color = 'transparent',
-  #     table_body.hlines.color = 'transparent',
-  #     table_body.border.bottom.color = 'transparent',
-  #     column_labels.border.bottom.color = 'transparent',
-  #     column_labels.border.top.color = 'transparent'
-  #   ) |> opt_css(
-  #     css = '
-  #     table tr:nth-child(odd) {
-  #     background-color: #e0dedeff;
-  #     }
-  #     .gt_col_heading {
-  #     position: sticky !important;
-  #     top: 0px !important;
-  #     z-index: 10 !important;
-  #     }
-  #     '
-  #   )
+  weights <- c(
+    "Goals (G)" = 2,
+    "Assists (A)" = 1,
+    "Shots (SH)" = 0.1,
+    "Blocked shots (BLK)" = 0.1,
+    "Saves (SVS)" = 0.05,
+    "Shutouts (SO)" = 1,
+    "Wins (W)" = 2,
+    "Overtime Losses (OTL)" = 1,
+    "Overall Points (Pts)" = 0
+  )
 
   gt_table <- data |>
     gt() |>
@@ -542,28 +452,6 @@ generate_fantasy_roster_gt_table <- function(
         Logo
       )
     ) |>
-    # tab_header(
-    #   title = div(
-    #     HTML(
-    #       web_image(
-    #         fantasy_team_info$team_image
-    #       )
-    #     ),
-    #     div(
-    #       fantasy_team_name
-    #     ),
-    #     HTML(
-    #       web_image(
-    #         fantasy_team_info$team_image
-    #       )
-    #     ),
-    #     style = css(
-    #       `display` = "flex",
-    #       `justify-content` = "center",
-    #       `align-items` = "center"
-    #     )
-    #   )
-    # ) |>
     cols_hide(
       c(
         "#",
@@ -603,47 +491,6 @@ generate_fantasy_roster_gt_table <- function(
       column_labels.border.bottom.color = 'transparent',
       column_labels.border.top.color = 'transparent'
     ) |>
-    # tab_style(
-    #   style = list(
-    #     cell_fill(
-    #       color = '#2B2D42'
-    #     ),
-    #     cell_text(
-    #       color = "white"
-    #     )
-    #   ),
-    #   locations = cells_body(
-    #     rows = c(
-    #       nrow(
-    #         skaters |>
-    #           filter(
-    #             position == "F"
-    #           )
-    #       ) +
-    #         1,
-    #       nrow(
-    #         skaters
-    #       ) +
-    #         2,
-    #       nrow(
-    #         skaters
-    #       ) +
-    #         nrow(
-    #           goalies
-    #         ) +
-    #         3
-    #     )
-    #   )
-    # ) |>
-    # tab_style_body(
-    #   style = cell_borders(
-    #     sides = c('top', 'right', 'left', 'bottom'),
-    #     weight = px(0) # Remove row borders
-    #   ),
-    #   fn = function(x) {
-    #     is.numeric(x) | is.character(x)
-    #   }
-    # ) |>
     cols_label(
       Headshot = "",
       Logo = "Team"
@@ -714,16 +561,32 @@ generate_fantasy_roster_gt_table <- function(
           "Overall Points (Pts)" = Pts,
         ) |>
         mutate(
-          stat = "Value"
+          stat = "Count"
         ) |>
         pivot_longer(
           cols = -stat,
           names_to = "Stat",
-          values_to = "Value"
+          values_to = "Count"
         ) %>%
         pivot_wider(
           names_from = stat,
-          values_from = Value
+          values_from = Count
+        ) |>
+        mutate(
+          FP = as.numeric(Count) *
+            unlist(
+              weights
+            ),
+          Count = if_else(
+            Stat == "Overall Points (Pts)",
+            "",
+            Count
+          ),
+          FP = if_else(
+            Stat == "Overall Points (Pts)",
+            sum(FP),
+            FP
+          )
         ) |>
         gt() |>
         tab_header(
@@ -842,10 +705,6 @@ generate_fantasy_roster_gt_table <- function(
         opt_align_table_header(align = "left"),
       .which = 4
     )
-  # sub_missing(
-  #   everything(),
-  #   missing_text = "-"
-  # )
 
   return(
     gt_table
