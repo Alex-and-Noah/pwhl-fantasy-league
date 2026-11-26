@@ -699,6 +699,7 @@ data <- lapply(
 
 data |>
   datatable(
+    extensions = "FixedColumns",
     escape = FALSE,
     rownames = FALSE,
     options = list(
@@ -710,7 +711,10 @@ data |>
           visible = FALSE,
           targets = "team_colour"
         )
-      )
+      ),
+      dom = "t",
+      scrollX = TRUE,
+      fixedColumns = list(leftColumns = 1)
     )
   ) |>
   formatStyle(
