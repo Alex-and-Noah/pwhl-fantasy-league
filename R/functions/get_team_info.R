@@ -88,6 +88,7 @@ library(dplyr)
 library(magrittr)
 library(purrr)
 library(cli)
+library(glue)
 
 #' @title  **Get PWHL Team Stats**
 #' @description Get stats of all players in the PWHL
@@ -156,7 +157,79 @@ get_team_stats <- function(
         team_info = team_info,
         team_id = team_id,
         season_id = season_id
-      )
+      ) |>
+        filter(
+          position != "G"
+        )
+
+      team_stats[[
+        team_code
+      ]][[
+        "skaters"
+      ]] <- team_stats[[
+        team_code
+      ]][[
+        "skaters"
+      ]] |>
+        mutate(
+          "team_code" = team_code
+        ) |>
+        left_join(
+          player_boxes_per_game |>
+            lapply(
+              "[[",
+              "skaters"
+            ) |>
+            bind_rows() |>
+            group_by(
+              name
+            ) |>
+            select(
+              name,
+              toi,
+              goals,
+              assists,
+              shots,
+              blocked_shots,
+              win,
+              ot_loss
+            ) |>
+            rename(
+              ice_time_minutes_seconds = toi,
+              goal = goals,
+              assist = assists,
+              shot = shots,
+              shot_blocked_by_player = blocked_shots,
+            ) |>
+            mutate(
+              ice_time_per_game_avg = ice_time_minutes_seconds,
+            ) |>
+            summarise(
+              ice_time_minutes_seconds = first(ice_time_minutes_seconds),
+              ice_time_per_game_avg = first(ice_time_per_game_avg),
+              goals = sum(goal),
+              assists = sum(assist),
+              shots = sum(shot),
+              shots_blocked_by_player = sum(shot_blocked_by_player),
+              wins = sum(win),
+              ot_losses = sum(ot_loss)
+            ),
+          by = "name"
+        ) |>
+        mutate(
+          across(
+            where(
+              is.numeric
+            ),
+            ~ replace_na(.x, 0)
+          ),
+          across(
+            where(
+              is.character
+            ),
+            ~ replace_na(.x, "00:00")
+          )
+        )
     } else {
       team_stats[[
         team_code
@@ -182,6 +255,45 @@ get_team_stats <- function(
         filter(
           active == 1
         )
+
+      team_stats[[
+        team_code
+      ]][[
+        "skaters"
+      ]] <- team_stats[[
+        team_code
+      ]][[
+        "skaters"
+      ]] |>
+        left_join(
+          player_boxes_per_game |>
+            lapply(
+              "[[",
+              "skaters"
+            ) |>
+            bind_rows() |>
+            group_by(
+              name
+            ) |>
+            select(
+              name,
+              win,
+              ot_loss
+            ) |>
+            summarise(
+              wins = sum(win),
+              ot_losses = sum(ot_loss)
+            ),
+          by = "name"
+        ) |>
+        mutate(
+          across(
+            where(
+              is.numeric
+            ),
+            ~ replace_na(.x, 0)
+          )
+        )
     }
 
     team_stats[[
@@ -193,26 +305,39 @@ get_team_stats <- function(
     ]][[
       "skaters"
     ]] |>
-      left_join(
-        player_boxes_per_game |>
-          lapply(
-            "[[",
-            "skaters"
-          ) |>
-          bind_rows() |>
-          group_by(
-            name
-          ) |>
-          select(
+      mutate(
+        across(
+          c(
+            hometown,
+            birthdate,
+            position,
+            h,
             name,
-            win,
-            ot_loss
-          ) |>
-          summarise(
-            wins = sum(win),
-            ot_losses = sum(ot_loss)
+            hand,
+            league,
+            player_headshot,
+            "team_code",
+            ice_time_minutes_seconds,
+            ice_time_per_game_avg
           ),
-        by = "name"
+          as.character
+        ),
+        across(
+          -c(
+            hometown,
+            birthdate,
+            position,
+            h,
+            name,
+            hand,
+            league,
+            player_headshot,
+            "team_code",
+            ice_time_minutes_seconds,
+            ice_time_per_game_avg
+          ),
+          as.numeric
+        )
       )
 
     cli_alert_info("Getting {team_code} goalies for season {season_id}...")
@@ -246,7 +371,71 @@ get_team_stats <- function(
         team_info = team_info,
         team_id = team_id,
         season_id = season_id
-      )
+      ) |>
+        filter(
+          position == "G"
+        )
+
+      team_stats[[
+        team_code
+      ]][[
+        "goalies"
+      ]] <- team_stats[[
+        team_code
+      ]][[
+        "goalies"
+      ]] |>
+        mutate(
+          "team_code" = team_code
+        ) |>
+        left_join(
+          player_boxes_per_game |>
+            lapply(
+              "[[",
+              "goalies"
+            ) |>
+            bind_rows() |>
+            group_by(
+              name
+            ) |>
+            select(
+              name,
+              toi,
+              shots_against,
+              goals_against,
+              shutout,
+              win,
+              ot_loss
+            ) |>
+            rename(
+              minutes_played = toi,
+              shot = shots_against,
+              goal_against = goals_against
+            ) |>
+            summarise(
+              minutes_played = first(minutes_played),
+              shots = sum(shot),
+              goals_against = sum(goal_against),
+              shutouts = sum(shutout),
+              wins = sum(win),
+              ot_losses = sum(ot_loss)
+            ),
+          by = "name"
+        ) |>
+        mutate(
+          across(
+            where(
+              is.numeric
+            ),
+            ~ replace_na(.x, 0)
+          ),
+          across(
+            where(
+              is.character
+            ),
+            ~ replace_na(.x, "00:00")
+          )
+        )
     } else {
       team_stats[[
         team_code
@@ -271,6 +460,46 @@ get_team_stats <- function(
         filter(
           active == 1
         )
+
+      team_stats[[
+        team_code
+      ]][[
+        "goalies"
+      ]] <- team_stats[[
+        team_code
+      ]][[
+        "goalies"
+      ]] |>
+        left_join(
+          player_boxes_per_game |>
+            lapply(
+              "[[",
+              "goalies"
+            ) |>
+            bind_rows() |>
+            group_by(
+              name
+            ) |>
+            filter(
+              toi != "0"
+            ) |>
+            select(
+              name,
+              ot_loss
+            ) |>
+            summarise(
+              ot_losses = sum(ot_loss)
+            ),
+          by = "name"
+        ) |>
+        mutate(
+          across(
+            where(
+              is.numeric
+            ),
+            ~ replace_na(.x, 0)
+          )
+        )
     }
 
     team_stats[[
@@ -282,32 +511,37 @@ get_team_stats <- function(
     ]][[
       "goalies"
     ]] |>
-      select(
-        -wins
-      ) |>
-      left_join(
-        player_boxes_per_game |>
-          lapply(
-            "[[",
-            "goalies"
-          ) |>
-          bind_rows() |>
-          group_by(
-            name
-          ) |>
-          filter(
-            toi != "0"
-          ) |>
-          select(
+      mutate(
+        across(
+          c(
+            hometown,
+            birthdate,
+            position,
+            h,
             name,
-            win,
-            ot_loss
-          ) |>
-          summarise(
-            wins = sum(win),
-            ot_losses = sum(ot_loss)
+            hand,
+            league,
+            player_headshot,
+            "team_code",
+            minutes_played
           ),
-        by = "name"
+          as.character
+        ),
+        across(
+          -c(
+            position,
+            name,
+            hometown,
+            birthdate,
+            h,
+            hand,
+            league,
+            player_headshot,
+            "team_code",
+            minutes_played
+          ),
+          as.numeric
+        )
       )
   }
 
@@ -340,9 +574,17 @@ pwhl_stats_fix <- function(
 ) {
   tryCatch(
     expr = {
+      team_id_var <- team_id
+
+      team_code <- team_info |>
+        filter(
+          team_id == team_id_var
+        ) |>
+        pull(team_code)
+
       if (position == "goalie") {
         URL <- glue::glue(
-          "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team=all&position=goalies&rookies=0&statsType=expanded&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=gaa&league_id=1&lang=en&division=-1&qualified=all&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._5"
+          "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team={team_id}&position=goalies&rookies=0&statsType=expanded&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=gaa&league_id=1&lang=en&division=-1&qualified=all&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._5"
         )
 
         res <- httr::RETRY(
@@ -365,6 +607,22 @@ pwhl_stats_fix <- function(
         players <- data.frame()
 
         data <- r[[1]]$sections[[1]]$data
+
+        data <- discard(
+          data,
+          ~ length(.x$prop) == 0
+        )
+
+        if (
+          length(
+            data
+          ) ==
+            0
+        ) {
+          stop(glue::glue(
+            "Empty goalie roster for season {season_id}, team {team_code}. Defaulting to manual team stats creation."
+          ))
+        }
 
         for (y in 1:length(data)) {
           players <- dplyr::bind_rows(
@@ -427,6 +685,17 @@ pwhl_stats_fix <- function(
         players <- data.frame()
 
         data <- r[[1]]$sections[[1]]$data
+
+        if (
+          length(
+            data
+          ) ==
+            0
+        ) {
+          stop(glue::glue(
+            "Empty skater roster for season {season_id}, team {team_code}. Defaulting to manual team stats creation."
+          ))
+        }
 
         for (y in 1:length(data)) {
           players <- dplyr::bind_rows(
@@ -491,8 +760,15 @@ pwhl_stats_fix <- function(
       }
     },
     error = function(e) {
+      err_call <- conditionCall(e)
+      fn_name <- if (!is.null(err_call)) {
+        deparse(sys.calls()[[1]])
+      } else {
+        "Unknown"
+      }
+
       message(glue::glue(
-        "{Sys.time()}: Invalid season or no roster data available! Try a season from 2023 onwards!"
+        "{Sys.time()} - Error in function {fn_name}: {conditionMessage(e)}"
       ))
     },
     warning = function(w) {},

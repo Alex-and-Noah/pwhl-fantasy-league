@@ -62,3 +62,5 @@ dashboard.html
 
 static/data/*
 /draft_tool_data/
+
+/site_libs/

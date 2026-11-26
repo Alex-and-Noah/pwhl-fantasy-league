@@ -220,6 +220,29 @@ get_fantasy_teams <- function(
         unlist() |>
         sum()
     }
+
+    if (!(current_date %in% days_seq)) {
+      fantasy_teams[[
+        df$team_name[[i]]
+      ]][["info"]][[
+        paste0(
+          "fantasy_points_",
+          current_date
+        )
+      ]] <- max(
+        (fantasy_teams[[
+          df$team_name[[i]]
+        ]][[
+          "info"
+        ]][[
+          paste0(
+            "fantasy_points_",
+            current_date - 1
+          )
+        ]]),
+        0
+      )
+    }
   }
 
   saveRDS(

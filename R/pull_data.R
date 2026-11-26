@@ -26,10 +26,10 @@ environment(custom_gt_split) <- asNamespace('gt')
 assignInNamespace("gt_split", custom_gt_split, ns = "gt")
 
 current_date <- today(
-  tzone = "EST"
+  tzone = "America/Toronto"
 )
 
-current_date <- as.Date("2026-04-25")
+# current_date <- as.Date("2026-04-25")
 # current_date <- as.Date("2026-01-25")
 # current_date <- as.Date("2026-05-20")
 
@@ -45,6 +45,12 @@ saveRDS(
   file = glue("data/season_id.RDS")
 )
 
+
+saveRDS(
+  current_date,
+  file = glue("data/current_date_season_{season_id}.RDS")
+)
+
 current_schedule <- season_schedules_by_id[[
   season_id
 ]]$schedule
@@ -54,27 +60,18 @@ saveRDS(
   file = glue("data/current_schedule_season_{season_id}.RDS")
 )
 
-# current_date <- current_schedule |>
-#   select(
-#     game_date
-#   ) |>
-#   last() |>
-#   pull()
-
-saveRDS(
-  current_date,
-  file = glue("data/current_date_season_{season_id}.RDS")
-)
-
 next_game_day <- current_schedule |>
   filter(
-    current_date <= game_date
+    current_date < game_date
   ) |>
   first() |>
   select(
     game_date
   ) |>
   pull()
+
+current_schedule <- current_schedule |>
+  filter(game_status %in% c("Final", "Final SO", "Final OT"))
 
 saveRDS(
   next_game_day,
@@ -124,10 +121,12 @@ saveRDS(
   file = glue("data/fantasy_teams_season_{season_id}.RDS")
 )
 
+
 standings <- compute_standings(
   current_date,
   fantasy_teams
 )
+
 
 saveRDS(
   standings,

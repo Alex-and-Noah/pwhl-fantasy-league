@@ -29,15 +29,15 @@ season_id <- readRDS(
 )
 
 current_schedule <- readRDS(
-  glue("data/current_schedule_season_{season_id}.RDS")
+  glue::glue("data/current_schedule_season_{season_id}.RDS")
 )
 
 current_date <- readRDS(
-  glue("data/current_date_season_{season_id}.RDS")
+  glue::glue("data/current_date_season_{season_id}.RDS")
 )
 
 team_info <- readRDS(
-  glue("data/team_info_season_{season_id}.RDS")
+  glue::glue("data/team_info_season_{season_id}.RDS")
 )
 
 todays_games <- current_schedule |>
@@ -189,6 +189,11 @@ standings <- readRDS(
 )
 
 data <- standings |>
+  arrange(
+    desc(
+      fantasy_points
+    )
+  ) |>
   mutate(
     fantasy_points = paste0(
       round(
@@ -221,11 +226,6 @@ data <- standings |>
       "<img src=\"",
       team_image,
       "\" style=\"width:5vh;\">"
-    )
-  ) |>
-  arrange(
-    desc(
-      fantasy_points
     )
   )
   
