@@ -760,8 +760,15 @@ pwhl_stats_fix <- function(
       }
     },
     error = function(e) {
+      err_call <- conditionCall(e)
+      fn_name <- if (!is.null(err_call)) {
+        deparse(sys.calls()[[1]])
+      } else {
+        "Unknown"
+      }
+
       message(glue::glue(
-        "{Sys.time()}: {e}"
+        "{Sys.time()} - Error in function {fn_name}: {conditionMessage(e)}"
       ))
     },
     warning = function(w) {},
