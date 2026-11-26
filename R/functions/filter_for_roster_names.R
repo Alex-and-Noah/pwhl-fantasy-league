@@ -37,14 +37,14 @@ filter_for_roster_names <- function(
     list(
       skaters = team_stats %>%
         map_df(
-          ~filter(
+          ~ filter(
             .$skaters,
             name %in% player_names
           )
         ),
       goalies = team_stats %>%
         map_df(
-          ~filter(
+          ~ filter(
             .$goalies,
             name %in% player_names
           )
