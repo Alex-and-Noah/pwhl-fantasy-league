@@ -88,6 +88,7 @@ library(dplyr)
 library(magrittr)
 library(purrr)
 library(cli)
+library(glue)
 
 #' @title  **Get PWHL Team Stats**
 #' @description Get stats of all players in the PWHL
@@ -573,6 +574,14 @@ pwhl_stats_fix <- function(
 ) {
   tryCatch(
     expr = {
+      team_id_var <- team_id
+
+      team_code <- team_info |>
+        filter(
+          team_id == team_id_var
+        ) |>
+        pull(team_code)
+
       if (position == "goalie") {
         URL <- glue::glue(
           "https://lscluster.hockeytech.com/feed/index.php?feed=statviewfeed&view=players&season={season_id}&team={team_id}&position=goalies&rookies=0&statsType=expanded&rosterstatus=undefined&site_id=2&first=0&limit=20&sort=gaa&league_id=1&lang=en&division=-1&qualified=all&key=694cfeed58c932ee&client_code=pwhl&league_id=1&callback=angular.callbacks._5"
@@ -599,13 +608,20 @@ pwhl_stats_fix <- function(
 
         data <- r[[1]]$sections[[1]]$data
 
+        data <- discard(
+          data,
+          ~ length(.x$prop) == 0
+        )
+
         if (
           length(
-            data[[1]]$prop
+            data
           ) ==
             0
         ) {
-          stop("Empty roster")
+          stop(glue::glue(
+            "Empty goalie roster for season {season_id}, team {team_code}. Defaulting to manual team stats creation."
+          ))
         }
 
         for (y in 1:length(data)) {
@@ -669,6 +685,17 @@ pwhl_stats_fix <- function(
         players <- data.frame()
 
         data <- r[[1]]$sections[[1]]$data
+
+        if (
+          length(
+            data
+          ) ==
+            0
+        ) {
+          stop(glue::glue(
+            "Empty skater roster for season {season_id}, team {team_code}. Defaulting to manual team stats creation."
+          ))
+        }
 
         for (y in 1:length(data)) {
           players <- dplyr::bind_rows(
@@ -734,7 +761,7 @@ pwhl_stats_fix <- function(
     },
     error = function(e) {
       message(glue::glue(
-        "{Sys.time()}: Invalid season or no roster data available! Try a season from 2023 onwards!"
+        "{Sys.time()}: {e}"
       ))
     },
     warning = function(w) {},
