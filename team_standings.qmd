@@ -425,28 +425,32 @@ data <- lapply(
               filter(
                 Role == "F"
               ) |>
-              select(G)
+              select(G),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "F"
               ) |>
-              select(A)
+              select(A),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "F"
               ) |>
-              select(SH)
+              select(SH),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "F"
               ) |>
-              select(BLK)
+              select(BLK),
+              na.rm = TRUE
           ),
           NA,
           NA,
@@ -455,21 +459,24 @@ data <- lapply(
               filter(
                 Role == "F"
               ) |>
-              select(W)
+              select(W),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "F"
               ) |>
-              select(OTL)
+              select(OTL),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "F"
               ) |>
-              select(Pts)
+              select(Pts),
+              na.rm = TRUE
           )
         ),
         c(
@@ -482,28 +489,32 @@ data <- lapply(
               filter(
                 Role == "D"
               ) |>
-              select(G)
+              select(G),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "D"
               ) |>
-              select(A)
+              select(A),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "D"
               ) |>
-              select(SH)
+              select(SH),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "D"
               ) |>
-              select(BLK)
+              select(BLK),
+              na.rm = TRUE
           ),
           NA,
           NA,
@@ -512,21 +523,24 @@ data <- lapply(
               filter(
                 Role == "D"
               ) |>
-              select(W)
+              select(W),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "D"
               ) |>
-              select(OTL)
+              select(OTL),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "D"
               ) |>
-              select(Pts)
+              select(Pts),
+              na.rm = TRUE
           )
         ),
         c(
@@ -543,21 +557,24 @@ data <- lapply(
               filter(
                 Role == "G"
               ) |>
-              select(SVS)
+              select(SVS),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "G"
               ) |>
-              select(SO)
+              select(SO),
+              na.rm = TRUE
           ),
           sum(
             . |>
               filter(
                 Role == "G"
               ) |>
-              select(W)
+              select(W),
+              na.rm = TRUE
           ),
           sum(
             . |>
@@ -571,7 +588,8 @@ data <- lapply(
               filter(
                 Role == "G"
               ) |>
-              select(Pts)
+              select(Pts),
+              na.rm = TRUE
           )
         ),
         c(
@@ -600,7 +618,7 @@ data <- lapply(
             na.rm = TRUE
           ),
           sum(
-            .$BLK,
+            .$SO,
             na.rm = TRUE
           ),
           sum(
@@ -720,6 +738,11 @@ data |>
       data$team_colour,
       data$team_colour
     )
+  ) |>
+  formatStyle(
+    columns = names(data),
+    height = "61.61px",
+    lineHeight = "100%"
   )
 # gt() |>
 # text_transform(
