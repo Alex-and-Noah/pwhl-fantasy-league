@@ -741,7 +741,7 @@ data |>
   ) |>
   formatStyle(
     columns = names(data),
-    height = "61.61px",
+    height = "50px",
     lineHeight = "100%"
   )
 # gt() |>
