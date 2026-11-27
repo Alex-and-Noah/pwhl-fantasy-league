@@ -275,7 +275,7 @@ data |>
     after = team_image
   ) |>
   cols_width(
-    team_image ~ px(60)
+    team_image ~ px(80)
   ) |>
   cols_label(
     team_image = "",
@@ -326,7 +326,7 @@ data |>
     }
 
     .gt_table tbody tr {
-        height: 60px;
+        height: 80px;
       }
     "
   )
