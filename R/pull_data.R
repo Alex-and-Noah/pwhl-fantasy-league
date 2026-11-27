@@ -60,6 +60,16 @@ saveRDS(
   file = glue("data/current_schedule_season_{season_id}.RDS")
 )
 
+games_played <- current_schedule |>
+  filter(
+    game_status %in% c("Final", "Final SO", "Final OT")
+  )
+
+saveRDS(
+  games_played,
+  file = glue("data/games_played_season_{season_id}.RDS")
+)
+
 next_game_day <- current_schedule |>
   filter(
     current_date < game_date
@@ -69,9 +79,6 @@ next_game_day <- current_schedule |>
     game_date
   ) |>
   pull()
-
-current_schedule <- current_schedule |>
-  filter(game_status %in% c("Final", "Final SO", "Final OT"))
 
 saveRDS(
   next_game_day,
@@ -88,7 +95,7 @@ saveRDS(
 )
 
 player_boxes_per_game <- get_player_boxes_per_game(
-  current_schedule
+  games_played
 )
 
 saveRDS(

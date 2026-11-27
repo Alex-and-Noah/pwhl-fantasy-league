@@ -214,6 +214,9 @@ standings |>
       fantasy_points_change_since_yesterday
     )
   ) |>
+  cols_width(
+    team_image ~ px(80)
+  ) |>
   cols_label(
     team_image = "",
     fantasy_team_name = "Team Name",
@@ -260,6 +263,10 @@ standings |>
       top: 0px !important;
       z-index: 10 !important;
     }
+
+    .gt_table tbody tr {
+        height: 80px;
+      }
     "
   )
 ```
@@ -706,11 +713,13 @@ data |>
       paging = FALSE,
       lengthChange = FALSE,
       searching = FALSE,
+      autoWidth = TRUE,
       columnDefs = list(
         list(
           visible = FALSE,
           targets = "team_colour"
-        )
+        ),
+        list(width = "80px", targets = 1)
       ),
       dom = "t",
       scrollX = TRUE,
@@ -745,7 +754,7 @@ data |>
   ) |>
   formatStyle(
     columns = names(data),
-    height = "40px",
+    height = "80px",
     lineHeight = "100%"
   )
 # gt() |>
