@@ -12,7 +12,7 @@ Due to how we acquire and clean the PWHL API data, this website currently includ
 # source("R/pull_data.R")
 ```
 
-```{r "todays games"}
+```{r "Imports"}
 library(dplyr)
 library(gt)
 library(purrr)
@@ -39,7 +39,9 @@ current_date <- readRDS(
 team_info <- readRDS(
   glue::glue("data/team_info_season_{season_id}.RDS")
 )
+```
 
+```{r "today's games"}
 todays_games <- current_schedule |>
   filter(
     game_date == current_date
@@ -272,6 +274,9 @@ data |>
     ),
     after = team_image
   ) |>
+  cols_width(
+    team_image ~ px(60)
+  ) |>
   cols_label(
     team_image = "",
     fantasy_team_name = "Team Name",
@@ -319,6 +324,10 @@ data |>
       top: 0px !important;
       z-index: 10 !important;
     }
+
+    .gt_table tbody tr {
+        height: 60px;
+      }
     "
   )
 ```
